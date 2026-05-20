@@ -1,0 +1,19 @@
+# Cloudflare Pages redirects file
+# Syntax: <source> <destination> <status_code>
+# Status codes: 301 (permanent), 302 (temporary), 200 (rewrite/proxy)
+# More specific rules must come BEFORE less specific ones.
+#
+# WordPress -> Astro URL migration rules will be generated from the WXR export
+# and appended below this line.
+#
+# Example:
+# /old-wp-slug/                /reviews/new-slug/                301
+# /?p=123                      /reviews/some-machine/             301
+# /category/espresso-machines/ /reviews/                          301
+
+# Catch-all WordPress feed/admin URLs (these should not exist on a static site)
+/feed/                          /                                  301
+/feed                           /                                  301
+/wp-admin/*                     /                                  301
+/wp-login.php                   /                                  301
+/xmlrpc.php                     /                                  410
