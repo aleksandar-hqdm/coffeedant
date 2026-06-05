@@ -83,6 +83,7 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
       </details>
 
       <a class="nav__link" href="/about/">About</a>
+      <a class="nav__cta" href="/quiz/">Find your machine</a>
     </nav>
   </div>
 </header>
@@ -110,6 +111,8 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
   .nav__item > summary::-webkit-details-marker { display: none; }
   .nav__item > summary::after { content: '▾'; font-size: 0.7rem; color: var(--color-muted); }
   .nav__link:hover, .nav__item > summary:hover, .nav__item[open] > summary { background: var(--color-soft); }
+  .nav__cta { display: inline-flex; align-items: center; padding: 0.5rem 0.9rem; border-radius: 999px; font-weight: 700; font-size: 0.92rem; text-decoration: none; background: var(--color-accent); color: #fff; white-space: nowrap; }
+  .nav__cta:hover { background: #15803d; }
 
   .nav__item { position: relative; }
   .nav__panel {

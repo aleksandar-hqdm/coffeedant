@@ -9,6 +9,17 @@ export interface LiveData {
   price?: string | null;
   displayPrice?: string | null;
   url?: string | null;
+  updated?: string | null;
+}
+
+// Format an ISO date (YYYY-MM-DD) as e.g. "Jun 5, 2026" for "last updated" tags.
+export function formatUpdated(date?: string | null): string | null {
+  if (!date) return null;
+  return new Date(date + 'T12:00:00Z').toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
