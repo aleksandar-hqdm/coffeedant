@@ -15,6 +15,7 @@ const { brand } = Astro.props as { brand: Brand };
 const rows = catalogMachines
   .filter((m) => m.brand === brand.brand)
   .sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
+const sc = (v: number | undefined) => (v == null ? '' : v >= 8.5 ? 'is-high' : v >= 7 ? 'is-mid' : 'is-low');
 const crumbs = [
   { name: 'Home', url: '/' },
   { name: 'Espresso Machines', url: '/machines/' },
@@ -43,6 +44,12 @@ const desc = `Compare every ${brand.brand} espresso machine we have reviewed${br
             <th scope="col">Type</th>
             <th scope="col">Milk</th>
             <th scope="col">Grinder</th>
+            <th scope="col" title="Espresso quality (our score / 10)">Espr.</th>
+            <th scope="col" title="Milk &amp; steam (our score / 10)">Steam</th>
+            <th scope="col" title="Build quality (our score / 10)">Build</th>
+            <th scope="col" title="Ease of use (our score / 10)">Ease</th>
+            <th scope="col" title="Value (our score / 10)">Value</th>
+            <th scope="col">Size (mm)</th>
             <th scope="col"><span class="sr">Links</span></th>
           </tr>
         </thead>
@@ -58,6 +65,12 @@ const desc = `Compare every ${brand.brand} espresso machine we have reviewed${br
               <td data-label="Type">{TYPE_LABEL[m.type] || m.type}</td>
               <td data-label="Milk">{MILK_LABEL[m.milk] || m.milk}</td>
               <td data-label="Grinder">{m.grinder ? 'Yes' : 'No'}</td>
+              <td class={`ct-score ${sc(m.scores.espresso)}`} data-label="Espresso">{m.scores.espresso ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.milk)}`} data-label="Steam">{m.scores.milk ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.build)}`} data-label="Build">{m.scores.build ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.ease)}`} data-label="Ease">{m.scores.ease ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.value)}`} data-label="Value">{m.scores.value ?? '—'}</td>
+              <td class="ct-dims" data-label="Size">{m.dims || <span class="ct-na">—</span>}</td>
               <td class="ct-actions">
                 <a class="ct-buy" href={m.buyUrl} target="_blank" rel="nofollow sponsored noopener">Price</a>
                 <a class="ct-review" href={m.route}>Review</a>
@@ -81,7 +94,12 @@ const desc = `Compare every ${brand.brand} espresso machine we have reviewed${br
   .brand-hero__guide:hover { text-decoration: underline; }
 
   .ctable-wrap { overflow-x: auto; border: 1px solid var(--color-line); border-radius: 14px; }
-  .ctable { width: 100%; border-collapse: collapse; min-width: 720px; }
+  .ctable { width: 100%; border-collapse: collapse; min-width: 1120px; }
+  .ct-score { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ct-score.is-high { color: #15803d; }
+  .ct-score.is-mid { color: #8a6d49; }
+  .ct-score.is-low { color: #b45309; }
+  .ct-dims { white-space: nowrap; font-size: 0.84rem; color: var(--color-muted); }
   .ctable thead th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); padding: 0.85rem 0.9rem; border-bottom: 1px solid var(--color-line); background: var(--color-soft); }
   .ctable tbody tr { border-bottom: 1px solid var(--color-line); }
   .ctable tbody tr:last-child { border-bottom: 0; }

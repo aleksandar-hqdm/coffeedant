@@ -11,7 +11,7 @@ const year = new Date().getFullYear();
   <div class="site-footer__inner">
     <div class="site-footer__brand">
       <span class="brand__mark">Coffee<span>dant</span></span>
-      <p>Independent espresso machine reviews, buying guides, and brewing tips. I buy the gear, test it, and report what holds up.</p>
+      <p>Independent espresso machine reviews, buying guides, and brewing tips. I buy the gear, test it on the bench, and report what holds up.</p>
       <p class="disclosure">Affiliate disclosure: Coffeedant is funded by affiliate links that may earn a commission at no extra cost to you.</p>
       <p class="disclosure">Product prices and availability are accurate as of the date shown and are subject to change. Any price shown at the time of purchase on Amazon will apply.</p>
     </div>
@@ -37,25 +37,33 @@ const year = new Date().getFullYear();
       </ul>
     </div>
   </div>
-  <div class="site-footer__bar">© {year} Coffeedant. All rights reserved.</div>
+  <div class="site-footer__bar">
+    <span>© {year} Coffeedant. All rights reserved.</span>
+    <span class="site-footer__tag">Brewed with care for people who take coffee seriously.</span>
+  </div>
 </footer>
 
 <style>
-  .site-footer { background: #14110e; color: #d8d2cb; margin-top: 4rem; }
+  .site-footer { background: var(--espresso-3); color: #d8ccbe; margin-top: 5rem; border-top: 3px solid var(--copper); }
   .site-footer__inner {
-    max-width: var(--container); margin: 0 auto; padding: 3rem 1.25rem 2rem;
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+    max-width: var(--container); margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem;
   }
-  .site-footer__brand p { font-size: 0.9rem; color: #a9a299; margin: 0.75rem 0 0; max-width: 38ch; }
-  .site-footer__brand .disclosure { font-size: 0.8rem; color: #8a847b; }
-  .site-footer .brand__mark { color: #fff; font-weight: 800; font-size: 1.25rem; }
-  .site-footer .brand__mark span { color: var(--color-accent); }
-  .site-footer__heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #fff; margin: 0 0 0.75rem; }
+  .site-footer__brand p { font-size: 0.9rem; color: #a89a8b; margin: 0.85rem 0 0; max-width: 42ch; line-height: 1.6; }
+  .site-footer__brand .disclosure { font-size: 0.79rem; color: #897c6e; }
+  .site-footer .brand__mark { font-family: var(--font-display); font-optical-sizing: auto; color: #fff; font-weight: 600; font-size: 1.5rem; letter-spacing: -0.02em; }
+  .site-footer .brand__mark span { color: var(--copper); }
+  .site-footer__heading { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: #fff; margin: 0 0 1rem; font-weight: 650; }
   .site-footer__col ul { list-style: none; margin: 0; padding: 0; }
-  .site-footer__col li { margin: 0.4rem 0; }
-  .site-footer__col a { color: #c7c1b9; text-decoration: none; font-size: 0.9rem; }
-  .site-footer__col a:hover { color: #fff; text-decoration: underline; }
-  .site-footer__bar { border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center; padding: 1.25rem; font-size: 0.85rem; color: #8a847b; }
-  @media (max-width: 760px) { .site-footer__inner { grid-template-columns: 1fr 1fr; } }
+  .site-footer__col li { margin: 0.5rem 0; }
+  .site-footer__col a { color: #c2b5a6; text-decoration: none; font-size: 0.9rem; transition: color 0.16s var(--ease); }
+  .site-footer__col a:hover { color: var(--copper); }
+  .site-footer__bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.08); max-width: var(--container); margin: 0 auto;
+    padding: 1.4rem 1.5rem; font-size: 0.83rem; color: #897c6e;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .site-footer__tag { font-family: var(--font-display); font-style: italic; color: #a89a8b; }
+  @media (max-width: 760px) { .site-footer__inner { grid-template-columns: 1fr 1fr; } .site-footer__brand { grid-column: 1 / -1; } }
   @media (max-width: 460px) { .site-footer__inner { grid-template-columns: 1fr; } }
 </style>

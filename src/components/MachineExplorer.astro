@@ -79,7 +79,7 @@ const data = JSON.stringify(list).replace(/</g, '\\u003c');
         <div class="mcard__body">
           <span class="mcard__brand">${m.brand}</span>
           <a class="mcard__title" href="${m.route}">${m.label}</a>
-          <div class="mcard__meta">${m.rating ? `<span class="mcard__rating">&#9733; ${m.rating}</span>` : ''}${m.displayPrice ? `<span class="mcard__price">${m.displayPrice}</span>` : ''}</div>
+          <div class="mcard__meta">${m.rating ? `<span class="mcard__rating">${m.rating}</span>` : ''}${m.displayPrice ? `<span class="mcard__price">${m.displayPrice}</span>` : ''}</div>
           <div class="mcard__actions">
             <a class="mcard__buy" href="${m.buyUrl}" target="_blank" rel="nofollow sponsored noopener">Check price</a>
             <a class="mcard__review" href="${m.route}">Review</a>
@@ -118,34 +118,18 @@ const data = JSON.stringify(list).replace(/</g, '\\u003c');
 </script>
 
 <style>
-  .explorer__bar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; justify-content: space-between; margin-bottom: 1rem; }
-  .explorer__filters { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; }
+  /* card + chip atoms live in global.css; this only styles the filter bar */
+  .explorer__bar {
+    display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 1.5rem; padding: 1.1rem 1.25rem; background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: var(--radius); box-shadow: var(--shadow-xs);
+  }
+  .explorer__filters { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; align-items: center; }
   .fgroup { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .chip { border: 1px solid var(--color-line); background: #fff; border-radius: 999px; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; color: var(--color-text); }
-  .chip:hover { border-color: var(--color-brand); }
-  .chip.is-active { background: var(--color-brand); border-color: var(--color-brand); color: #fff; }
-  .grinder { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
-  .explorer__sort { font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; }
-  .explorer__sort select { padding: 0.4rem 0.6rem; border-radius: 8px; border: 1px solid var(--color-line); font: inherit; }
-  .explorer__count { color: var(--color-muted); font-size: 0.85rem; margin: 0 0 1rem; }
-  .explorer__empty { text-align: center; color: var(--color-muted); padding: 2rem; }
-
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.1rem; }
-  .mcard { display: flex; flex-direction: column; border: 1px solid var(--color-line); border-radius: 14px; overflow: hidden; background: #fff; transition: box-shadow 0.15s ease, transform 0.15s ease; }
-  .mcard:hover { box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1); transform: translateY(-2px); }
-  .mcard__media { aspect-ratio: 4 / 3; background: var(--color-soft); display: flex; align-items: center; justify-content: center; padding: 0.75rem; }
-  .mcard__media img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .mcard__ph { color: var(--color-muted); font-size: 0.85rem; }
-  .mcard__body { padding: 0.85rem 0.95rem 1rem; display: flex; flex-direction: column; gap: 0.35rem; }
-  .mcard__brand { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); }
-  .mcard__title { font-weight: 700; color: var(--color-text); text-decoration: none; line-height: 1.3; font-size: 0.98rem; }
-  .mcard__title:hover { color: var(--color-brand); }
-  .mcard__meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-  .mcard__rating { font-size: 0.82rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 0.1rem 0.45rem; border-radius: 999px; }
-  .mcard__price { font-weight: 700; font-size: 0.92rem; }
-  .mcard__actions { display: flex; gap: 0.5rem; margin-top: 0.35rem; }
-  .mcard__buy { flex: 1; text-align: center; background: var(--color-accent); color: #fff; font-weight: 700; padding: 0.45rem; border-radius: 999px; text-decoration: none; font-size: 0.82rem; }
-  .mcard__buy:hover { background: #15803d; }
-  .mcard__review { flex: 1; text-align: center; border: 1px solid var(--color-line); color: var(--color-brand); font-weight: 600; padding: 0.45rem; border-radius: 999px; text-decoration: none; font-size: 0.82rem; }
-  .mcard__review:hover { background: var(--color-soft); }
+  .grinder { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.88rem; font-weight: 600; cursor: pointer; color: var(--ink-2); }
+  .grinder input { accent-color: var(--copper-deep); width: 1rem; height: 1rem; }
+  .explorer__sort { font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ink-2); }
+  .explorer__count { color: var(--ink-3); font-size: 0.85rem; margin: 0 0 1.25rem; font-weight: 500; }
+  .explorer__empty { text-align: center; color: var(--ink-3); padding: 2.5rem; }
+  @media (max-width: 560px) { .explorer__bar { padding: 1rem; } }
 </style>

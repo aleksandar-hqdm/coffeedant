@@ -71,11 +71,16 @@ const out = fs.existsSync('src/data/amazon.json') ? JSON.parse(fs.readFileSync('
 const updated = new Date().toISOString().slice(0, 10);
 const token = await getToken();
 let ok = 0;
+let loggedCR = false;
 for (let i = 0; i < asins.length; i += 10) {
   const items = await getItems(token, asins.slice(i, i + 10));
   for (const it of items) {
     const listing = it?.offersV2?.listings?.find((l) => l.isBuyBoxWinner) || it?.offersV2?.listings?.[0];
     const money = listing?.price?.money;
+    const cr = it?.customerReviews;
+    if (!loggedCR && cr) { console.log('customerReviews shape:', JSON.stringify(cr)); loggedCR = true; }
+    const starRating = cr?.starRating?.value ?? (typeof cr?.starRating === 'number' ? cr.starRating : null);
+    const reviewCount = cr?.count?.value ?? cr?.count ?? null;
     out[it.asin] = {
       title: it?.itemInfo?.title?.displayValue || null,
       image: it?.images?.primary?.large?.url || null,
@@ -83,6 +88,8 @@ for (let i = 0; i < asins.length; i += 10) {
       displayPrice: money?.displayAmount || null,
       currency: money?.currency || null,
       listPrice: listing?.price?.savingBasis?.money?.displayAmount || null,
+      amazonRating: starRating != null ? Number(starRating) : null,
+      amazonReviews: reviewCount != null ? Number(reviewCount) : null,
       url: it?.detailPageURL || null,
       updated,
     };
