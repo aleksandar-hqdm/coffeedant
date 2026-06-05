@@ -1,13 +1,15 @@
 ---
 import nav from '../../data/nav.json';
 import amazon from '../../data/amazon.json';
+import asinMap from '../../data/asins.json';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-type Model = { label: string; route: string; image: string | null; rating: number | null; price: string | null; asin: string | null };
+type Model = { label: string; route: string; slug: string; image: string | null; rating: number | null; price: string | null; asin: string | null; amazonUrl: string | null };
 type Brand = { brand: string; slug: string; route: string; hubRoute: string | null; count: number; avgRating: number | null; models: Model[] };
 
 const catalog = (nav as { catalog: Brand[] }).catalog;
-const amz = amazon as Record<string, { image?: string; price?: string }>;
+const amz = amazon as Record<string, { image?: string; price?: string; displayPrice?: string; url?: string }>;
+const asins = asinMap as Record<string, string>;
 
 export async function getStaticPaths() {
   const cat = (nav as { catalog: Brand[] }).catalog;
@@ -15,13 +17,17 @@ export async function getStaticPaths() {
 }
 
 const { brand } = Astro.props as { brand: Brand };
-// Prefer live Amazon image/price when available; otherwise fall back to the
-// product image from the review and show no price until live data exists.
-const models = brand.models.map((m) => ({
-  ...m,
-  image: (m.asin && amz[m.asin]?.image) || m.image,
-  livePrice: m.asin ? amz[m.asin]?.price ?? null : null,
-}));
+// Resolve each machine's ASIN (from content or the slug->ASIN map), then prefer
+// live Amazon image/price; fall back to the product image from the review.
+const models = brand.models.map((m) => {
+  const asin = m.asin || asins[m.slug] || null;
+  const live = asin ? amz[asin] : null;
+  return {
+    ...m,
+    image: live?.image || m.image,
+    livePrice: live?.displayPrice || (live?.price ? `$${live.price}` : null),
+  };
+});
 const crumbs = [
   { name: 'Home', url: '/' },
   { name: 'Espresso Machines', url: '/espresso-machine/' },
@@ -52,7 +58,7 @@ const desc = `Every ${brand.brand} espresso machine we have reviewed${brand.avgR
               {m.rating
                 ? <span class="machine-card__rating">★ {m.rating} / 5</span>
                 : <span class="machine-card__rating machine-card__rating--none">Reviewed</span>}
-              {m.livePrice && <span class="machine-card__price">${m.livePrice}</span>}
+              {m.livePrice && <span class="machine-card__price">{m.livePrice}</span>}
             </div>
             <span class="machine-card__cta">Read review &rarr;</span>
           </div>

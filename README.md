@@ -62,9 +62,15 @@ The generated content is committed, so Vercel builds without needing the dump.
 └── vercel.json            # redirects + trailing slash (generated)
 ```
 
-## Amazon pricing (Phase 2)
+## Amazon pricing (Creators API)
 
-Buy buttons currently render from the migrated content. Live prices via PA-API 5.0 are stubbed in `src/lib/amazon.ts`; provide `AMAZON_ACCESS_KEY` and `AMAZON_SECRET_KEY` via env (see `.env.example`) to enable. Amazon's terms require prices to be refreshed within 24h, so the live path batches and caches on a schedule.
+Live prices and product images come from the Amazon Creators API (the PA-API 5.0 replacement, retired May 2026). Pipeline:
+
+1. `npm run resolve-asins` follows each `amzn.to` buy link to its ASIN (`src/data/asins.json`).
+2. `npm run amazon-refresh` exchanges the OAuth2 client credentials for a token and calls `getItems`, writing live price/image/title to `src/data/amazon.json`.
+3. Brand-page cards read `amazon.json` (keyed by ASIN) and show the live price + Amazon image, falling back to the review's own image.
+
+Set `CREATORS_CLIENT_ID`, `CREATORS_CLIENT_SECRET`, `AMAZON_PARTNER_TAG` (see `.env.example`) locally, and as repo secrets so the weekly GitHub Action (`.github/workflows/amazon-weekly.yml`) keeps prices fresh.
 
 ## Deploys
 

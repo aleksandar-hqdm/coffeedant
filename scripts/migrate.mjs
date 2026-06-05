@@ -230,6 +230,7 @@ for (const r of pages.filter((p) => p.type === 'review' && p.route.startsWith('/
   byBrand.get(bk).push({
     label: modelLabel(r.title, bk, r.slug),
     route: r.route,
+    slug: r.slug,
     image: r.image,
     rating: r.rating,
     price: r.price,

@@ -1,9 +1,8 @@
 name: Weekly Amazon refresh
 
-# Refreshes product prices/images/availability once a week (and on demand).
-# Set repo secrets AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_PARTNER_TAG
-# (Product Advertising API 5.0 credentials) to enable live data. Without them
-# the refresh step is a safe no-op.
+# Refreshes product prices/images once a week (and on demand) via the Amazon
+# Creators API. Set repo secrets CREATORS_CLIENT_ID, CREATORS_CLIENT_SECRET,
+# AMAZON_PARTNER_TAG to enable live data. Without them the refresh is a no-op.
 
 on:
   schedule:
@@ -26,8 +25,8 @@ jobs:
       - name: Refresh prices and metadata (PA-API)
         run: node scripts/amazon-refresh.mjs
         env:
-          AMAZON_ACCESS_KEY: ${{ secrets.AMAZON_ACCESS_KEY }}
-          AMAZON_SECRET_KEY: ${{ secrets.AMAZON_SECRET_KEY }}
+          CREATORS_CLIENT_ID: ${{ secrets.CREATORS_CLIENT_ID }}
+          CREATORS_CLIENT_SECRET: ${{ secrets.CREATORS_CLIENT_SECRET }}
           AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
       - name: Commit refreshed data
         run: |
