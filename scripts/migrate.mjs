@@ -106,6 +106,36 @@ function blocksToHtml(content) {
   return html;
 }
 
+// Pull product facts out of a review body. Ratings/prices come from the
+// authoritative schema.org microdata (no guessing from prose); the buy link is
+// the first Amazon link inside the product box.
+function extractProduct(html, fallbackImage) {
+  let boxStart = html.indexOf('<div class="cd-merged-box"');
+  if (boxStart < 0) boxStart = html.search(/schema\.org\/Product/i);
+  const box = boxStart > -1 ? html.slice(boxStart, boxStart + 6000) : html;
+
+  const ratingStr =
+    (html.match(/itemprop=["']ratingValue["'][^>]*content=["']([\d.]+)["']/i) || [])[1] ||
+    (html.match(/content=["']([\d.]+)["'][^>]*itemprop=["']ratingValue["']/i) || [])[1] ||
+    (html.match(/itemprop=["']ratingValue["'][^>]*>\s*([\d.]+)/i) || [])[1] || '';
+  let rating = ratingStr ? Math.round(parseFloat(ratingStr) * 10) / 10 : null;
+  if (rating != null && (rating < 1 || rating > 5)) rating = null;
+
+  const imgTag =
+    (html.match(/<img[^>]*itemprop=["']image["'][^>]*>/i) || [])[0] ||
+    (box.match(/<img[^>]*src=["'][^"']*(?:wp-content|media-amazon|images-amazon|ssl-images)[^"']*["'][^>]*>/i) || [])[0] || '';
+  const image = (imgTag.match(/src=["']([^"']+)["']/) || [])[1] || fallbackImage || null;
+
+  const priceStr = (html.match(/itemprop=["']price["'][^>]*content=["']([\d.]+)["']/i) || [])[1] || '';
+  const price = priceStr ? priceStr.replace(/,/g, '') : null;
+
+  const asin = (box.match(/\/dp\/([A-Z0-9]{10})/) || html.match(/\/dp\/([A-Z0-9]{10})/) || [])[1] || null;
+  const amazonUrl = (box.match(/href=["'](https?:\/\/(?:amzn\.to|www\.amazon\.[a-z.]+)\/[^"']+)["']/i) ||
+    html.match(/href=["'](https?:\/\/(?:amzn\.to|www\.amazon\.[a-z.]+)\/[^"']+)["']/i) || [])[1] || null;
+
+  return { image, rating, asin, amazonUrl, price };
+}
+
 function routeFromPermalink(permalink, slug) {
   if (permalink) {
     const p = permalink.replace(ORIGIN, '').replace(/^https?:\/\/[^/]+/, '');
@@ -146,6 +176,7 @@ for (const p of posts) {
   const route = routeFromPermalink(y?.permalink, p.post_name);
   const type = classify(route, p.post_name);
   const bodyHtml = blocksToHtml(p.post_content);
+  const product = extractProduct(bodyHtml, y?.open_graph_image || y?.twitter_image || null);
 
   if (!y) report.missingYoast.push(route);
   const sc = p.post_content.match(/\[[a-z][a-z0-9_-]+[\s\]]/gi);
@@ -177,6 +208,11 @@ for (const p of posts) {
     noindex: y?.is_robots_noindex === '1',
     date: p.post_date,
     modified: p.post_modified,
+    image: product.image,
+    rating: product.rating,
+    asin: product.asin,
+    amazonUrl: product.amazonUrl,
+    price: product.price,
     bodyHtml,
   });
 }
@@ -191,14 +227,30 @@ const byBrand = new Map();
 for (const r of pages.filter((p) => p.type === 'review' && p.route.startsWith('/espresso-machine/'))) {
   const bk = detectBrand(r.slug) || 'other';
   if (!byBrand.has(bk)) byBrand.set(bk, []);
-  byBrand.get(bk).push({ label: modelLabel(r.title, bk, r.slug), route: r.route });
+  byBrand.get(bk).push({
+    label: modelLabel(r.title, bk, r.slug),
+    route: r.route,
+    image: r.image,
+    rating: r.rating,
+    price: r.price,
+    asin: r.asin,
+    amazonUrl: r.amazonUrl,
+  });
 }
 const catalog = [...byBrand.entries()]
-  .map(([bk, models]) => ({
-    brand: BRAND_NAMES[bk] || bk.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-    route: hubByBrand[bk] || null,
-    models: models.sort((a, b) => a.label.localeCompare(b.label)),
-  }))
+  .map(([bk, models]) => {
+    const rated = models.map((m) => m.rating).filter((n) => typeof n === 'number');
+    const avgRating = rated.length ? Math.round((rated.reduce((a, b) => a + b, 0) / rated.length) * 10) / 10 : null;
+    return {
+      brand: BRAND_NAMES[bk] || bk.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+      slug: bk,
+      route: `/brand/${bk}/`,
+      hubRoute: hubByBrand[bk] || null,
+      count: models.length,
+      avgRating,
+      models: models.sort((a, b) => a.label.localeCompare(b.label)),
+    };
+  })
   .sort((a, b) => a.brand.localeCompare(b.brand));
 
 const guideList = pages.filter((p) => p.type === 'category').map((p) => ({ name: p.breadcrumb || p.title, route: p.route }));

@@ -22,6 +22,11 @@ const pages = defineCollection({
     noindex: z.boolean().optional(),
     date: z.string().nullable().optional(),
     modified: z.string().nullable().optional(),
+    image: z.string().nullable().optional(),
+    rating: z.number().nullable().optional(),
+    asin: z.string().nullable().optional(),
+    amazonUrl: z.string().nullable().optional(),
+    price: z.string().nullable().optional(),
     bodyHtml: z.string(),
   }),
 });

@@ -2,775 +2,1627 @@
   "catalog": [
     {
       "brand": "9Barista",
-      "route": null,
+      "slug": "9barista",
+      "route": "/brand/9barista/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": null,
       "models": [
         {
           "label": "MK 2",
-          "route": "/espresso-machine/9barista-mk2/"
+          "route": "/espresso-machine/9barista-mk2/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/9barista-mk2.jpeg",
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4a4dFQM"
         }
       ]
     },
     {
       "brand": "Ascaso",
-      "route": null,
+      "slug": "ascaso",
+      "route": "/brand/ascaso/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.3,
       "models": [
         {
           "label": "Steel Duo PID",
-          "route": "/espresso-machine/ascaso-steel-duo-pid/"
+          "route": "/espresso-machine/ascaso-steel-duo-pid/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/ascaso-steel-duo-pid-product-image-min.jpg",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4bOrPqd"
         },
         {
           "label": "Steel Uno PID",
-          "route": "/espresso-machine/ascaso-steel-uno/"
+          "route": "/espresso-machine/ascaso-steel-uno/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Ascaso-Steel-Uno-PID-1.webp",
+          "rating": 4.2,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qjbAGl"
         }
       ]
     },
     {
       "brand": "Bezzera",
-      "route": null,
+      "slug": "bezzera",
+      "route": "/brand/bezzera/",
+      "hubRoute": null,
+      "count": 8,
+      "avgRating": 4.3,
       "models": [
         {
           "label": "BZ09",
-          "route": "/espresso-machine/bezzera-bz09/"
+          "route": "/espresso-machine/bezzera-bz09/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Bezzera-BZ09.jpg",
+          "rating": 4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3Z2Nbc0"
         },
         {
           "label": "BZ10",
-          "route": "/espresso-machine/bezzera-bz10/"
+          "route": "/espresso-machine/bezzera-bz10/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/bezzera-bz10-1.jpg",
+          "rating": 4.4,
+          "price": "1449.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4ptpxQI"
         },
         {
           "label": "BZ13 PID",
-          "route": "/espresso-machine/bezzera-bz13-pid/"
+          "route": "/espresso-machine/bezzera-bz13-pid/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/bezzera-bz10-1.jpg",
+          "rating": 4.5,
+          "price": "1699",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3Z8Pw5e"
         },
         {
           "label": "Duo MN",
-          "route": "/espresso-machine/bezzera-duo-mn/"
+          "route": "/espresso-machine/bezzera-duo-mn/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Bezzera-Duo-mn-min.jpg",
+          "rating": 4.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iUdSJ6"
         },
         {
           "label": "Hobby",
-          "route": "/espresso-machine/bezzera-hobby/"
+          "route": "/espresso-machine/bezzera-hobby/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Bezzera-Hobby-espresso-machine-1.jpg",
+          "rating": 3.8,
+          "price": "799",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3YG0e3i"
         },
         {
           "label": "Mitica Top PID",
-          "route": "/espresso-machine/bezzera-mitica-top-pid/"
+          "route": "/espresso-machine/bezzera-mitica-top-pid/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/bezzera-mitica-pid-min.jpg",
+          "rating": 4.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4pEc1L1"
         },
         {
           "label": "Strega",
-          "route": "/espresso-machine/bezzera-strega/"
+          "route": "/espresso-machine/bezzera-strega/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/bezzera-strega.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4syk7GX"
         },
         {
           "label": "Unica PID (MN)",
-          "route": "/espresso-machine/bezzera-unica-pid/"
+          "route": "/espresso-machine/bezzera-unica-pid/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/bezzera-unica-pid.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4oV4upY"
         }
       ]
     },
     {
       "brand": "Bosch",
-      "route": "/bosch/",
+      "slug": "bosch",
+      "route": "/brand/bosch/",
+      "hubRoute": "/bosch/",
+      "count": 3,
+      "avgRating": 3.3,
       "models": [
         {
           "label": "300 Series VeroCafe (TIU20307)",
-          "route": "/espresso-machine/bosch-300-series-verocafe-tiu20307/"
+          "route": "/espresso-machine/bosch-300-series-verocafe-tiu20307/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/bosch-verocafe-300-series-min.jpg",
+          "rating": 2.8,
+          "price": "899.95",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4rVFuBI"
         },
         {
           "label": "500 Series VeroCafe (TPU40109)",
-          "route": "/espresso-machine/bosch-500-series-verocafe-tpu40109/"
+          "route": "/espresso-machine/bosch-500-series-verocafe-tpu40109/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Bosch-500-Series-VeroCafe-TPU40109.jpg",
+          "rating": 3.7,
+          "price": "989.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4m44qo8"
         },
         {
           "label": "800 Series Espresso Machine",
-          "route": "/espresso-machine/bosch-800-series/"
+          "route": "/espresso-machine/bosch-800-series/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/bosch-800-series.jpg",
+          "rating": 3.3,
+          "price": "1199.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iUArO0"
         }
       ]
     },
     {
       "brand": "Breville",
-      "route": "/breville/",
+      "slug": "breville",
+      "route": "/brand/breville/",
+      "hubRoute": "/breville/",
+      "count": 11,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "Bambino Plus",
-          "route": "/espresso-machine/breville-bambino/"
+          "route": "/espresso-machine/breville-bambino/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/breville-bambin-plus-min.png",
+          "rating": 4.2,
+          "price": "449.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4oTFUpH"
         },
         {
           "label": "Barista Express",
-          "route": "/espresso-machine/breville-barista-express-bes870xl/"
+          "route": "/espresso-machine/breville-barista-express-bes870xl/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/barista-express-featured-min.png",
+          "rating": 3.9,
+          "price": null,
+          "asin": "B0DZCVQXWC",
+          "amazonUrl": "https://amzn.to/44wsM2t"
         },
         {
           "label": "Barista Express Impress",
-          "route": "/espresso-machine/breville-barista-express-impress-bes876/"
+          "route": "/espresso-machine/breville-barista-express-impress-bes876/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/barista-express-impress-product-min-min.png",
+          "rating": 4.5,
+          "price": null,
+          "asin": "B0BBYNPV33",
+          "amazonUrl": "https://amzn.to/3YonUJ7"
         },
         {
           "label": "Barista Pro",
-          "route": "/espresso-machine/breville-barista-pro-bes878/"
+          "route": "/espresso-machine/breville-barista-pro-bes878/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/brevile-pro-featured-min.png",
+          "rating": 4.1,
+          "price": "679.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iUts7x"
         },
         {
           "label": "Barista Touch BES880BSS 2025",
-          "route": "/espresso-machine/breville-barista-touch-bes880bss/"
+          "route": "/espresso-machine/breville-barista-touch-bes880bss/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/breville-barista-touch-min.png",
+          "rating": null,
+          "price": null,
+          "asin": "B078WMLXXG",
+          "amazonUrl": "https://www.amazon.com/Breville-BES880BSS-Barista-Espresso-Stainless/dp/B078WMLXXG?th=1"
         },
         {
           "label": "Barista Touch Impress",
-          "route": "/espresso-machine/breville-barista-touch-impress-bes881/"
+          "route": "/espresso-machine/breville-barista-touch-impress-bes881/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/breville-barista-touch-impress-min.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iW4xk2"
         },
         {
           "label": "Dual Boiler (BES920XL)",
-          "route": "/espresso-machine/breville-dual-boiler-bes920xl/"
+          "route": "/espresso-machine/breville-dual-boiler-bes920xl/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/breville-dual-boiler-featured-image-min.jpg",
+          "rating": 4.6,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3KWjc2c"
         },
         {
           "label": "Dynamic Duo (BEP920)",
-          "route": "/espresso-machine/breville-dynamic-duo-bep920/"
+          "route": "/espresso-machine/breville-dynamic-duo-bep920/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/breville-dynamic-duo-1.jpg",
+          "rating": 4.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3NhxHhN"
         },
         {
           "label": "Oracle",
-          "route": "/espresso-machine/breville-oracle-bes980x/"
+          "route": "/espresso-machine/breville-oracle-bes980x/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/breville-oracle-min.png",
+          "rating": null,
+          "price": null,
+          "asin": "B00J19PT2K",
+          "amazonUrl": "https://amzn.to/4c4ZwTx"
         },
         {
           "label": "Oracle Jet",
-          "route": "/espresso-machine/breville-oracle-jet-bes985/"
+          "route": "/espresso-machine/breville-oracle-jet-bes985/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/breville-oracle-jet-min.png",
+          "rating": null,
+          "price": null,
+          "asin": "B0DYGDKQ85",
+          "amazonUrl": "https://amzn.to/3NxWD5l"
         },
         {
           "label": "Oracle Touch",
-          "route": "/espresso-machine/breville-oracle-touch-bes990/"
+          "route": "/espresso-machine/breville-oracle-touch-bes990/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/breville-oracle-touch-min.png",
+          "rating": 3.7,
+          "price": "1999.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/48Vfga0"
         }
       ]
     },
     {
       "brand": "Cafelat",
-      "route": null,
+      "slug": "cafelat",
+      "route": "/brand/cafelat/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": null,
       "models": [
         {
           "label": "Robot Barista",
-          "route": "/espresso-machine/cafelat-robot-barista/"
+          "route": "/espresso-machine/cafelat-robot-barista/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     },
     {
       "brand": "Crem",
-      "route": null,
+      "slug": "crem",
+      "route": "/brand/crem/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": null,
       "models": [
         {
           "label": "ONE HX PID WT/WC",
-          "route": "/espresso-machine/crem-one-hx-pid-wt-wc/"
+          "route": "/espresso-machine/crem-one-hx-pid-wt-wc/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     },
     {
       "brand": "Dalla Corte",
-      "route": null,
+      "slug": "dalla-corte",
+      "route": "/brand/dalla-corte/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": 4.7,
       "models": [
         {
           "label": "Mina",
-          "route": "/espresso-machine/dalla-corte-mina/"
+          "route": "/espresso-machine/dalla-corte-mina/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Dalla-Corte-Mina-min.jpg",
+          "rating": 4.7,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49jcbR2"
         }
       ]
     },
     {
       "brand": "De'Longhi",
-      "route": "/de-longhi/",
+      "slug": "delonghi",
+      "route": "/brand/delonghi/",
+      "hubRoute": "/de-longhi/",
+      "count": 14,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "De’Longhi Dedica EC685",
-          "route": "/espresso-machine/delonghi-dedica/"
+          "route": "/espresso-machine/delonghi-dedica/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/delonghi-dedica-min.jpg",
+          "rating": 3.7,
+          "price": "248.85",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4cdohP2"
         },
         {
           "label": "De’Longhi Dinamica Plus",
-          "route": "/espresso-machine/delonghi-dinamica-plus-ecam370/"
+          "route": "/espresso-machine/delonghi-dinamica-plus-ecam370/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/delonghi-dinamica-plus.png",
+          "rating": 4.4,
+          "price": "849.99",
+          "asin": "B08DP6T1D6",
+          "amazonUrl": "https://www.amazon.com/DeLonghi-Dinamica-Automatic-Espresso-Titanium/dp/B08DP6T1D6?th=1"
         },
         {
           "label": "De’Longhi ECP3420",
-          "route": "/espresso-machine/delonghi-ecp3420/"
+          "route": "/espresso-machine/delonghi-ecp3420/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/delonghi-ecp-1.jpg",
+          "rating": 3.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3ZcYu1m"
         },
         {
           "label": "De’Longhi Eletta Explore (ECAM450.xx)",
-          "route": "/espresso-machine/delonghi-eletta-explore-ecam450/"
+          "route": "/espresso-machine/delonghi-eletta-explore-ecam450/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/delonghi-eletta-explore.png",
+          "rating": 4.7,
+          "price": "1499.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qebn7y"
         },
         {
           "label": "De’Longhi La Specialista Arte",
-          "route": "/espresso-machine/delonghi-la-specialista-arte/"
+          "route": "/espresso-machine/delonghi-la-specialista-arte/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/delonghi-la-specialista-arte.png",
+          "rating": 4.1,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3NkCleW"
         },
         {
           "label": "De’Longhi La Specialista Prestigio",
-          "route": "/espresso-machine/delonghi-la-specialista-prestigio/"
+          "route": "/espresso-machine/delonghi-la-specialista-prestigio/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/delonghi-la-specialista-prestigio.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": "B0934BNSXX",
+          "amazonUrl": "https://www.amazon.com/DeLonghi-EC9355M-Specialista-Prestigio-Espresso/dp/B0934BNSXX"
         },
         {
           "label": "De’Longhi PrimaDonna Soul (ECAM610.xx)",
-          "route": "/espresso-machine/delonghi-primadonna-soul-ecam610/"
+          "route": "/espresso-machine/delonghi-primadonna-soul-ecam610/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/delonghi-primadonna-soul.png",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3Z3YosY"
         },
         {
           "label": "Dinamica Aroma Bar ECAM359.37.TB",
-          "route": "/espresso-machine/delonghi-dinamica-aroma-bar-ecam359-37-tb/"
+          "route": "/espresso-machine/delonghi-dinamica-aroma-bar-ecam359-37-tb/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Dinamica Plus ECAM38085SB",
-          "route": "/espresso-machine/delonghi-dinamica-plus-ecam38085sb/"
+          "route": "/espresso-machine/delonghi-dinamica-plus-ecam38085sb/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/DeLonghi-Dinamica-Plus-min.jpg",
+          "rating": 4.5,
+          "price": "1199",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iWKAJU"
         },
         {
           "label": "Magnifica ESAM3000",
-          "route": "/espresso-machine/delonghi-magnifica-esam3000/"
+          "route": "/espresso-machine/delonghi-magnifica-esam3000/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Magnifica Evo",
-          "route": "/espresso-machine/delonghi-magnifica-evo/"
+          "route": "/espresso-machine/delonghi-magnifica-evo/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/delonghi-magnifica-evo.png",
+          "rating": 4.2,
+          "price": "549.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4q9WFhq"
         },
         {
           "label": "Magnifica Evo Next",
-          "route": "/espresso-machine/delonghi-magnifica-evo-next/"
+          "route": "/espresso-machine/delonghi-magnifica-evo-next/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/DeLonghi-Magnifica-Evo-Next-Feature-1.jpg",
+          "rating": null,
+          "price": "899",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qh0OAu"
         },
         {
           "label": "Magnifica Plus",
-          "route": "/espresso-machine/delonghi-magnifica-plus/"
+          "route": "/espresso-machine/delonghi-magnifica-plus/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/delonghi-magnifica-plus-product-image.jpg",
+          "rating": 4.6,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4sv1BiD"
         },
         {
           "label": "Magnifica Start",
-          "route": "/espresso-machine/delonghi-magnifica-start/"
+          "route": "/espresso-machine/delonghi-magnifica-start/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/DeLonghi-Magnifica-Start.jpg",
+          "rating": 4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qKnedl"
         }
       ]
     },
     {
       "brand": "ECM",
-      "route": null,
+      "slug": "ecm",
+      "route": "/brand/ecm/",
+      "hubRoute": null,
+      "count": 7,
+      "avgRating": 4.4,
       "models": [
         {
           "label": "Casa V",
-          "route": "/espresso-machine/ecm-casa-v/"
+          "route": "/espresso-machine/ecm-casa-v/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/ECM-Casa-V-1.jpg",
+          "rating": 4.1,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qOFAd8"
         },
         {
           "label": "Classika PID + Flow Control",
-          "route": "/espresso-machine/ecm-classika-pid-flow-control/"
+          "route": "/espresso-machine/ecm-classika-pid-flow-control/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/ECM-Classika-PID-min.jpg",
+          "rating": 4.4,
+          "price": "1649",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4j9EgPp"
         },
         {
           "label": "Mechanika Slim PID",
-          "route": "/espresso-machine/ecm-mechanika-slim-pid/"
+          "route": "/espresso-machine/ecm-mechanika-slim-pid/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/ecm-mechanika-slim-pid-min.jpg",
+          "rating": 4.5,
+          "price": "2159.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4pvI52Z"
         },
         {
           "label": "Mechanika V Slim",
-          "route": "/espresso-machine/ecm-mechanika-v-slim/"
+          "route": "/espresso-machine/ecm-mechanika-v-slim/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Puristika",
-          "route": "/espresso-machine/ecm-puristika/"
+          "route": "/espresso-machine/ecm-puristika/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/ecm-puristika-featured-image-min.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49DGFP8"
         },
         {
           "label": "Synchronika",
-          "route": "/espresso-machine/ecm-synchronika/"
+          "route": "/espresso-machine/ecm-synchronika/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/ECM-Synchronika-1.jpg",
+          "rating": 4.6,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4jsaKV5"
         },
         {
           "label": "Technika V Profi PID",
-          "route": "/espresso-machine/ecm-technika-v-profi-pid/"
+          "route": "/espresso-machine/ecm-technika-v-profi-pid/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/ecm-technika-v-profi-pid-espresso-machine-1.jpg",
+          "rating": 4.6,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4pQOENP"
         }
       ]
     },
     {
       "brand": "Flair",
-      "route": null,
+      "slug": "flair",
+      "route": "/brand/flair/",
+      "hubRoute": null,
+      "count": 4,
+      "avgRating": 4.4,
       "models": [
         {
           "label": "58",
-          "route": "/espresso-machine/flair-58/"
+          "route": "/espresso-machine/flair-58/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/flair-58-espresso-1.jpg",
+          "rating": 4.4,
+          "price": "506.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4a3m7zN"
         },
         {
           "label": "Classic",
-          "route": "/espresso-machine/flair-classic/"
+          "route": "/espresso-machine/flair-classic/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "NEO Flex",
-          "route": "/espresso-machine/flair-neo-flex/"
+          "route": "/espresso-machine/flair-neo-flex/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "PRO 2",
-          "route": "/espresso-machine/flair-pro-2/"
+          "route": "/espresso-machine/flair-pro-2/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     },
     {
       "brand": "Gaggia",
-      "route": "/gaggia/",
+      "slug": "gaggia",
+      "route": "/brand/gaggia/",
+      "hubRoute": "/gaggia/",
+      "count": 18,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "Accademia",
-          "route": "/espresso-machine/gaggia-accademia-ri9781-01/"
+          "route": "/espresso-machine/gaggia-accademia-ri9781-01/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/gaggia-accademia-featured-product-min.jpg",
+          "rating": 4.2,
+          "price": "1799.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iLSt4L"
         },
         {
           "label": "Anima",
-          "route": "/espresso-machine/gaggia-anima/"
+          "route": "/espresso-machine/gaggia-anima/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/gaggia-anima-prestige.png",
+          "rating": 4.2,
+          "price": "699",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/47NSe4Y"
         },
         {
           "label": "Anima Deluxe",
-          "route": "/espresso-machine/gaggia-anima-deluxe/"
+          "route": "/espresso-machine/gaggia-anima-deluxe/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Anima Prestige",
-          "route": "/espresso-machine/gaggia-anima-prestige/"
+          "route": "/espresso-machine/gaggia-anima-prestige/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/gaggia-anima-prestige.png",
+          "rating": 3.8,
+          "price": "849",
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Babila (RI9700/64)",
-          "route": "/espresso-machine/gaggia-babila-ri9700/"
+          "route": "/espresso-machine/gaggia-babila-ri9700/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Brera (RI9305/11)",
-          "route": "/espresso-machine/gaggia-brera-ri9305/"
+          "route": "/espresso-machine/gaggia-brera-ri9305/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/gaggia-brera.png",
+          "rating": 4.7,
+          "price": null,
+          "asin": "B003XV31IG",
+          "amazonUrl": "https://www.amazon.com/Brera-Espresso-Machine-Color-Silver/dp/B003XV31IG?th=1"
         },
         {
           "label": "Cadorna Barista Plus (RI9603/47)",
-          "route": "/espresso-machine/gaggia-cadorna-barista-plus-ri9603-47/"
+          "route": "/espresso-machine/gaggia-cadorna-barista-plus-ri9603-47/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Gaggia-Cadorna-Barista-Plus-min.jpg",
+          "rating": 3.8,
+          "price": "1099.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/44ruy4S"
         },
         {
           "label": "Cadorna Milk",
-          "route": "/espresso-machine/gaggia-cadorna-milk/"
+          "route": "/espresso-machine/gaggia-cadorna-milk/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Cadorna Prestige",
-          "route": "/espresso-machine/gaggia-cadorna-prestige/"
+          "route": "/espresso-machine/gaggia-cadorna-prestige/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/gaggia-cadorna-prestige.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4pMWTug"
         },
         {
           "label": "Classic Evo",
-          "route": "/espresso-machine/gaggia-classic-evo/"
+          "route": "/espresso-machine/gaggia-classic-evo/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Gaggia-Classic-Evo-min.jpg",
+          "rating": 4.2,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/44UiB7U"
         },
         {
           "label": "Classic Evo Pro",
-          "route": "/espresso-machine/gaggia-classic-evo-pro/"
+          "route": "/espresso-machine/gaggia-classic-evo-pro/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/gaggia-classic-evo-pro.jpg",
+          "rating": 4.5,
+          "price": "549",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4jxhwJd"
         },
         {
           "label": "Classic GT",
-          "route": "/espresso-machine/gaggia-classic-gt/"
+          "route": "/espresso-machine/gaggia-classic-gt/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Gaggia-Classic-Evo-min.jpg",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3KsS1Mn"
         },
         {
           "label": "Espresso Evolution (EG2115)",
-          "route": "/espresso-machine/gaggia-espresso-evolution-eg2115/"
+          "route": "/espresso-machine/gaggia-espresso-evolution-eg2115/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/gaggia-espresso-evolution-min.jpg",
+          "rating": 3.9,
+          "price": "249.95",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3KVHdGx"
         },
         {
           "label": "Magenta Prestige (RI8702)",
-          "route": "/espresso-machine/gaggia-magenta-prestige-ri8702/"
+          "route": "/espresso-machine/gaggia-magenta-prestige-ri8702/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Gaggia-Magenta-Prestige-min.jpg",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/44t2oq6"
         },
         {
           "label": "Naviglio Deluxe (HD8749)",
-          "route": "/espresso-machine/gaggia-naviglio-deluxe-hd8749/"
+          "route": "/espresso-machine/gaggia-naviglio-deluxe-hd8749/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Naviglio Milk (HD8749/01)",
-          "route": "/espresso-machine/gaggia-naviglio-milk-hd8749-01/"
+          "route": "/espresso-machine/gaggia-naviglio-milk-hd8749-01/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Velasca (RI8260/RI8263)",
-          "route": "/espresso-machine/gaggia-velasca-ri8260-3/"
+          "route": "/espresso-machine/gaggia-velasca-ri8260-3/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/gaggia-velasca-ri8260-3-featured-image-min.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49DGFP8"
         },
         {
           "label": "Velasca Prestige (RI8263/SUP047RG)",
-          "route": "/espresso-machine/gaggia-velasca-prestige-ri8263/"
+          "route": "/espresso-machine/gaggia-velasca-prestige-ri8263/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     },
     {
       "brand": "Jura",
-      "route": null,
+      "slug": "jura",
+      "route": "/brand/jura/",
+      "hubRoute": null,
+      "count": 4,
+      "avgRating": 4.4,
       "models": [
         {
           "label": "E6",
-          "route": "/espresso-machine/jura-e6/"
+          "route": "/espresso-machine/jura-e6/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/jura-e6.png",
+          "rating": 4.1,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/452XP6g"
         },
         {
           "label": "E8",
-          "route": "/espresso-machine/jura-e8/"
+          "route": "/espresso-machine/jura-e8/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/jura-e8.png",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qJhZKQ"
         },
         {
           "label": "GIGA 6",
-          "route": "/espresso-machine/jura-giga-6/"
+          "route": "/espresso-machine/jura-giga-6/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/jura-giga-6.png",
+          "rating": 4.7,
+          "price": "5399",
+          "asin": "B0C2JD6TJ7",
+          "amazonUrl": "https://www.amazon.com/Jura-GIGA-10-Diamond-Black/dp/B0C2JD6TJ7"
         },
         {
           "label": "Z10",
-          "route": "/espresso-machine/jura-z10/"
+          "route": "/espresso-machine/jura-z10/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     },
     {
       "brand": "Krups",
-      "route": "/krups/",
+      "slug": "krups",
+      "route": "/brand/krups/",
+      "hubRoute": "/krups/",
+      "count": 11,
+      "avgRating": 3.6,
       "models": [
         {
           "label": "Arabica Digital EA817040",
-          "route": "/espresso-machine/krups-arabica-digital-ea817040/"
+          "route": "/espresso-machine/krups-arabica-digital-ea817040/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Arabica Manual (EA811040/EA811840)",
-          "route": "/espresso-machine/krups-arabica-manual-ea811040-ea811840/"
+          "route": "/espresso-machine/krups-arabica-manual-ea811040-ea811840/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/krups-arabica-manual-1.jpg",
+          "rating": 3.1,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qQE7mF"
         },
         {
           "label": "Evidence Eco Design EA897B40",
-          "route": "/espresso-machine/krups-evidence-eco-design-ea897b40/"
+          "route": "/espresso-machine/krups-evidence-eco-design-ea897b40/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/KRUPS-Evidence-ECOdesign-1.jpg",
+          "rating": 4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qKEWxg"
         },
         {
           "label": "Evidence Milk EA891D27",
-          "route": "/espresso-machine/krups-evidence-milk-ea891d27/"
+          "route": "/espresso-machine/krups-evidence-milk-ea891d27/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Evidence One EA895N40",
-          "route": "/espresso-machine/krups-evidence-one-ea895n40/"
+          "route": "/espresso-machine/krups-evidence-one-ea895n40/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/krups-evidence-evo-min.png",
+          "rating": 3.8,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3NbIzxW"
         },
         {
           "label": "INTUITION ESSENTIAL (EA870840)",
-          "route": "/espresso-machine/krups-intuition-essential-ea870840/"
+          "route": "/espresso-machine/krups-intuition-essential-ea870840/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "INTUITION EXPERIENCE+",
-          "route": "/espresso-machine/krups-intuition-experience-ea877d40/"
+          "route": "/espresso-machine/krups-intuition-experience-ea877d40/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/krups-intuition-experience-min.png",
+          "rating": 4.6,
+          "price": "999.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4aI1eeg"
         },
         {
           "label": "INTUITION PREFERENCE+ EA875U40",
-          "route": "/espresso-machine/krups-intuition-preference-ea875u40/"
+          "route": "/espresso-machine/krups-intuition-preference-ea875u40/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/krups-intuition-preference-min.png",
+          "rating": 3.9,
+          "price": null,
+          "asin": "B08C5YJP33",
+          "amazonUrl": "https://www.amazon.co.uk/Krups-Intuition-Preference-Cappuccino-EA873810/dp/B08C5YJP33"
         },
         {
           "label": "OPIO XP320840",
-          "route": "/espresso-machine/krups-opio-xp320840/"
+          "route": "/espresso-machine/krups-opio-xp320840/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/krups-opio-1.jpg",
+          "rating": 3.1,
+          "price": "70.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3Nbd5I6"
         },
         {
           "label": "SENSATION EA910E40",
-          "route": "/espresso-machine/krups-sensation-ea910e40/"
+          "route": "/espresso-machine/krups-sensation-ea910e40/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/Krups-SENSATION-featured-product-min.jpg",
+          "rating": 3.1,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3KvYyWE"
         },
         {
           "label": "Virtuoso XP442C40",
-          "route": "/espresso-machine/krups-virtuoso-xp442c40/"
+          "route": "/espresso-machine/krups-virtuoso-xp442c40/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/krups-virtuoso-min.jpg",
+          "rating": 2.9,
+          "price": "138.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3YoWYcd"
         }
       ]
     },
     {
       "brand": "La Marzocco",
-      "route": null,
+      "slug": "la-marzocco",
+      "route": "/brand/la-marzocco/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.5,
       "models": [
         {
           "label": "Linea Micra",
-          "route": "/espresso-machine/la-marzocco-linea-micra/"
+          "route": "/espresso-machine/la-marzocco-linea-micra/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/La-Marzocco-Linea-Micra-min.jpg",
+          "rating": 4.3,
+          "price": "4499.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3Yqt8E8"
         },
         {
           "label": "Linea Mini",
-          "route": "/espresso-machine/la-marzocco-linea-mini/"
+          "route": "/espresso-machine/la-marzocco-linea-mini/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/La-Marzocco-Linea-Mini-min.jpg",
+          "rating": 4.7,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3N4zTtb"
         }
       ]
     },
     {
       "brand": "La Pavoni",
-      "route": null,
+      "slug": "la-pavoni",
+      "route": "/brand/la-pavoni/",
+      "hubRoute": null,
+      "count": 4,
+      "avgRating": 4.1,
       "models": [
         {
           "label": "Cellini Classic",
-          "route": "/espresso-machine/la-pavoni-cellini-classic/"
+          "route": "/espresso-machine/la-pavoni-cellini-classic/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/la-pavoni-mini-cellini-front-featured-min.jpg",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3Ndbvp2"
         },
         {
           "label": "Europiccola",
-          "route": "/espresso-machine/la-pavoni-europiccola/"
+          "route": "/espresso-machine/la-pavoni-europiccola/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/la-pavoni-europiccola-min.png",
+          "rating": 4.2,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qKkD35"
         },
         {
           "label": "Mini Cellini",
-          "route": "/espresso-machine/la-pavoni-mini-cellini/"
+          "route": "/espresso-machine/la-pavoni-mini-cellini/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/la-pavoni-mini-cellini-product-image-min.jpg",
+          "rating": 3.9,
+          "price": "1568.83",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/44Ga2NS"
         },
         {
           "label": "New Domus Bar",
-          "route": "/espresso-machine/la-pavoni-new-domus-bar/"
+          "route": "/espresso-machine/la-pavoni-new-domus-bar/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/La-Pavoni-New-Domus-Bar.jpg",
+          "rating": 4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49nOasg"
         }
       ]
     },
     {
       "brand": "Lelit",
-      "route": null,
+      "slug": "lelit",
+      "route": "/brand/lelit/",
+      "hubRoute": null,
+      "count": 7,
+      "avgRating": 4.3,
       "models": [
         {
           "label": "Anna PL41TEM",
-          "route": "/espresso-machine/lelit-anna/"
+          "route": "/espresso-machine/lelit-anna/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/lelit-anna-featured-min.jpg",
+          "rating": 4.3,
+          "price": "699.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4jriEy9"
         },
         {
           "label": "Bianca PL162T",
-          "route": "/espresso-machine/lelit-bianca-pl162t/"
+          "route": "/espresso-machine/lelit-bianca-pl162t/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/lelit-bianca-full-featured-min.jpg",
+          "rating": 4.6,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qDPNJe"
         },
         {
           "label": "Elizabeth PL92T",
-          "route": "/espresso-machine/lelit-elizabeth/"
+          "route": "/espresso-machine/lelit-elizabeth/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/lelit-elizabeth-min.jpg",
+          "rating": 4.4,
+          "price": "1439.96",
+          "asin": "B07Q5V179F",
+          "amazonUrl": "https://amzn.to/3YmuxvF"
         },
         {
           "label": "Glenda PL41PlusT",
-          "route": "/espresso-machine/lelit-glenda-pl41plust/"
+          "route": "/espresso-machine/lelit-glenda-pl41plust/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/lelit-glenda-min.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iWgyG9"
         },
         {
           "label": "Grace PL81T",
-          "route": "/espresso-machine/lelit-grace-pl81t/"
+          "route": "/espresso-machine/lelit-grace-pl81t/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Lelit-Grace-1.jpg",
+          "rating": 4.1,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49j1b7K"
         },
         {
           "label": "Mara X (PL62X)",
-          "route": "/espresso-machine/lelit-mara-x/"
+          "route": "/espresso-machine/lelit-mara-x/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/lelit-mara-x-featured-image-min.jpg",
+          "rating": 4.5,
+          "price": "1699.95",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/45yRqQf"
         },
         {
           "label": "Victoria PL91T",
-          "route": "/espresso-machine/lelit-victoria-pl91t/"
+          "route": "/espresso-machine/lelit-victoria-pl91t/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Lelit-Victoria-1.jpg",
+          "rating": 4.2,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49T4mmK"
         }
       ]
     },
     {
       "brand": "Londinium",
-      "route": null,
+      "slug": "londinium",
+      "route": "/brand/londinium/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": 4.6,
       "models": [
         {
           "label": "R24",
-          "route": "/espresso-machine/londinium-r24/"
+          "route": "/espresso-machine/londinium-r24/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/londinium-r24-lever-espresso-machine-1.jpg",
+          "rating": 4.6,
+          "price": "3083.33",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qz8PB5"
         }
       ]
     },
     {
       "brand": "Melitta",
-      "route": null,
+      "slug": "melitta",
+      "route": "/brand/melitta/",
+      "hubRoute": null,
+      "count": 5,
+      "avgRating": 4,
       "models": [
         {
           "label": "Barista TS Smart",
-          "route": "/espresso-machine/melitta-barista-ts-smart/"
+          "route": "/espresso-machine/melitta-barista-ts-smart/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/melitta-barista-ts-smart.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4jLBSyD"
         },
         {
           "label": "Cafina CT8",
-          "route": "/espresso-machine/melitta-cafina-ct8/"
+          "route": "/espresso-machine/melitta-cafina-ct8/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Melitta-XT8-2-1-1.jpg",
+          "rating": 3.7,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49wC93B"
         },
         {
           "label": "Cafina XT6 (BES870)",
-          "route": "/espresso-machine/melitta-cafina-xt6-bes870/"
+          "route": "/espresso-machine/melitta-cafina-xt6-bes870/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Cafina XT7",
-          "route": "/espresso-machine/melitta-cafina-xt7/"
+          "route": "/espresso-machine/melitta-cafina-xt7/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Passione OT",
-          "route": "/espresso-machine/melitta-passione/"
+          "route": "/espresso-machine/melitta-passione/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/melitta-passione-OT.jpg",
+          "rating": 4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qQ4yJj"
         }
       ]
     },
     {
       "brand": "Miele",
-      "route": null,
+      "slug": "miele",
+      "route": "/brand/miele/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.5,
       "models": [
         {
           "label": "CM6360 MilkPerfection",
-          "route": "/espresso-machine/miele-cm6360-milkperfection/"
+          "route": "/espresso-machine/miele-cm6360-milkperfection/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/miele-cm6360.png",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4jMkwl8"
         },
         {
           "label": "CM7750 CoffeeSelect",
-          "route": "/espresso-machine/miele-cm7750-coffeeselect/"
+          "route": "/espresso-machine/miele-cm7750-coffeeselect/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/miele-cm7750-1.jpg",
+          "rating": 4.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49tRTFY"
         }
       ]
     },
     {
       "brand": "Nespresso",
-      "route": "/nespresso/",
+      "slug": "nespresso",
+      "route": "/brand/nespresso/",
+      "hubRoute": "/nespresso/",
+      "count": 1,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "Vertuo Plus",
-          "route": "/espresso-machine/nespresso-vertuo-plus/"
+          "route": "/espresso-machine/nespresso-vertuo-plus/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/nespresso-vertuo-plus.jpg",
+          "rating": 4.2,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qHsHkZ"
         }
       ]
     },
     {
       "brand": "Nivona",
-      "route": null,
+      "slug": "nivona",
+      "route": "/brand/nivona/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.3,
       "models": [
         {
           "label": "CafeRomatica 6-Series",
-          "route": "/espresso-machine/nivona-caferomatica-6xx/"
+          "route": "/espresso-machine/nivona-caferomatica-6xx/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/nivona-caferomatica-6-1.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qSu1Sk"
         },
         {
           "label": "CafeRomatica 8xx",
-          "route": "/espresso-machine/nivona-caferomatica-8xx/"
+          "route": "/espresso-machine/nivona-caferomatica-8xx/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/nivona-caferomatica-8.jpg",
+          "rating": 4.2,
+          "price": "999",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49bcU8i"
         }
       ]
     },
     {
       "brand": "Nuova Simonelli",
-      "route": null,
+      "slug": "nuova-simonelli",
+      "route": "/brand/nuova-simonelli/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.4,
       "models": [
         {
           "label": "Musica",
-          "route": "/espresso-machine/nuova-simonelli-musica/"
+          "route": "/espresso-machine/nuova-simonelli-musica/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Oscar II",
-          "route": "/espresso-machine/nuova-simonelli-oscar-ii/"
+          "route": "/espresso-machine/nuova-simonelli-oscar-ii/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/nuova-simonelli-oscar-ii-espresso-machine-1.jpg",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3Lbu1Od"
         }
       ]
     },
     {
       "brand": "Philips",
-      "route": null,
+      "slug": "philips",
+      "route": "/brand/philips/",
+      "hubRoute": null,
+      "count": 4,
+      "avgRating": 4.3,
       "models": [
         {
           "label": "2200 LatteGo",
-          "route": "/espresso-machine/philips-2200-lattego/"
+          "route": "/espresso-machine/philips-2200-lattego/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/philips-2200-lattego.png",
+          "rating": 4.4,
+          "price": "349",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4bExEVU"
         },
         {
           "label": "3200 LatteGo",
-          "route": "/espresso-machine/philips-3200-lattego/"
+          "route": "/espresso-machine/philips-3200-lattego/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/philips-3200-lattego.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4quTSzM"
         },
         {
           "label": "4300 LatteGo",
-          "route": "/espresso-machine/philips-4300-lattego/"
+          "route": "/espresso-machine/philips-4300-lattego/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/philips-4300-lattego.png",
+          "rating": 4.2,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/45k149B"
         },
         {
           "label": "5400 LatteGo (EP54xx)",
-          "route": "/espresso-machine/philips-5400-lattego/"
+          "route": "/espresso-machine/philips-5400-lattego/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/philips-5400-lattego.png",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3YvJHyM"
         }
       ]
     },
     {
       "brand": "Profitec",
-      "route": null,
+      "slug": "profitec",
+      "route": "/brand/profitec/",
+      "hubRoute": null,
+      "count": 6,
+      "avgRating": 4.4,
       "models": [
         {
           "label": "GO",
-          "route": "/espresso-machine/profitec-go/"
+          "route": "/espresso-machine/profitec-go/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/profitec-go-featured-image-min.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3YmP5nw"
         },
         {
           "label": "Pro 400",
-          "route": "/espresso-machine/profitec-pro-400/"
+          "route": "/espresso-machine/profitec-pro-400/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Profitec-Pro-400-1.jpg",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3LApHIk"
         },
         {
           "label": "Pro 500 PID",
-          "route": "/espresso-machine/profitec-pro-500-pid/"
+          "route": "/espresso-machine/profitec-pro-500-pid/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/profitec-pro_500-1.webp",
+          "rating": 4.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3YKwxxZ"
         },
         {
           "label": "Pro 600",
-          "route": "/espresso-machine/profitec-pro-600/"
+          "route": "/espresso-machine/profitec-pro-600/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/profitec-pro-600-min.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4iYCTTq"
         },
         {
           "label": "Pro 700",
-          "route": "/espresso-machine/profitec-pro-700/"
+          "route": "/espresso-machine/profitec-pro-700/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/profitec-pro-700-min.jpg",
+          "rating": 4.6,
+          "price": "2979",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4pOqOCt"
         },
         {
           "label": "Pro 800",
-          "route": "/espresso-machine/profitec-pro-800/"
+          "route": "/espresso-machine/profitec-pro-800/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/profitec-pro-800.png",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4qvlXH5"
         }
       ]
     },
     {
       "brand": "Quick Mill",
-      "route": null,
+      "slug": "quick-mill",
+      "route": "/brand/quick-mill/",
+      "hubRoute": null,
+      "count": 9,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "Alexia EVO + Flow Control",
-          "route": "/espresso-machine/quick-mill-alexia-evo-flow/"
+          "route": "/espresso-machine/quick-mill-alexia-evo-flow/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Andreja Premium Evo",
-          "route": "/espresso-machine/quick-mill-andreja-premium-evo/"
+          "route": "/espresso-machine/quick-mill-andreja-premium-evo/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Carola EVO",
-          "route": "/espresso-machine/quick-mill-carola-evo/"
+          "route": "/espresso-machine/quick-mill-carola-evo/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/12/quickmill-Carola-Evo-Hero-min.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4jtoNtE"
         },
         {
           "label": "Orione 3000",
-          "route": "/espresso-machine/quick-mill-orione-3000/"
+          "route": "/espresso-machine/quick-mill-orione-3000/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Quick-Mill-Orione-3000.jpg",
+          "rating": 3.9,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/499cpvu"
         },
         {
           "label": "Pippa 4100",
-          "route": "/espresso-machine/quick-mill-pippa-4100/"
+          "route": "/espresso-machine/quick-mill-pippa-4100/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/quick-mill-pippa.jpg",
+          "rating": 4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3NaybGA"
         },
         {
           "label": "QM67 Evo",
-          "route": "/espresso-machine/quick-mill-qm67-evo/"
+          "route": "/espresso-machine/quick-mill-qm67-evo/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/QuickMill67-1.webp",
+          "rating": 4.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/45ohLAK"
         },
         {
           "label": "Rubino",
-          "route": "/espresso-machine/quick-mill-rubino/"
+          "route": "/espresso-machine/quick-mill-rubino/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Silvano Evo",
-          "route": "/espresso-machine/quick-mill-silvano-evo/"
+          "route": "/espresso-machine/quick-mill-silvano-evo/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Vetrano 2B Evo",
-          "route": "/espresso-machine/quick-mill-vetrano-2b-evo/"
+          "route": "/espresso-machine/quick-mill-vetrano-2b-evo/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     },
     {
       "brand": "Rancilio",
-      "route": null,
+      "slug": "rancilio",
+      "route": "/brand/rancilio/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "Silvia",
-          "route": "/espresso-machine/rancilio-silvia/"
+          "route": "/espresso-machine/rancilio-silvia/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/rancilio-silvia-min.png",
+          "rating": 4.1,
+          "price": "995.00",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4srpkQN"
         },
         {
           "label": "Silvia Pro X",
-          "route": "/espresso-machine/rancilio-silvia-pro-x/"
+          "route": "/espresso-machine/rancilio-silvia-pro-x/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/rancilio-silvia-min.png",
+          "rating": 4.2,
+          "price": "899.95",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4bOHYuF"
         }
       ]
     },
     {
       "brand": "Rocket Espresso",
-      "route": "/rocket-espresso/",
+      "slug": "rocket",
+      "route": "/brand/rocket/",
+      "hubRoute": "/rocket-espresso/",
+      "count": 4,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "Appartamento",
-          "route": "/espresso-machine/rocket-appartamento-tca/"
+          "route": "/espresso-machine/rocket-appartamento-tca/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/10/rocket-appartamento-min.png",
+          "rating": 4.2,
+          "price": "2250",
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4jzJHav"
         },
         {
           "label": "Rocket Giotto Cronometro R",
-          "route": "/espresso-machine/rocket-giotto-cronometro-r/"
+          "route": "/espresso-machine/rocket-giotto-cronometro-r/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Rocket Mozzafiato Cronometro R",
-          "route": "/espresso-machine/rocket-mozzafiato-cronometro-r/"
+          "route": "/espresso-machine/rocket-mozzafiato-cronometro-r/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         },
         {
           "label": "Rocket R Nine One",
-          "route": "/espresso-machine/rocket-r-nine-one/"
+          "route": "/espresso-machine/rocket-r-nine-one/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     },
     {
       "brand": "ROK",
-      "route": null,
+      "slug": "rok",
+      "route": "/brand/rok/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": 4,
       "models": [
         {
           "label": "EspressoGC",
-          "route": "/espresso-machine/rok-espresso-gc/"
+          "route": "/espresso-machine/rok-espresso-gc/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/rok-espressogc-1.jpg",
+          "rating": 4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4pLTV9i"
         }
       ]
     },
     {
       "brand": "Saeco",
-      "route": null,
+      "slug": "saeco",
+      "route": "/brand/saeco/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": 4.3,
       "models": [
         {
           "label": "Xelsis",
-          "route": "/espresso-machine/saeco-xelsis/"
+          "route": "/espresso-machine/saeco-xelsis/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/saeco-xelsis-1.jpg",
+          "rating": 4.3,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4b2FQka"
         }
       ]
     },
     {
       "brand": "Siemens",
-      "route": null,
+      "slug": "siemens",
+      "route": "/brand/siemens/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.5,
       "models": [
         {
           "label": "EQ.700 Integral",
-          "route": "/espresso-machine/siemens-eq700-integral/"
+          "route": "/espresso-machine/siemens-eq700-integral/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/siemens-eq700-integral.png",
+          "rating": 4.4,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/455UZxo"
         },
         {
           "label": "EQ.9 Plus s700",
-          "route": "/espresso-machine/siemens-eq9-plus-s700/"
+          "route": "/espresso-machine/siemens-eq9-plus-s700/",
+          "image": "https://coffeedant.com/wp-content/uploads/2025/11/siemens-eq9-plus-s700.png",
+          "rating": 4.5,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/4j3W5PR"
         }
       ]
     },
     {
       "brand": "Slayer",
-      "route": null,
+      "slug": "slayer",
+      "route": "/brand/slayer/",
+      "hubRoute": null,
+      "count": 1,
+      "avgRating": 4.7,
       "models": [
         {
           "label": "Single Group",
-          "route": "/espresso-machine/slayer-single-group/"
+          "route": "/espresso-machine/slayer-single-group/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/Slayer_Single_Group_Espresso_Machine-1.jpg",
+          "rating": 4.7,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/49nXUTm"
         }
       ]
     },
     {
       "brand": "VBM",
-      "route": null,
+      "slug": "vbm",
+      "route": "/brand/vbm/",
+      "hubRoute": null,
+      "count": 2,
+      "avgRating": 4.2,
       "models": [
         {
           "label": "Domobar Single Boiler Digital",
-          "route": "/espresso-machine/vbm-domobar-single-boiler-digital/"
+          "route": "/espresso-machine/vbm-domobar-single-boiler-digital/",
+          "image": "https://coffeedant.com/wp-content/uploads/2026/01/vbm-dombar-single-boiler-digital-machine-1.jpg",
+          "rating": 4.2,
+          "price": null,
+          "asin": null,
+          "amazonUrl": "https://amzn.to/3NEcD5c"
         },
         {
           "label": "Domobar Super HX",
-          "route": "/espresso-machine/vbm-domobar-super-hx/"
+          "route": "/espresso-machine/vbm-domobar-super-hx/",
+          "image": null,
+          "rating": null,
+          "price": null,
+          "asin": null,
+          "amazonUrl": null
         }
       ]
     }

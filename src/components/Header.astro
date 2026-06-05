@@ -1,7 +1,7 @@
 ---
 import nav from '../data/nav.json';
 const { catalog, guides, grinders, coffeeMachines } = nav as {
-  catalog: { brand: string; route: string | null; models: { label: string; route: string }[] }[];
+  catalog: { brand: string; slug: string; route: string; count: number; avgRating: number | null }[];
   guides: { name: string; route: string }[];
   grinders: { label: string; route: string }[];
   coffeeMachines: { label: string; route: string }[];
@@ -29,14 +29,12 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
           </div>
           <div class="mega__brands">
             {catalog.map((b) => (
-              <div class="cat-brand">
-                {b.route
-                  ? <a class="cat-brand__name" href={b.route}>{b.brand}</a>
-                  : <span class="cat-brand__name">{b.brand}</span>}
-                <ul>
-                  {b.models.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
-                </ul>
-              </div>
+              <a class="brand-pill" href={b.route}>
+                <span class="brand-pill__name">{b.brand}</span>
+                <span class="brand-pill__meta">
+                  {b.count} {b.count === 1 ? 'review' : 'reviews'}{b.avgRating ? ` · ★ ${b.avgRating}` : ''}
+                </span>
+              </a>
             ))}
           </div>
         </div>
@@ -123,13 +121,15 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
     background: var(--color-soft); color: var(--color-text);
   }
   .mega__guides a:hover { background: #ece7e1; }
-  .mega__brands { column-width: 185px; column-gap: 1.75rem; }
-  .cat-brand { break-inside: avoid; margin-bottom: 1.1rem; }
-  .cat-brand__name { display: block; font-weight: 700; font-size: 0.9rem; color: var(--color-text); margin-bottom: 0.25rem; text-decoration: none; }
-  a.cat-brand__name:hover { color: var(--color-brand); text-decoration: underline; }
-  .cat-brand ul { list-style: none; margin: 0; padding: 0; }
-  .cat-brand li a { display: block; padding: 0.12rem 0; color: var(--color-muted); text-decoration: none; font-size: 0.86rem; line-height: 1.5; }
-  .cat-brand li a:hover { color: var(--color-brand); }
+  .mega__brands { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 0.6rem; }
+  .brand-pill {
+    display: flex; flex-direction: column; gap: 2px; padding: 0.55rem 0.75rem;
+    border: 1px solid var(--color-line); border-radius: 10px; background: #fff; text-decoration: none;
+    transition: border-color 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  }
+  .brand-pill:hover { border-color: rgba(111, 78, 55, 0.45); background: var(--color-soft); box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06); }
+  .brand-pill__name { font-weight: 700; font-size: 0.92rem; color: var(--color-text); }
+  .brand-pill__meta { font-size: 0.76rem; color: var(--color-muted); }
 
   @media (max-width: 860px) {
     .nav-toggle { display: flex; }
@@ -138,7 +138,7 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
     .nav__item, .nav__link { width: 100%; }
     .nav__item > summary { justify-content: space-between; }
     .nav__panel, .nav__panel--mega { position: static; box-shadow: none; border: none; padding: 0.25rem 0 0.5rem 0.75rem; max-height: 50vh; left: auto; right: auto; }
-    .mega__brands { column-width: auto; columns: 2; }
+    .mega__brands { grid-template-columns: 1fr 1fr; }
   }
 </style>
 

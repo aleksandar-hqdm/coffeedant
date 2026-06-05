@@ -1,0 +1,38 @@
+name: Weekly Amazon refresh
+
+# Refreshes product prices/images/availability once a week (and on demand).
+# Set repo secrets AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_PARTNER_TAG
+# (Product Advertising API 5.0 credentials) to enable live data. Without them
+# the refresh step is a safe no-op.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve ASINs from buy links
+        run: node scripts/resolve-asins.mjs
+      - name: Refresh prices and metadata (PA-API)
+        run: node scripts/amazon-refresh.mjs
+        env:
+          AMAZON_ACCESS_KEY: ${{ secrets.AMAZON_ACCESS_KEY }}
+          AMAZON_SECRET_KEY: ${{ secrets.AMAZON_SECRET_KEY }}
+          AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
+      - name: Commit refreshed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/amazon.json src/data/asins.json
+          git diff --cached --quiet || git commit -m "chore: weekly Amazon refresh"
+          git push
