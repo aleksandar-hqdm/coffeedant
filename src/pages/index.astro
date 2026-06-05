@@ -1,40 +1,29 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pages = await getCollection('pages');
+const home = pages.find((p) => p.data.route === '/');
+const data = home?.data;
 ---
 <BaseLayout
-  title="Coffeedant"
-  description="Honest espresso machine reviews, buying guides, and brewing tips."
+  title={data?.seoTitle || 'Coffeedant'}
+  description={data?.description || 'Honest espresso machine reviews, buying guides, and brewing tips.'}
+  canonicalURL={data?.canonical}
+  ogTitle={data?.ogTitle}
+  ogDescription={data?.ogDescription}
+  ogImage={data?.ogImage}
 >
-  <main>
-    <section class="hero">
+  {data ? (
+    <div class="cd-home" set:html={data.bodyHtml} />
+  ) : (
+    <section class="cd-article">
       <h1>Coffeedant</h1>
-      <p class="tagline">Honest espresso machine reviews, buying guides, and brewing tips.</p>
-      <p class="note">The site is being rebuilt. New reviews and guides coming soon.</p>
+      <p>Honest espresso machine reviews, buying guides, and brewing tips.</p>
     </section>
-  </main>
+  )}
 </BaseLayout>
 
 <style>
-  main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem;
-  }
-  .hero {
-    text-align: center;
-  }
-  h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    margin: 0 0 1rem;
-    letter-spacing: -0.02em;
-  }
-  .tagline {
-    font-size: 1.25rem;
-    color: var(--color-muted);
-    margin: 0 0 2rem;
-  }
-  .note {
-    color: var(--color-muted);
-    font-size: 0.95rem;
-  }
+  .cd-home { max-width: var(--container); margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
 </style>

@@ -1,0 +1,88 @@
+{
+  "brands": [
+    {
+      "name": "Bosch Espresso Machines: A Practical Brand Built on Automation and Everyday Coffee",
+      "slug": "bosch",
+      "route": "/bosch/"
+    },
+    {
+      "name": "Breville: From Australian innovation to global kitchen excellence",
+      "slug": "breville",
+      "route": "/breville/"
+    },
+    {
+      "name": "De’Longhi Brand Overview: The Italian Appliance Giant That Brought Café Logic to the Home—and Pulled the Café Closer to Home",
+      "slug": "de-longhi",
+      "route": "/de-longhi/"
+    },
+    {
+      "name": "Gaggia: From Crema’s Birthplace To Your Kitchen",
+      "slug": "gaggia",
+      "route": "/gaggia/"
+    },
+    {
+      "name": "Keurig",
+      "slug": "keurig",
+      "route": "/keurig/"
+    },
+    {
+      "name": "Krups Espresso Machines: German Engineering for Your Morning Ritual",
+      "slug": "krups",
+      "route": "/krups/"
+    },
+    {
+      "name": "Nespresso: The engineering of premium coffee culture",
+      "slug": "nespresso",
+      "route": "/nespresso/"
+    },
+    {
+      "name": "Rocket Espresso",
+      "slug": "rocket-espresso",
+      "route": "/rocket-espresso/"
+    }
+  ],
+  "guides": [
+    {
+      "name": "Best small espresso machines for tiny kitchens, studios, offices and RVs",
+      "route": "/espresso-machine/small/"
+    },
+    {
+      "name": "Best espresso machines with built in grinder",
+      "route": "/espresso-machine/built-in-grinder/"
+    },
+    {
+      "name": "Best superautomatic espresso machines",
+      "route": "/espresso-machine/superautomatic/"
+    },
+    {
+      "name": "Best espresso machines for beginners",
+      "route": "/espresso-machine/beginners/"
+    },
+    {
+      "name": "Best budget espresso machines under $500",
+      "route": "/espresso-machine/cheap-budget-under-500/"
+    },
+    {
+      "name": "Best prosumer espresso machines under $1000",
+      "route": "/espresso-machine/prosumer-under-1000/"
+    },
+    {
+      "name": "Best single boiler espresso machines",
+      "route": "/espresso-machine/single-boiler/"
+    }
+  ],
+  "sections": [
+    {
+      "name": "Best Espresso Machines (2026): pick the machine that fits your routine",
+      "route": "/espresso-machine/"
+    },
+    {
+      "name": "Coffee Machine",
+      "route": "/coffee-machine/"
+    },
+    {
+      "name": "Grinders",
+      "route": "/grinder/"
+    }
+  ]
+}

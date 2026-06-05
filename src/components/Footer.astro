@@ -1,0 +1,56 @@
+---
+import nav from '../data/nav.json';
+const { brands, guides } = nav as { brands: { name: string; route: string }[]; guides: { name: string; route: string }[] };
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__brand">
+      <span class="brand__mark">Coffee<span>dant</span></span>
+      <p>Independent espresso machine reviews, buying guides, and brewing tips. I buy the gear, test it, and report what holds up.</p>
+      <p class="disclosure">Affiliate disclosure: Coffeedant is funded by affiliate links that may earn a commission at no extra cost to you.</p>
+    </div>
+
+    <div class="site-footer__col">
+      <p class="site-footer__heading">Buying guides</p>
+      <ul>{guides.map((g) => (<li><a href={g.route}>{g.name}</a></li>))}</ul>
+    </div>
+
+    <div class="site-footer__col">
+      <p class="site-footer__heading">Brands</p>
+      <ul>{brands.slice(0, 8).map((b) => (<li><a href={b.route}>{b.name}</a></li>))}</ul>
+    </div>
+
+    <div class="site-footer__col">
+      <p class="site-footer__heading">Coffeedant</p>
+      <ul>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/testing/">Testing methodology</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/privacy-policy/">Privacy Policy</a></li>
+        <li><a href="/tos/">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__bar">© {year} Coffeedant. All rights reserved.</div>
+</footer>
+
+<style>
+  .site-footer { background: #14110e; color: #d8d2cb; margin-top: 4rem; }
+  .site-footer__inner {
+    max-width: var(--container); margin: 0 auto; padding: 3rem 1.25rem 2rem;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+  }
+  .site-footer__brand p { font-size: 0.9rem; color: #a9a299; margin: 0.75rem 0 0; max-width: 38ch; }
+  .site-footer__brand .disclosure { font-size: 0.8rem; color: #8a847b; }
+  .site-footer .brand__mark { color: #fff; font-weight: 800; font-size: 1.25rem; }
+  .site-footer .brand__mark span { color: var(--color-accent); }
+  .site-footer__heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: #fff; margin: 0 0 0.75rem; }
+  .site-footer__col ul { list-style: none; margin: 0; padding: 0; }
+  .site-footer__col li { margin: 0.4rem 0; }
+  .site-footer__col a { color: #c7c1b9; text-decoration: none; font-size: 0.9rem; }
+  .site-footer__col a:hover { color: #fff; text-decoration: underline; }
+  .site-footer__bar { border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center; padding: 1.25rem; font-size: 0.85rem; color: #8a847b; }
+  @media (max-width: 760px) { .site-footer__inner { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px) { .site-footer__inner { grid-template-columns: 1fr; } }
+</style>

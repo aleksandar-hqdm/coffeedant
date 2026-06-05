@@ -17,8 +17,18 @@ pnpm-debug.log*
 .env
 .env.production
 
+# private: raw WordPress dump (contains content + must never be committed)
+_private/
+*.sql
+
+# vercel
+.vercel
+
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+
+# claude local tooling
+.claude/

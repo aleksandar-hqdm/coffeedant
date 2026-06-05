@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages
+    .filter((p) => p.data.route !== '/')
+    .map((p) => ({
+      params: { slug: p.data.route.replace(/^\/|\/$/g, '') },
+      props: { data: p.data },
+    }));
+}
+
+const { data } = Astro.props;
+
+const LABELS: Record<string, string> = {
+  'espresso-machine': 'Espresso Machines',
+  'coffee-machine': 'Coffee Machines',
+  grinder: 'Grinders',
+  blog: 'Blog',
+  tos: 'Terms of Service',
+  'privacy-policy': 'Privacy Policy',
+};
+function titleize(seg: string) {
+  return LABELS[seg] || seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+const segs = data.route.replace(/^\/|\/$/g, '').split('/');
+const breadcrumbs = [{ name: 'Home', url: '/' }];
+segs.forEach((seg, i) => {
+  const url = '/' + segs.slice(0, i + 1).join('/') + '/';
+  const last = i === segs.length - 1;
+  breadcrumbs.push({ name: last ? data.breadcrumb || data.title : titleize(seg), url });
+});
+
+const isArticle = data.type === 'review' || data.type === 'blog';
+---
+<BaseLayout
+  title={data.seoTitle || data.title}
+  description={data.description}
+  canonicalURL={data.canonical}
+  ogTitle={data.ogTitle}
+  ogDescription={data.ogDescription}
+  ogImage={data.ogImage}
+  ogType={isArticle ? 'article' : 'website'}
+  noindex={data.noindex}
+  breadcrumbs={breadcrumbs}
+>
+  <article class="cd-article" set:html={data.bodyHtml} />
+</BaseLayout>

@@ -1,0 +1,93 @@
+---
+import nav from '../data/nav.json';
+const { brands, guides } = nav as { brands: { name: string; route: string }[]; guides: { name: string; route: string }[] };
+---
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="brand" aria-label="Coffeedant home">
+      <span class="brand__mark">Coffee<span>dant</span></span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <details class="nav__item">
+        <summary>Espresso Machines</summary>
+        <div class="nav__panel nav__panel--mega">
+          <div>
+            <p class="nav__heading">By brand</p>
+            <ul class="nav__grid">
+              {brands.map((b) => (<li><a href={b.route}>{b.name}</a></li>))}
+            </ul>
+          </div>
+          <div>
+            <p class="nav__heading">Buying guides</p>
+            <ul>
+              {guides.map((g) => (<li><a href={g.route}>{g.name}</a></li>))}
+              <li><a href="/espresso-machine/"><strong>Browse all machines</strong></a></li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <details class="nav__item">
+        <summary>Guides</summary>
+        <div class="nav__panel">
+          <ul>
+            {guides.map((g) => (<li><a href={g.route}>{g.name}</a></li>))}
+          </ul>
+        </div>
+      </details>
+
+      <a class="nav__link" href="/coffee-machine/">Coffee Machines</a>
+      <a class="nav__link" href="/grinder/">Grinders</a>
+      <a class="nav__link" href="/about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: #fff; border-bottom: 1px solid var(--color-line);
+    box-shadow: 0 1px 0 rgba(17, 24, 39, 0.02);
+  }
+  .site-header__inner {
+    max-width: var(--container); margin: 0 auto; padding: 0.65rem 1.25rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .brand { text-decoration: none; }
+  .brand__mark { font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; color: var(--color-brand); }
+  .brand__mark span { color: var(--color-accent); }
+
+  .nav { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+  .nav__link, .nav__item > summary {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.5rem 0.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem;
+    color: var(--color-text); text-decoration: none; cursor: pointer; list-style: none;
+  }
+  .nav__item > summary::-webkit-details-marker { display: none; }
+  .nav__item > summary::after { content: '▾'; font-size: 0.7rem; color: var(--color-muted); }
+  .nav__link:hover, .nav__item > summary:hover { background: var(--color-soft); }
+
+  .nav__item { position: relative; }
+  .nav__panel {
+    position: absolute; top: calc(100% + 6px); left: 0;
+    background: #fff; border: 1px solid var(--color-line); border-radius: 12px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12); padding: 1rem 1.25rem; min-width: 230px;
+  }
+  .nav__panel--mega { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem 2rem; width: max(520px, 40vw); }
+  .nav__heading { margin: 0 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-muted); }
+  .nav__panel ul { list-style: none; margin: 0; padding: 0; }
+  .nav__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.1rem 1.25rem; }
+  .nav__panel li { margin: 0; }
+  .nav__panel a { display: block; padding: 0.35rem 0; color: var(--color-text); text-decoration: none; font-size: 0.93rem; }
+  .nav__panel a:hover { color: var(--color-brand); }
+
+  @media (max-width: 820px) {
+    .site-header__inner { flex-wrap: wrap; }
+    .nav { width: 100%; flex-direction: column; align-items: stretch; gap: 0; }
+    .nav__item, .nav__link { width: 100%; }
+    .nav__panel { position: static; box-shadow: none; border: none; padding: 0.25rem 0 0.75rem 1rem; min-width: 0; width: auto; }
+    .nav__panel--mega { grid-template-columns: 1fr; width: auto; }
+    .nav__grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

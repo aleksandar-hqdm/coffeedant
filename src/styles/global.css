@@ -1,0 +1,92 @@
+/* Coffeedant base styles. Page bodies carry their own component CSS inline;
+   this file provides the global shell, typography, and sensible defaults for
+   core WordPress blocks (tables, images, lists, details, columns). */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --color-text: #1f2430;
+  --color-muted: #5b6472;
+  --color-bg: #ffffff;
+  --color-soft: #f7f6f4;
+  --color-line: rgba(17, 24, 39, 0.1);
+  --color-brand: #6f4e37;
+  --color-brand-dark: #543a28;
+  --color-accent: #16a34a;
+  --container: 1100px;
+  --radius: 14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { color-scheme: light; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: var(--color-brand); }
+img { max-width: 100%; height: auto; }
+
+.container { max-width: var(--container); margin: 0 auto; padding: 0 1.25rem; }
+
+/* ---- article (migrated page body) --------------------------------------- */
+.cd-article {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+  font-size: 1.05rem;
+}
+.cd-article > h1:first-child, .cd-article > h2:first-child { margin-top: 0; }
+.cd-article h1 { font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1.18; letter-spacing: -0.01em; }
+.cd-article h2 { font-size: clamp(1.5rem, 3vw, 1.9rem); line-height: 1.25; margin-top: 2.2rem; }
+.cd-article h3 { font-size: 1.25rem; margin-top: 1.6rem; }
+.cd-article p { margin: 0 0 1.1rem; }
+.cd-article ul, .cd-article ol { margin: 0 0 1.1rem; padding-left: 1.4rem; }
+.cd-article li { margin: 0.35rem 0; }
+.cd-article a { text-decoration: underline; text-underline-offset: 2px; }
+.cd-article blockquote {
+  margin: 1.5rem 0; padding: 0.5rem 1.25rem; border-left: 4px solid var(--color-brand);
+  background: var(--color-soft); border-radius: 0 8px 8px 0;
+}
+.cd-article hr { border: none; border-top: 1px solid var(--color-line); margin: 2.5rem 0; }
+.cd-article pre {
+  background: #0f172a; color: #e2e8f0; padding: 1rem 1.25rem; border-radius: 10px;
+  overflow-x: auto; font-size: 0.9rem;
+}
+.cd-article figure { margin: 1.5rem 0; }
+.cd-article figcaption { font-size: 0.85rem; color: var(--color-muted); text-align: center; margin-top: 0.5rem; }
+
+/* default styling for plain core tables; self-styled review tables override this */
+.cd-article table { border-collapse: collapse; width: 100%; margin: 1.25rem 0; font-size: 0.95rem; }
+.cd-article .wp-block-table { overflow-x: auto; }
+.cd-article table:not([class]) th, .cd-article table:not([class]) td,
+.cd-article .wp-block-table td, .cd-article .wp-block-table th {
+  border: 1px solid var(--color-line); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top;
+}
+.cd-article .wp-block-table thead th { background: var(--color-soft); }
+
+/* native details/summary (FAQ accordions) */
+.cd-article details { border: 1px solid var(--color-line); border-radius: 10px; padding: 0.5rem 1rem; margin: 0.6rem 0; background: #fff; }
+.cd-article summary { cursor: pointer; font-weight: 600; padding: 0.4rem 0; }
+
+/* core columns/buttons fallback */
+.cd-article .wp-block-columns { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.cd-article .wp-block-column { flex: 1 1 240px; }
+.cd-article .wp-block-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
+.cd-article .wp-block-button__link {
+  display: inline-block; background: var(--color-accent); color: #fff; padding: 0.7rem 1.3rem;
+  border-radius: 999px; text-decoration: none; font-weight: 700;
+}
+
+/* breadcrumbs */
+.breadcrumbs { max-width: 980px; margin: 1.25rem auto 0; padding: 0 1.25rem; font-size: 0.85rem; color: var(--color-muted); }
+.breadcrumbs a { color: var(--color-muted); text-decoration: none; }
+.breadcrumbs a:hover { text-decoration: underline; }
+
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }

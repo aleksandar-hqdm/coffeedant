@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "migrate": "node scripts/migrate.mjs",
+    "strip-secrets": "node scripts/strip-secrets.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
