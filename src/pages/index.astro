@@ -36,7 +36,7 @@ const brands = [...catalog].sort((a, b) => b.count - a.count);
       <p class="hero__sub">{reviewCount} machines bought, tested, and scored on what actually matters: the shot, the steam, the build, and the price.</p>
       <div class="hero__cta">
         <a class="btn btn--primary" href="/quiz/">Take the Quiz: Find your machine</a>
-        <a class="btn btn--ghost" href="/espresso-machine/">Browse all reviews</a>
+        <a class="btn btn--ghost" href="/machines/">Browse all machines</a>
       </div>
       <p class="hero__trust">No sponsored reviews. I buy the gear and report what holds up.</p>
     </div>
@@ -47,7 +47,7 @@ const brands = [...catalog].sort((a, b) => b.count - a.count);
     <section class="block">
       <div class="block__head">
         <h2>Top-rated machines</h2>
-        <a class="block__more" href="/espresso-machine/">See all &rarr;</a>
+        <a class="block__more" href="/machines/">See all &rarr;</a>
       </div>
       <div class="card-grid">
         {topRated.map((m) => (
@@ -86,12 +86,14 @@ const brands = [...catalog].sort((a, b) => b.count - a.count);
       <div class="tile-grid">
         {guides.map((g) => (<a class="tile" href={g.route}><span>{g.name}</span><span class="tile__arrow">&rarr;</span></a>))}
         <a class="tile tile--accent" href="/quiz/"><span>Help me choose (quiz)</span><span class="tile__arrow">&rarr;</span></a>
+        <a class="tile" href="/machines/"><span>Browse &amp; filter all machines</span><span class="tile__arrow">&rarr;</span></a>
+        <a class="tile" href="/compare/"><span>Compare machines side by side</span><span class="tile__arrow">&rarr;</span></a>
       </div>
     </section>
 
     <!-- Shop by brand -->
     <section class="block">
-      <div class="block__head"><h2>Shop by brand</h2><a class="block__more" href="/espresso-machine/">All brands &rarr;</a></div>
+      <div class="block__head"><h2>Shop by brand</h2><a class="block__more" href="/machines/">All brands &rarr;</a></div>
       <div class="brand-grid">
         {brands.slice(0, 18).map((b) => (
           <a class="bpill" href={b.route}>

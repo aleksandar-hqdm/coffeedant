@@ -25,7 +25,7 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
         <summary>Espresso Machines</summary>
         <div class="nav__panel nav__panel--mega">
           <div class="mega__top">
-            <a class="mega__all" href="/espresso-machine/">Browse all machines &rarr;</a>
+            <a class="mega__all" href="/machines/">Browse &amp; filter all machines &rarr;</a>
             <div class="mega__guides">
               {guides.map((g) => (<a href={g.route}>{g.name}</a>))}
             </div>
@@ -85,6 +85,7 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
         </div>
       </details>
 
+      <a class="nav__link" href="/compare/">Compare</a>
       <a class="nav__link" href="/about/">About</a>
       <a class="nav__cta" href="/quiz/">Find your machine</a>
     </nav>
