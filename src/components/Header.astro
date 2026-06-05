@@ -1,5 +1,6 @@
 ---
 import nav from '../data/nav.json';
+import SiteSearch from './SiteSearch.astro';
 const { catalog, guides, grinders, coffeeMachines } = nav as {
   catalog: { brand: string; slug: string; route: string; count: number; avgRating: number | null; models: { label: string; route: string }[] }[];
   guides: { name: string; route: string }[];
@@ -12,6 +13,8 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
     <a href="/" class="brand" aria-label="Coffeedant home">
       <span class="brand__mark">Coffee<span>dant</span></span>
     </a>
+
+    <SiteSearch />
 
     <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu">
       <span></span><span></span><span></span>

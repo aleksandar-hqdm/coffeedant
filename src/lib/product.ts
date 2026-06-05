@@ -36,6 +36,11 @@ export function titleMatches(brand: string, label: string, title?: string | null
   return codes.some((w) => t.includes(norm(w)));
 }
 
+// Same-brand accessories (descalers, filters, tampers, pitchers) can pass the
+// brand match. These rarely lead a real machine's title, so reject them.
+const ACCESSORY = /\b(descal\w+|cleaning\s+(?:tablet|solution|kit|powder)|cartridge|\btamper\b|frothing\s+pitcher|milk\s+pitcher|knock\s*box|portafilter|bottomless|gasket|o[-\s]?ring|\bwdt\b|distribution\s+tool|replacement\s+(?:part|filter|seal))\b/i;
+const PRICE_FLOOR = 60; // an "espresso machine" under ~$60 is almost certainly a mismatched accessory
+
 export function liveProduct(
   m: { slug: string; brand: string; label: string; asin?: string | null },
   amz: Record<string, LiveData>,
@@ -44,7 +49,11 @@ export function liveProduct(
   const asin = m.asin || asins[m.slug] || null;
   const live = asin ? amz[asin] : null;
   if (!live) return null;
-  return titleMatches(m.brand, m.label, live.title) ? live : null;
+  if (!titleMatches(m.brand, m.label, live.title)) return null;
+  if (live.title && ACCESSORY.test(live.title)) return null;
+  const p = live.price ? parseFloat(live.price) : null;
+  if (p != null && p < PRICE_FLOOR) return null;
+  return live;
 }
 
 const TAG = 'coffeedant03-20';

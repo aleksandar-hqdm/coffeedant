@@ -1,16 +1,10 @@
 ---
 import nav from '../../data/nav.json';
-import amazon from '../../data/amazon.json';
-import asinMap from '../../data/asins.json';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { liveProduct, formatUpdated } from '../../lib/product';
+import { machines as catalogMachines, TYPE_LABEL, MILK_LABEL } from '../../lib/catalog';
 
-type Model = { label: string; route: string; slug: string; image: string | null; rating: number | null; price: string | null; asin: string | null; amazonUrl: string | null };
-type Brand = { brand: string; slug: string; route: string; hubRoute: string | null; count: number; avgRating: number | null; models: Model[] };
-
+type Brand = { brand: string; slug: string; route: string; hubRoute: string | null; count: number; avgRating: number | null; models: any[] };
 const catalog = (nav as { catalog: Brand[] }).catalog;
-const amz = amazon as Record<string, { title?: string | null; image?: string; price?: string; displayPrice?: string; url?: string }>;
-const asins = asinMap as Record<string, string>;
 
 export async function getStaticPaths() {
   const cat = (nav as { catalog: Brand[] }).catalog;
@@ -18,25 +12,17 @@ export async function getStaticPaths() {
 }
 
 const { brand } = Astro.props as { brand: Brand };
-// Resolve each machine's ASIN (from content or the slug->ASIN map), then prefer
-// live Amazon image/price; fall back to the product image from the review.
-const models = brand.models.map((m) => {
-  const live = liveProduct({ slug: m.slug, brand: brand.brand, label: m.label, asin: m.asin }, amz, asins);
-  return {
-    ...m,
-    image: live?.image || m.image,
-    livePrice: live?.displayPrice || (live?.price ? `$${live.price}` : null),
-    lastUpdated: live?.displayPrice || live?.price ? formatUpdated(live?.updated) : null,
-  };
-});
+const rows = catalogMachines
+  .filter((m) => m.brand === brand.brand)
+  .sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
 const crumbs = [
   { name: 'Home', url: '/' },
-  { name: 'Espresso Machines', url: '/espresso-machine/' },
+  { name: 'Espresso Machines', url: '/machines/' },
   { name: brand.brand, url: brand.route },
 ];
-const desc = `Every ${brand.brand} espresso machine we have reviewed${brand.avgRating ? `, with an average rating of ${brand.avgRating} out of 5` : ''}. Compare models and read the full reviews.`;
+const desc = `Compare every ${brand.brand} espresso machine we have reviewed${brand.avgRating ? `, average rating ${brand.avgRating} out of 5` : ''}: price, rating, type, milk system, and grinder, side by side.`;
 ---
-<BaseLayout title={`${brand.brand} Espresso Machines`} description={desc} breadcrumbs={crumbs}>
+<BaseLayout title={`${brand.brand} Espresso Machines: Compared`} description={desc} breadcrumbs={crumbs}>
   <div class="brand-page">
     <header class="brand-hero">
       <h1>{brand.brand} Espresso Machines</h1>
@@ -47,54 +33,72 @@ const desc = `Every ${brand.brand} espresso machine we have reviewed${brand.avgR
       {brand.hubRoute && <a class="brand-hero__guide" href={brand.hubRoute}>Read the {brand.brand} buying guide &rarr;</a>}
     </header>
 
-    <div class="machine-grid">
-      {models.map((m) => (
-        <a class="machine-card" href={m.route}>
-          <div class="machine-card__media">
-            {m.image ? <img src={m.image} alt={m.label} loading="lazy" /> : <div class="machine-card__ph">No image</div>}
-          </div>
-          <div class="machine-card__body">
-            <h2 class="machine-card__title">{m.label}</h2>
-            <div class="machine-card__meta">
-              {m.rating
-                ? <span class="machine-card__rating">★ {m.rating} / 5</span>
-                : <span class="machine-card__rating machine-card__rating--none">Reviewed</span>}
-              {m.livePrice && <span class="machine-card__price">{m.livePrice}</span>}
-            </div>
-            {m.lastUpdated && <span class="machine-card__updated">Last updated: {m.lastUpdated}</span>}
-            <span class="machine-card__cta">Read review &rarr;</span>
-          </div>
-        </a>
-      ))}
+    <div class="ctable-wrap">
+      <table class="ctable">
+        <thead>
+          <tr>
+            <th scope="col">Machine</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Price</th>
+            <th scope="col">Type</th>
+            <th scope="col">Milk</th>
+            <th scope="col">Grinder</th>
+            <th scope="col"><span class="sr">Links</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((m) => (
+            <tr>
+              <th scope="row" class="ct-machine">
+                <a class="ct-thumb" href={m.route}>{m.image ? <img src={m.image} alt={m.label} loading="lazy" /> : <span class="ct-ph">No image</span>}</a>
+                <a class="ct-name" href={m.route}>{m.label}</a>
+              </th>
+              <td data-label="Rating">{m.rating ? <span class="ct-rating">★ {m.rating}</span> : <span class="ct-na">n/a</span>}</td>
+              <td data-label="Price">{m.displayPrice || <span class="ct-na">See Amazon</span>}</td>
+              <td data-label="Type">{TYPE_LABEL[m.type] || m.type}</td>
+              <td data-label="Milk">{MILK_LABEL[m.milk] || m.milk}</td>
+              <td data-label="Grinder">{m.grinder ? 'Yes' : 'No'}</td>
+              <td class="ct-actions">
+                <a class="ct-buy" href={m.buyUrl} target="_blank" rel="nofollow sponsored noopener">Price</a>
+                <a class="ct-review" href={m.route}>Review</a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
+    <p class="ctable-note">Prices update weekly from Amazon. Some boutique models are not sold on Amazon; choose "See Amazon" to check current listings.</p>
   </div>
 </BaseLayout>
 
 <style>
   .brand-page { max-width: var(--container); margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
-  .brand-hero { padding: 1rem 0 1.5rem; border-bottom: 1px solid var(--color-line); margin-bottom: 1.75rem; }
+  .brand-hero { padding: 1rem 0 1.5rem; border-bottom: 1px solid var(--color-line); margin-bottom: 1.5rem; }
   .brand-hero h1 { margin: 0 0 0.35rem; font-size: clamp(1.7rem, 4vw, 2.3rem); }
   .brand-hero__meta { margin: 0; color: var(--color-muted); }
   .brand-hero__meta strong { color: var(--color-accent); }
   .brand-hero__guide { display: inline-block; margin-top: 0.6rem; color: var(--color-brand); font-weight: 600; text-decoration: none; }
   .brand-hero__guide:hover { text-decoration: underline; }
 
-  .machine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
-  .machine-card {
-    display: flex; flex-direction: column; border: 1px solid var(--color-line); border-radius: 14px;
-    overflow: hidden; background: #fff; text-decoration: none; color: inherit;
-    transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
-  }
-  .machine-card:hover { box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1); transform: translateY(-2px); border-color: rgba(111, 78, 55, 0.3); }
-  .machine-card__media { aspect-ratio: 4 / 3; background: var(--color-soft); display: flex; align-items: center; justify-content: center; padding: 0.75rem; }
-  .machine-card__media img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .machine-card__ph { color: var(--color-muted); font-size: 0.85rem; }
-  .machine-card__body { padding: 0.9rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.45rem; }
-  .machine-card__title { margin: 0; font-size: 1rem; line-height: 1.3; }
-  .machine-card__meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-  .machine-card__rating { font-size: 0.85rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 0.1rem 0.5rem; border-radius: 999px; }
-  .machine-card__rating--none { color: var(--color-muted); background: var(--color-soft); font-weight: 600; }
-  .machine-card__price { font-size: 0.9rem; font-weight: 700; color: var(--color-text); }
-  .machine-card__updated { font-size: 0.72rem; color: var(--color-muted); }
-  .machine-card__cta { margin-top: 0.15rem; font-size: 0.85rem; font-weight: 600; color: var(--color-brand); }
+  .ctable-wrap { overflow-x: auto; border: 1px solid var(--color-line); border-radius: 14px; }
+  .ctable { width: 100%; border-collapse: collapse; min-width: 720px; }
+  .ctable thead th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); padding: 0.85rem 0.9rem; border-bottom: 1px solid var(--color-line); background: var(--color-soft); }
+  .ctable tbody tr { border-bottom: 1px solid var(--color-line); }
+  .ctable tbody tr:last-child { border-bottom: 0; }
+  .ctable td, .ctable th[scope="row"] { padding: 0.7rem 0.9rem; font-size: 0.92rem; vertical-align: middle; }
+  .ct-machine { display: flex; align-items: center; gap: 0.75rem; min-width: 240px; font-weight: 400; }
+  .ct-thumb { flex: none; width: 54px; height: 54px; border-radius: 8px; background: var(--color-soft); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .ct-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .ct-ph { font-size: 0.6rem; color: var(--color-muted); text-align: center; }
+  .ct-name { font-weight: 700; color: var(--color-text); text-decoration: none; line-height: 1.3; }
+  .ct-name:hover { color: var(--color-brand); }
+  .ct-rating { font-weight: 700; color: #b45309; background: #fef3c7; padding: 0.1rem 0.45rem; border-radius: 999px; white-space: nowrap; }
+  .ct-na { color: var(--color-muted); }
+  .ct-actions { white-space: nowrap; }
+  .ct-buy { display: inline-block; background: var(--color-accent); color: #fff; font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 999px; text-decoration: none; font-size: 0.82rem; margin-right: 0.35rem; }
+  .ct-buy:hover { background: #15803d; }
+  .ct-review { display: inline-block; color: var(--color-brand); font-weight: 600; text-decoration: none; font-size: 0.82rem; }
+  .ct-review:hover { text-decoration: underline; }
+  .ctable-note { color: var(--color-muted); font-size: 0.82rem; margin: 0.85rem 0 0; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 </style>

@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { machines, TYPE_LABEL, MILK_LABEL } from '../../lib/catalog';
+const data = machines.map((m) => ({
+  slug: m.slug, label: m.label, brand: m.brand, route: m.route, image: m.image,
+  rating: m.rating, displayPrice: m.displayPrice, buyUrl: m.buyUrl,
+  typeLabel: TYPE_LABEL[m.type] || m.type, milkLabel: MILK_LABEL[m.milk] || m.milk, grinder: m.grinder,
+}));
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+<BaseLayout
+  title="Compare Espresso Machines Side by Side"
+  description="Put up to three espresso machines side by side: price, rating, type, milk system, and more."
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Compare', url: '/compare/' }]}
+>
+  <div class="cmp">
+    <header class="cmp__head">
+      <h1>Compare machines</h1>
+      <p>Pick up to three machines to see them side by side.</p>
+    </header>
+    <div class="cmp__grid" id="cmp-grid"></div>
+  </div>
+
+  <script id="cmp-data" type="application/json" set:html={json} />
+  <script is:inline>
+    (() => {
+      const M = JSON.parse(document.getElementById('cmp-data').textContent);
+      const bySlug = Object.fromEntries(M.map((m) => [m.slug, m]));
+      const grid = document.getElementById('cmp-grid');
+      let slots = [null, null, null];
+      const preset = new URLSearchParams(location.search).get('m');
+      if (preset) preset.split(',').slice(0, 3).forEach((s, i) => { if (bySlug[s]) slots[i] = s; });
+      while (slots.length < 3) slots.push(null);
+
+      const esc = (s) => (s == null ? '' : String(s).replace(/"/g, '&quot;'));
+      function syncUrl() {
+        const sel = slots.filter(Boolean);
+        const q = sel.length ? '?m=' + sel.join(',') : '';
+        history.replaceState(null, '', location.pathname + q);
+      }
+      function col(slug, i) {
+        if (!slug) {
+          return `<div class="cmp__col cmp__col--empty">
+            <div class="cmp__picker">
+              <input type="text" class="cmp__search" data-slot="${i}" placeholder="Add a machine..." aria-label="Search machines">
+              <ul class="cmp__results" data-results="${i}"></ul>
+            </div>
+          </div>`;
+        }
+        const m = bySlug[slug];
+        const row = (lbl, val) => `<div class="cmp__row"><span class="cmp__lbl">${lbl}</span><span class="cmp__val">${val}</span></div>`;
+        return `<div class="cmp__col">
+          <button class="cmp__remove" data-remove="${i}" aria-label="Remove">&times;</button>
+          <a class="cmp__media" href="${m.route}">${m.image ? `<img src="${esc(m.image)}" alt="${esc(m.label)}" loading="lazy">` : '<span>No image</span>'}</a>
+          <span class="cmp__brand">${m.brand}</span>
+          <a class="cmp__name" href="${m.route}">${m.label}</a>
+          ${row('Price', m.displayPrice || '<span class="cmp__na">See Amazon</span>')}
+          ${row('Our rating', m.rating ? '&#9733; ' + m.rating + ' / 5' : '<span class="cmp__na">n/a</span>')}
+          ${row('Type', m.typeLabel)}
+          ${row('Milk', m.milkLabel)}
+          ${row('Built-in grinder', m.grinder ? 'Yes' : 'No')}
+          <div class="cmp__actions">
+            <a class="cmp__buy" href="${esc(m.buyUrl)}" target="_blank" rel="nofollow sponsored noopener">Check price</a>
+            <a class="cmp__review" href="${m.route}">Read review</a>
+          </div>
+        </div>`;
+      }
+      function render() {
+        grid.innerHTML = slots.map((s, i) => col(s, i)).join('');
+        grid.querySelectorAll('[data-remove]').forEach((b) => b.addEventListener('click', () => { slots[+b.dataset.remove] = null; render(); syncUrl(); }));
+        grid.querySelectorAll('.cmp__search').forEach((inp) => {
+          const i = +inp.dataset.slot;
+          const results = grid.querySelector(`[data-results="${i}"]`);
+          inp.addEventListener('input', () => {
+            const q = inp.value.trim().toLowerCase();
+            if (!q) { results.innerHTML = ''; return; }
+            const chosen = new Set(slots.filter(Boolean));
+            const hits = M.filter((m) => !chosen.has(m.slug) && (m.label + ' ' + m.brand).toLowerCase().includes(q)).slice(0, 8);
+            results.innerHTML = hits.map((m) => `<li><button data-pick="${m.slug}">${m.brand} ${m.label}</button></li>`).join('');
+            results.querySelectorAll('[data-pick]').forEach((btn) => btn.addEventListener('click', () => { slots[i] = btn.dataset.pick; render(); syncUrl(); }));
+          });
+          inp.focus();
+        });
+      }
+      render(); syncUrl();
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .cmp { max-width: var(--container); margin: 0 auto; padding: 1.75rem 1.25rem 3rem; }
+  .cmp__head { margin-bottom: 1.5rem; }
+  .cmp__head h1 { margin: 0 0 0.35rem; font-size: clamp(1.7rem, 4vw, 2.4rem); }
+  .cmp__head p { margin: 0; color: var(--color-muted); }
+  .cmp__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: start; }
+  .cmp__col { position: relative; border: 1px solid var(--color-line); border-radius: 14px; padding: 1rem; background: #fff; }
+  .cmp__col--empty { display: flex; align-items: center; justify-content: center; min-height: 220px; border-style: dashed; background: var(--color-soft); }
+  .cmp__picker { width: 100%; }
+  .cmp__search { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--color-line); border-radius: 8px; font: inherit; }
+  .cmp__results { list-style: none; margin: 0.5rem 0 0; padding: 0; max-height: 240px; overflow: auto; }
+  .cmp__results button { width: 100%; text-align: left; background: none; border: 0; padding: 0.5rem; border-radius: 6px; cursor: pointer; font: inherit; }
+  .cmp__results button:hover { background: var(--color-soft); }
+  .cmp__remove { position: absolute; top: 0.5rem; right: 0.5rem; border: 0; background: var(--color-soft); border-radius: 999px; width: 26px; height: 26px; cursor: pointer; font-size: 1rem; line-height: 1; }
+  .cmp__media { display: flex; align-items: center; justify-content: center; height: 130px; background: var(--color-soft); border-radius: 10px; padding: 0.5rem; }
+  .cmp__media img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .cmp__brand { display: block; margin-top: 0.75rem; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); }
+  .cmp__name { display: block; font-weight: 700; color: var(--color-text); text-decoration: none; line-height: 1.3; margin-bottom: 0.5rem; }
+  .cmp__row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.4rem 0; border-top: 1px solid var(--color-line); font-size: 0.88rem; }
+  .cmp__lbl { color: var(--color-muted); }
+  .cmp__val { font-weight: 600; text-align: right; }
+  .cmp__na { color: var(--color-muted); font-weight: 400; }
+  .cmp__actions { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.75rem; }
+  .cmp__buy { text-align: center; background: var(--color-accent); color: #fff; font-weight: 700; padding: 0.5rem; border-radius: 999px; text-decoration: none; font-size: 0.85rem; }
+  .cmp__buy:hover { background: #15803d; }
+  .cmp__review { text-align: center; border: 1px solid var(--color-line); color: var(--color-brand); font-weight: 600; padding: 0.5rem; border-radius: 999px; text-decoration: none; font-size: 0.85rem; }
+  @media (max-width: 640px) { .cmp__grid { grid-template-columns: 1fr; } }
+</style>
