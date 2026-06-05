@@ -55,6 +55,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': ldGr
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#faf5ef" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
 
     <title>{fullTitle}</title>
     {desc && <meta name="description" content={desc} />}

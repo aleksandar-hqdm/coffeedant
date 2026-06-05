@@ -10,16 +10,17 @@ import { machines } from '../../lib/catalog';
 >
   <div class="hub">
     <header class="hub__head">
-      <h1>All espresso machines</h1>
-      <p>Filter and sort every machine we have tested. Prices update weekly from Amazon.</p>
+      <p class="eyebrow">{machines.length} machines on the bench</p>
+      <h1>The full collection</h1>
+      <p class="hub__sub">Filter and sort every espresso machine we have bought and tested. Prices refresh weekly from Amazon.</p>
     </header>
     <MachineExplorer />
   </div>
 </BaseLayout>
 
 <style>
-  .hub { max-width: var(--container); margin: 0 auto; padding: 1.75rem 1.25rem 3rem; }
-  .hub__head { margin-bottom: 1.5rem; }
-  .hub__head h1 { margin: 0 0 0.35rem; font-size: clamp(1.7rem, 4vw, 2.4rem); }
-  .hub__head p { margin: 0; color: var(--color-muted); }
+  .hub { max-width: var(--container); margin: 0 auto; padding: 2.25rem 1.5rem 4rem; }
+  .hub__head { margin-bottom: 1.75rem; }
+  .hub__head h1 { margin: 0 0 0.5rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .hub__sub { margin: 0; color: var(--ink-2); font-size: 1.08rem; max-width: 60ch; }
 </style>

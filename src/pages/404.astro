@@ -6,25 +6,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="The page you were looking for doesn't exist."
   noindex
 >
-  <main>
-    <section>
-      <h1>404</h1>
-      <p>This page doesn't exist (or hasn't been migrated from the old site yet).</p>
-      <p><a href="/">Back to home</a></p>
-    </section>
-  </main>
+  <section class="nf">
+    <p class="nf__num">404</p>
+    <h1 class="nf__title">This shot didn't pull.</h1>
+    <p class="nf__text">The page you were after doesn't exist, or hasn't been migrated from the old site yet. Let's get you back to the good stuff.</p>
+    <div class="nf__cta">
+      <a class="btn btn--primary" href="/">Back to home</a>
+      <a class="btn btn--ghost" href="/machines/">Browse all machines</a>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem;
-    text-align: center;
-  }
-  h1 {
-    font-size: 6rem;
-    margin: 0;
-    color: var(--color-accent);
-  }
+  .nf { max-width: 640px; margin: 0 auto; padding: 5rem 1.5rem 6rem; text-align: center; }
+  .nf__num { font-family: var(--font-display); font-optical-sizing: auto; font-weight: 600; font-size: clamp(5rem, 18vw, 9rem); line-height: 1; margin: 0; color: var(--copper-deep); letter-spacing: -0.03em; }
+  .nf__title { font-size: clamp(1.6rem, 4vw, 2.3rem); margin: 0.5rem 0 0.75rem; }
+  .nf__text { color: var(--ink-2); font-size: 1.08rem; margin: 0 auto 2rem; max-width: 46ch; }
+  .nf__cta { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
 </style>

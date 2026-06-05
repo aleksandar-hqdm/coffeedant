@@ -27,8 +27,10 @@ const posts = pages
 </BaseLayout>
 
 <style>
-  .post-list { list-style: none; padding: 0; margin: 2rem 0 0; }
-  .post-list li { padding: 1.1rem 0; border-bottom: 1px solid var(--color-line); }
-  .post-list a { font-size: 1.2rem; font-weight: 700; text-decoration: none; color: var(--color-brand); }
-  .post-list p { margin: 0.35rem 0 0; color: var(--color-muted); font-size: 0.95rem; }
+  .post-list { list-style: none; padding: 0; margin: 2.5rem 0 0; }
+  .post-list li { padding: 1.4rem 0; border-bottom: 1px solid var(--line-soft); transition: padding-left 0.2s var(--ease); }
+  .post-list li:hover { padding-left: 0.4rem; }
+  .post-list a { font-family: var(--font-display); font-optical-sizing: auto; font-size: 1.4rem; font-weight: 540; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); line-height: 1.25; }
+  .post-list a:hover { color: var(--copper-deep); }
+  .post-list p { margin: 0.45rem 0 0; color: var(--ink-2); font-size: 0.98rem; max-width: 70ch; }
 </style>

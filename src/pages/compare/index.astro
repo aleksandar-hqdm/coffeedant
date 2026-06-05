@@ -108,18 +108,19 @@ const json = JSON.stringify(payload).replace(/</g, '\\u003c');
   .cmp__head h1 { margin: 0 0 0.35rem; font-size: clamp(1.7rem, 4vw, 2.4rem); }
   .cmp__head p { margin: 0; color: var(--color-muted, #5b6472); }
   .cmp__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: start; }
-  .cmp__col { position: relative; border: 1px solid var(--color-line, rgba(17,24,39,.1)); border-radius: 14px; padding: 1rem; background: #fff; }
-  .cmp__col--empty { display: flex; align-items: center; justify-content: center; min-height: 260px; border-style: dashed; background: var(--color-soft, #f7f6f4); }
+  .cmp__col { position: relative; border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 1.1rem; background: var(--surface); box-shadow: var(--shadow-xs); }
+  .cmp__col--empty { display: flex; align-items: center; justify-content: center; min-height: 260px; border-style: dashed; border-color: var(--line); background: var(--canvas-2); box-shadow: none; }
   .cmp__picker { width: 100%; }
   .cmp__search { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--color-line, #ddd); border-radius: 8px; font: inherit; }
   .cmp__results { list-style: none; margin: 0.5rem 0 0; padding: 0; max-height: 240px; overflow: auto; }
   .cmp__results button { width: 100%; text-align: left; background: none; border: 0; padding: 0.5rem; border-radius: 6px; cursor: pointer; font: inherit; }
   .cmp__results button:hover { background: var(--color-soft, #f3f3f3); }
   .cmp__remove { position: absolute; top: 0.5rem; right: 0.5rem; border: 0; background: var(--color-soft, #eee); border-radius: 999px; width: 26px; height: 26px; cursor: pointer; font-size: 1rem; line-height: 1; }
-  .cmp__media { display: flex; align-items: center; justify-content: center; height: 140px; background: var(--color-soft, #f7f6f4); border-radius: 10px; padding: 0.5rem; }
-  .cmp__media img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .cmp__brand { display: block; margin-top: 0.75rem; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted, #777); }
-  .cmp__name { display: block; font-weight: 700; color: var(--color-text, #1f2430); text-decoration: none; line-height: 1.3; margin-bottom: 0.5rem; }
+  .cmp__media { display: flex; align-items: center; justify-content: center; height: 150px; background: radial-gradient(120% 100% at 50% 0%, #fff, var(--canvas-2)); border-radius: var(--radius-sm); padding: 0.75rem; }
+  .cmp__media img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+  .cmp__brand { display: block; margin-top: 0.85rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 600; }
+  .cmp__name { display: block; font-family: var(--font-display); font-weight: 540; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; line-height: 1.2; margin: 0.15rem 0 0.6rem; }
+  .cmp__name:hover { color: var(--copper-deep); }
   .cmp__sec { margin: 0.9rem 0 0.4rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-muted, #888); font-weight: 700; }
   .cmp__row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.32rem 0; border-top: 1px solid var(--color-line, #eee); font-size: 0.86rem; }
   .cmp__lbl { color: var(--color-muted, #777); }
@@ -135,9 +136,10 @@ const json = JSON.stringify(payload).replace(/</g, '\\u003c');
   .cmp__badges { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
   .cmp__badges span { font-size: 0.72rem; background: var(--color-soft, #f1efec); color: var(--color-text, #444); padding: 0.15rem 0.5rem; border-radius: 999px; }
   .cmp__actions { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.9rem; }
-  .cmp__buy { text-align: center; background: var(--color-accent, #16a34a); color: #fff; font-weight: 700; padding: 0.5rem; border-radius: 999px; text-decoration: none; font-size: 0.85rem; }
-  .cmp__buy:hover { background: #15803d; }
-  .cmp__review { text-align: center; border: 1px solid var(--color-line, #ddd); color: var(--color-brand, #6f4e37); font-weight: 600; padding: 0.5rem; border-radius: 999px; text-decoration: none; font-size: 0.85rem; }
+  .cmp__buy { text-align: center; background: var(--copper-deep); color: #fff; font-weight: 620; padding: 0.55rem; border-radius: 999px; text-decoration: none; font-size: 0.85rem; transition: background 0.2s var(--ease); }
+  .cmp__buy:hover { background: var(--copper-dark); color: #fff; }
+  .cmp__review { text-align: center; border: 1px solid var(--line); color: var(--ink); font-weight: 600; padding: 0.55rem; border-radius: 999px; text-decoration: none; font-size: 0.85rem; }
+  .cmp__review:hover { background: var(--canvas-2); }
   .cmp__reddit { display: block; text-align: center; margin-top: 0.5rem; font-size: 0.8rem; color: var(--color-muted, #777); text-decoration: none; }
   .cmp__reddit:hover { color: var(--color-brand, #6f4e37); text-decoration: underline; }
   @media (max-width: 640px) { .cmp__grid { grid-template-columns: 1fr; } }

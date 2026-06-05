@@ -226,9 +226,10 @@ select, .field {
 }
 select:focus-visible, .field:focus-visible { outline: 2px solid var(--copper); outline-offset: 1px; }
 
-/* ---- scroll reveal ------------------------------------------------------- */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
-.reveal.is-in { opacity: 1; transform: none; }
+/* ---- scroll reveal (JS-gated: content is visible by default; only the .js
+   root, set by an inline head script, opts elements into the hidden start) --- */
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+.js .reveal.is-in { opacity: 1; transform: none; }
 
 /* =========================================================================
    Article body (migrated WordPress pages render into .cd-article)

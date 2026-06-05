@@ -32,17 +32,19 @@ const json = JSON.stringify(searchIndex).replace(/</g, '\\u003c');
 </script>
 
 <style>
-  .search { position: relative; display: flex; align-items: center; gap: 0.4rem; flex: 0 1 260px; min-width: 150px; background: var(--color-soft); border: 1px solid var(--color-line); border-radius: 999px; padding: 0.35rem 0.75rem; }
-  .search__icon { width: 16px; height: 16px; color: var(--color-muted); flex: none; }
-  .search__input { border: 0; background: none; outline: none; font: inherit; font-size: 0.9rem; width: 100%; color: var(--color-text); }
+  .search { position: relative; display: flex; align-items: center; gap: 0.45rem; flex: 0 1 280px; min-width: 150px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 0.4rem 0.85rem; transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease); }
+  .search:focus-within { border-color: var(--copper); box-shadow: 0 0 0 3px var(--copper-tint); }
+  .search__icon { width: 16px; height: 16px; color: var(--ink-3); flex: none; }
+  .search__input { border: 0; background: none; outline: none; font: inherit; font-size: 0.9rem; width: 100%; color: var(--ink); }
+  .search__input::placeholder { color: var(--ink-3); }
   .search__results {
-    position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 300; background: #fff;
-    border: 1px solid var(--color-line); border-radius: 12px; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
-    padding: 0.4rem; max-height: 60vh; overflow: auto; min-width: 260px;
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 300; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg);
+    padding: 0.45rem; max-height: 60vh; overflow: auto; min-width: 280px;
   }
-  .search__results a { display: block; padding: 0.5rem 0.6rem; border-radius: 8px; text-decoration: none; color: var(--color-text); font-size: 0.9rem; }
-  .search__results a:hover { background: var(--color-soft); }
-  .search__results .ss-b { color: var(--color-muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; margin-right: 0.25rem; }
-  .ss-none { display: block; padding: 0.6rem; color: var(--color-muted); font-size: 0.88rem; }
+  .search__results a { display: block; padding: 0.55rem 0.65rem; border-radius: var(--radius-sm); text-decoration: none; color: var(--ink); font-size: 0.9rem; transition: background 0.14s var(--ease), color 0.14s var(--ease); }
+  .search__results a:hover { background: var(--canvas-2); color: var(--copper-deep); }
+  .search__results .ss-b { color: var(--ink-3); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.1em; margin-right: 0.3rem; font-weight: 600; }
+  .ss-none { display: block; padding: 0.6rem; color: var(--ink-3); font-size: 0.88rem; }
   @media (max-width: 860px) { .search { flex-basis: 140px; min-width: 110px; } .search__input { font-size: 16px; } }
 </style>
