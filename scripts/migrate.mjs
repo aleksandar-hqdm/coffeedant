@@ -106,6 +106,16 @@ function enforceAffiliate(html) {
   });
 }
 
+// Self-host images: map WordPress uploads to /images/ (downloaded into public).
+function localizeImages(s) {
+  return s ? s.replace(/https?:\/\/coffeedant\.com\/wp-content\/uploads\//gi, '/images/') : s;
+}
+function resolvedImage(url) {
+  const local = localizeImages(url);
+  if (local && local.startsWith('/images/')) return fs.existsSync('public' + local) ? local : null;
+  return local || null;
+}
+
 // ---- Gutenberg -> HTML --------------------------------------------------------
 function blocksToHtml(content) {
   if (!content) return '';
@@ -116,7 +126,10 @@ function blocksToHtml(content) {
     .replace(/\n{3,}/g, '\n\n')
     .trim();
   // keep images pointing at the live host for now; make other internal links root-relative
-  html = html.replace(/https:\/\/coffeedant\.com\/(?!wp-content)/g, '/');
+  html = html.replace(/https?:\/\/coffeedant\.com\/wp-content\/uploads\//gi, '/images/');
+  html = html.replace(/https?:\/\/coffeedant\.com\//gi, '/');
+  // drop inline images whose file we do not have (these 404 on the source site too)
+  html = html.replace(/<img\b[^>]*\bsrc="(\/images\/[^"]+)"[^>]*>/gi, (tag, src) => (fs.existsSync('public' + src) ? tag : ''));
   html = enforceAffiliate(html);
   return html;
 }
@@ -217,13 +230,13 @@ for (const p of posts) {
     canonical: y?.canonical || (y?.permalink ?? `${ORIGIN}${route}`),
     ogTitle: decodeEntities(y?.open_graph_title || y?.title) || null,
     ogDescription: decodeEntities(y?.open_graph_description || y?.description) || null,
-    ogImage: y?.open_graph_image || y?.twitter_image || null,
+    ogImage: resolvedImage(y?.open_graph_image || y?.twitter_image),
     breadcrumb: decodeEntities(y?.breadcrumb_title || p.post_title),
     focusKeyword: y?.primary_focus_keyword || null,
     noindex: y?.is_robots_noindex === '1',
     date: p.post_date,
     modified: p.post_modified,
-    image: product.image,
+    image: resolvedImage(product.image),
     rating: product.rating,
     asin: product.asin,
     amazonUrl: product.amazonUrl,

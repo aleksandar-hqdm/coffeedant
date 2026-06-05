@@ -1,6 +1,9 @@
 ---
 import { machines } from '../lib/catalog';
-const data = JSON.stringify(machines).replace(/</g, '\\u003c');
+interface Props { only?: string[] }
+const { only } = Astro.props;
+const list = only && only.length ? machines.filter((m) => only.includes(m.slug)) : machines;
+const data = JSON.stringify(list).replace(/</g, '\\u003c');
 ---
 <div class="explorer">
   <div class="explorer__bar">

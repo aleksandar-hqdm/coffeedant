@@ -5,6 +5,8 @@ import amazon from '../data/amazon.json';
 import asinMap from '../data/asins.json';
 import nav from '../data/nav.json';
 import { liveProduct } from '../lib/product';
+import MachineExplorer from '../components/MachineExplorer.astro';
+import { machines as catalogMachines } from '../lib/catalog';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -71,6 +73,15 @@ if (livePrice) {
     bodyHtml = bodyHtml.replace(/(<a\b[^>]*\bbtn-buy\b[^>]*>[\s\S]*?<\/a>)/i, `$1<p class="price-note">${note}</p>`);
   }
 }
+
+// Best-of guide pages: surface a filter/sort explorer scoped to the machines the
+// guide links to (falls back to the full catalog when it links to few).
+let guideOnly: string[] | undefined;
+if (data.type === 'category') {
+  const machineSlugs = new Set(catalogMachines.map((m) => m.slug));
+  const linked = [...new Set([...bodyHtml.matchAll(/\/espresso-machine\/([a-z0-9-]+)\//g)].map((m) => m[1]))].filter((s) => machineSlugs.has(s));
+  guideOnly = linked.length >= 3 ? linked : undefined;
+}
 ---
 <BaseLayout
   title={data.seoTitle || data.title}
@@ -84,4 +95,15 @@ if (livePrice) {
   breadcrumbs={breadcrumbs}
 >
   <article class="cd-article" set:html={bodyHtml} />
+  {data.type === 'category' && (
+    <section class="guide-explorer">
+      <h2 class="guide-explorer__title">Filter &amp; sort these picks</h2>
+      <MachineExplorer only={guideOnly} />
+    </section>
+  )}
 </BaseLayout>
+
+<style>
+  .guide-explorer { max-width: var(--container); margin: 0 auto; padding: 0.5rem 1.25rem 2.5rem; }
+  .guide-explorer__title { font-size: clamp(1.3rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+</style>
