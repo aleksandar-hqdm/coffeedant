@@ -25,6 +25,44 @@ const BRAND_HUBS = new Set([
   'bosch', 'nespresso', 'keurig',
 ]);
 
+// Brand detection for the catalog menu. Slugs are consistent (e.g. delonghi-*,
+// quick-mill-*), so longest-prefix match on the slug is reliable.
+const BRAND_NAMES = {
+  'nuova-simonelli': 'Nuova Simonelli', 'quick-mill': 'Quick Mill', 'la-marzocco': 'La Marzocco',
+  'la-pavoni': 'La Pavoni', 'dalla-corte': 'Dalla Corte', rocket: 'Rocket Espresso',
+  delonghi: "De'Longhi", breville: 'Breville', gaggia: 'Gaggia', krups: 'Krups', lelit: 'Lelit',
+  profitec: 'Profitec', bezzera: 'Bezzera', ecm: 'ECM', vbm: 'VBM', crem: 'Crem', jura: 'Jura',
+  siemens: 'Siemens', bosch: 'Bosch', melitta: 'Melitta', nivona: 'Nivona', philips: 'Philips',
+  saeco: 'Saeco', miele: 'Miele', ascaso: 'Ascaso', cafelat: 'Cafelat', flair: 'Flair',
+  londinium: 'Londinium', slayer: 'Slayer', '9barista': '9Barista', rancilio: 'Rancilio',
+  rok: 'ROK', timemore: 'Timemore', baratza: 'Baratza', '1zpresso': '1Zpresso',
+  nespresso: 'Nespresso',
+};
+const CANON = { 'de-longhi': 'delonghi', 'rocket-espresso': 'rocket' };
+const BRAND_PREFIXES = [...Object.keys(BRAND_NAMES), 'de-longhi', 'rocket-espresso']
+  .sort((a, b) => b.length - a.length);
+function detectBrand(slug) {
+  for (const p of BRAND_PREFIXES) if (slug === p || slug.startsWith(p + '-')) return CANON[p] || p;
+  return null;
+}
+function slugToName(slug, brandKey) {
+  let s = slug;
+  if (brandKey) for (const p of BRAND_PREFIXES) { if (s === p || s.startsWith(p + '-')) { s = s.slice(p.length).replace(/^-/, ''); break; } }
+  return s
+    .replace(/-/g, ' ')
+    .replace(/\b([a-z]{1,4}\d[\w]*)\b/gi, (m) => m.toUpperCase())
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .trim();
+}
+function modelLabel(title, brandKey, slug) {
+  let t = String(title).split(/[:|]/)[0].replace(/\breview\b.*/i, '').replace(/^the\s+/i, '').trim();
+  const bn = BRAND_NAMES[brandKey];
+  if (bn) t = t.replace(new RegExp('^' + bn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + "[\\s'’\\-]*", 'i'), '').trim();
+  // a clean product name is short; a sentence-style title falls back to the slug
+  if (!t || t.split(/\s+/).length > 6 || t.length > 42) t = slugToName(slug, brandKey);
+  return t || slugToName(slug, brandKey);
+}
+
 const sql = loadDump(SRC);
 
 // ---- parse the tables we need -------------------------------------------------
@@ -37,6 +75,21 @@ try { redirects = parseTable(sql, 'wp_redirection_items').rows; } catch { /* opt
 const yoastById = new Map();
 for (const y of yoast) {
   if (y.object_type === 'post' && y.object_id) yoastById.set(String(y.object_id), y);
+}
+
+// WordPress stores titles/descriptions with HTML entities; decode them to plain
+// text so Astro escapes once on render (avoids "&amp;" showing literally).
+function decodeEntities(s) {
+  if (s == null) return s;
+  return String(s)
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, ' ').replace(/&hellip;/g, '…')
+    .replace(/&ndash;/g, '–').replace(/&mdash;/g, '—')
+    .replace(/&rsquo;|&lsquo;/g, "'").replace(/&rdquo;|&ldquo;/g, '"')
+    .replace(/&amp;/g, '&');
 }
 
 // ---- Gutenberg -> HTML --------------------------------------------------------
@@ -112,14 +165,14 @@ for (const p of posts) {
     slug: p.post_name,
     route,
     type,
-    title: p.post_title,
-    seoTitle: y?.title || null,
-    description: y?.description || null,
+    title: decodeEntities(p.post_title),
+    seoTitle: decodeEntities(y?.title) || null,
+    description: decodeEntities(y?.description) || null,
     canonical: y?.canonical || (y?.permalink ?? `${ORIGIN}${route}`),
-    ogTitle: y?.open_graph_title || y?.title || null,
-    ogDescription: y?.open_graph_description || y?.description || null,
+    ogTitle: decodeEntities(y?.open_graph_title || y?.title) || null,
+    ogDescription: decodeEntities(y?.open_graph_description || y?.description) || null,
     ogImage: y?.open_graph_image || y?.twitter_image || null,
-    breadcrumb: y?.breadcrumb_title || p.post_title,
+    breadcrumb: decodeEntities(y?.breadcrumb_title || p.post_title),
     focusKeyword: y?.primary_focus_keyword || null,
     noindex: y?.is_robots_noindex === '1',
     date: p.post_date,
@@ -128,19 +181,44 @@ for (const p of posts) {
   });
 }
 
-// ---- navigation data (brands + guides) ---------------------------------------
-const brandList = pages
-  .filter((p) => p.type === 'brand')
-  .map((p) => ({ name: p.title.replace(/\s*[-|].*$/, '').trim(), slug: p.slug, route: p.route }))
-  .sort((a, b) => a.name.localeCompare(b.name));
-const guideList = pages
-  .filter((p) => p.type === 'category')
-  .map((p) => ({ name: p.breadcrumb || p.title, route: p.route }));
-const nav = {
-  brands: brandList,
-  guides: guideList,
-  sections: pages.filter((p) => p.type === 'section').map((p) => ({ name: p.breadcrumb || p.title, route: p.route })),
+// ---- navigation catalog (every review, grouped by brand) ---------------------
+const hubByBrand = {};
+for (const p of pages.filter((p) => p.type === 'brand')) {
+  const bk = detectBrand(p.slug);
+  if (bk) hubByBrand[bk] = p.route;
+}
+const byBrand = new Map();
+for (const r of pages.filter((p) => p.type === 'review' && p.route.startsWith('/espresso-machine/'))) {
+  const bk = detectBrand(r.slug) || 'other';
+  if (!byBrand.has(bk)) byBrand.set(bk, []);
+  byBrand.get(bk).push({ label: modelLabel(r.title, bk, r.slug), route: r.route });
+}
+const catalog = [...byBrand.entries()]
+  .map(([bk, models]) => ({
+    brand: BRAND_NAMES[bk] || bk.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+    route: hubByBrand[bk] || null,
+    models: models.sort((a, b) => a.label.localeCompare(b.label)),
+  }))
+  .sort((a, b) => a.brand.localeCompare(b.brand));
+
+const guideList = pages.filter((p) => p.type === 'category').map((p) => ({ name: p.breadcrumb || p.title, route: p.route }));
+const cleanName = (p) => {
+  let t = (p.breadcrumb || p.title).split(/[:|?]/)[0].replace(/\breview\b.*/i, '').replace(/^the\s+/i, '').trim();
+  if (!t || t.split(/\s+/).length > 6 || t.length > 42) t = slugToName(p.slug, null);
+  return t;
 };
+const grinders = pages
+  .filter((p) => p.type === 'review' && p.route.startsWith('/grinder/'))
+  .map((p) => ({ label: cleanName(p), route: p.route }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+const coffeeMachines = [
+  ...pages.filter((p) => p.type === 'review' && p.route.startsWith('/coffee-machine/')),
+  ...pages.filter((p) => p.slug === 'nespresso' || p.slug === 'keurig'),
+]
+  .map((p) => ({ label: cleanName(p), route: p.route }))
+  .sort((a, b) => a.label.localeCompare(b.label));
+
+const nav = { catalog, guides: guideList, grinders, coffeeMachines };
 
 // ---- redirects ----------------------------------------------------------------
 const redirectRules = [];
@@ -175,7 +253,9 @@ fs.writeFileSync(path.join(ROOT, 'vercel.json'), JSON.stringify(vercel, null, 2)
 // ---- report -------------------------------------------------------------------
 console.log('pages emitted:', pages.length);
 console.log('by type:', report.byType);
-console.log('brands:', brandList.length, '| guides:', guideList.length);
+console.log('catalog brands:', catalog.length, '| models:', catalog.reduce((n, b) => n + b.models.length, 0), '| guides:', guideList.length, '| grinders:', grinders.length, '| coffee:', coffeeMachines.length);
+const unmatched = byBrand.get('other') || [];
+if (unmatched.length) console.log('UNMATCHED brand for:', unmatched.map((m) => m.route));
 console.log('redirect rules (from plugin):', redirectRules.length);
 console.log('pages missing Yoast meta:', report.missingYoast.length, report.missingYoast.slice(0, 10));
 console.log('odd block types:', report.oddBlocks);

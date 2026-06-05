@@ -1,6 +1,11 @@
 ---
 import nav from '../data/nav.json';
-const { brands, guides } = nav as { brands: { name: string; route: string }[]; guides: { name: string; route: string }[] };
+const { catalog, guides, grinders, coffeeMachines } = nav as {
+  catalog: { brand: string; route: string | null; models: { label: string; route: string }[] }[];
+  guides: { name: string; route: string }[];
+  grinders: { label: string; route: string }[];
+  coffeeMachines: { label: string; route: string }[];
+};
 ---
 <header class="site-header">
   <div class="site-header__inner">
@@ -8,49 +13,71 @@ const { brands, guides } = nav as { brands: { name: string; route: string }[]; g
       <span class="brand__mark">Coffee<span>dant</span></span>
     </a>
 
-    <nav class="nav" aria-label="Primary">
-      <details class="nav__item">
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="primary-nav" aria-label="Primary">
+      <details class="nav__item nav__item--mega">
         <summary>Espresso Machines</summary>
         <div class="nav__panel nav__panel--mega">
-          <div>
-            <p class="nav__heading">By brand</p>
-            <ul class="nav__grid">
-              {brands.map((b) => (<li><a href={b.route}>{b.name}</a></li>))}
-            </ul>
+          <div class="mega__top">
+            <a class="mega__all" href="/espresso-machine/">Browse all machines &rarr;</a>
+            <div class="mega__guides">
+              {guides.map((g) => (<a href={g.route}>{g.name}</a>))}
+            </div>
           </div>
-          <div>
-            <p class="nav__heading">Buying guides</p>
-            <ul>
-              {guides.map((g) => (<li><a href={g.route}>{g.name}</a></li>))}
-              <li><a href="/espresso-machine/"><strong>Browse all machines</strong></a></li>
-            </ul>
+          <div class="mega__brands">
+            {catalog.map((b) => (
+              <div class="cat-brand">
+                {b.route
+                  ? <a class="cat-brand__name" href={b.route}>{b.brand}</a>
+                  : <span class="cat-brand__name">{b.brand}</span>}
+                <ul>
+                  {b.models.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
+                </ul>
+              </div>
+            ))}
           </div>
+        </div>
+      </details>
+
+      <details class="nav__item">
+        <summary>Coffee Machines</summary>
+        <div class="nav__panel">
+          <ul>
+            {coffeeMachines.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
+            <li><a href="/coffee-machine/"><strong>All coffee machines</strong></a></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="nav__item">
+        <summary>Grinders</summary>
+        <div class="nav__panel">
+          <ul>
+            {grinders.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
+            <li><a href="/grinder/"><strong>All grinders</strong></a></li>
+          </ul>
         </div>
       </details>
 
       <details class="nav__item">
         <summary>Guides</summary>
         <div class="nav__panel">
-          <ul>
-            {guides.map((g) => (<li><a href={g.route}>{g.name}</a></li>))}
-          </ul>
+          <ul>{guides.map((g) => (<li><a href={g.route}>{g.name}</a></li>))}</ul>
         </div>
       </details>
 
-      <a class="nav__link" href="/coffee-machine/">Coffee Machines</a>
-      <a class="nav__link" href="/grinder/">Grinders</a>
       <a class="nav__link" href="/about/">About</a>
     </nav>
   </div>
 </header>
 
 <style>
-  .site-header {
-    position: sticky; top: 0; z-index: 100;
-    background: #fff; border-bottom: 1px solid var(--color-line);
-    box-shadow: 0 1px 0 rgba(17, 24, 39, 0.02);
-  }
+  .site-header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid var(--color-line); }
   .site-header__inner {
+    position: relative;
     max-width: var(--container); margin: 0 auto; padding: 0.65rem 1.25rem;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   }
@@ -58,36 +85,83 @@ const { brands, guides } = nav as { brands: { name: string; route: string }[]; g
   .brand__mark { font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; color: var(--color-brand); }
   .brand__mark span { color: var(--color-accent); }
 
-  .nav { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+  .nav-toggle { display: none; flex-direction: column; gap: 4px; background: none; border: 0; padding: 0.5rem; cursor: pointer; }
+  .nav-toggle span { width: 22px; height: 2px; background: var(--color-text); border-radius: 2px; }
+
+  .nav { display: flex; align-items: center; gap: 0.25rem; }
   .nav__link, .nav__item > summary {
     display: inline-flex; align-items: center; gap: 0.3rem;
     padding: 0.5rem 0.75rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem;
-    color: var(--color-text); text-decoration: none; cursor: pointer; list-style: none;
+    color: var(--color-text); text-decoration: none; cursor: pointer; list-style: none; white-space: nowrap;
   }
   .nav__item > summary::-webkit-details-marker { display: none; }
   .nav__item > summary::after { content: '▾'; font-size: 0.7rem; color: var(--color-muted); }
-  .nav__link:hover, .nav__item > summary:hover { background: var(--color-soft); }
+  .nav__link:hover, .nav__item > summary:hover, .nav__item[open] > summary { background: var(--color-soft); }
 
+  /* small dropdowns anchor to their item */
   .nav__item { position: relative; }
   .nav__panel {
-    position: absolute; top: calc(100% + 6px); left: 0;
+    position: absolute; top: calc(100% + 4px); left: 0; z-index: 200;
     background: #fff; border: 1px solid var(--color-line); border-radius: 12px;
-    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12); padding: 1rem 1.25rem; min-width: 230px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.14); padding: 0.75rem; min-width: 240px;
   }
-  .nav__panel--mega { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem 2rem; width: max(520px, 40vw); }
-  .nav__heading { margin: 0 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-muted); }
   .nav__panel ul { list-style: none; margin: 0; padding: 0; }
-  .nav__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.1rem 1.25rem; }
-  .nav__panel li { margin: 0; }
-  .nav__panel a { display: block; padding: 0.35rem 0; color: var(--color-text); text-decoration: none; font-size: 0.93rem; }
-  .nav__panel a:hover { color: var(--color-brand); }
+  .nav__panel li a { display: block; padding: 0.4rem 0.6rem; border-radius: 8px; color: var(--color-text); text-decoration: none; font-size: 0.92rem; }
+  .nav__panel li a:hover { background: var(--color-soft); color: var(--color-brand); }
 
-  @media (max-width: 820px) {
-    .site-header__inner { flex-wrap: wrap; }
-    .nav { width: 100%; flex-direction: column; align-items: stretch; gap: 0; }
+  /* full-width mega panel anchors to the header container */
+  .nav__item--mega { position: static; }
+  .nav__panel--mega {
+    left: 1.25rem; right: 1.25rem; min-width: 0; padding: 1.1rem 1.25rem 1.25rem;
+    max-height: 74vh; overflow: auto;
+  }
+  .mega__top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding-bottom: 0.85rem; margin-bottom: 0.85rem; border-bottom: 1px solid var(--color-line); }
+  .mega__all { font-weight: 700; color: var(--color-brand); text-decoration: none; }
+  .mega__guides { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .mega__guides a {
+    font-size: 0.82rem; padding: 0.25rem 0.65rem; border-radius: 999px; text-decoration: none;
+    background: var(--color-soft); color: var(--color-text);
+  }
+  .mega__guides a:hover { background: #ece7e1; }
+  .mega__brands { column-width: 185px; column-gap: 1.75rem; }
+  .cat-brand { break-inside: avoid; margin-bottom: 1.1rem; }
+  .cat-brand__name { display: block; font-weight: 700; font-size: 0.9rem; color: var(--color-text); margin-bottom: 0.25rem; text-decoration: none; }
+  a.cat-brand__name:hover { color: var(--color-brand); text-decoration: underline; }
+  .cat-brand ul { list-style: none; margin: 0; padding: 0; }
+  .cat-brand li a { display: block; padding: 0.12rem 0; color: var(--color-muted); text-decoration: none; font-size: 0.86rem; line-height: 1.5; }
+  .cat-brand li a:hover { color: var(--color-brand); }
+
+  @media (max-width: 860px) {
+    .nav-toggle { display: flex; }
+    .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: #fff; border-bottom: 1px solid var(--color-line); box-shadow: 0 20px 40px rgba(15,23,42,0.12); padding: 0.5rem; max-height: 80vh; overflow: auto; }
+    .nav.nav--open { display: flex; }
     .nav__item, .nav__link { width: 100%; }
-    .nav__panel { position: static; box-shadow: none; border: none; padding: 0.25rem 0 0.75rem 1rem; min-width: 0; width: auto; }
-    .nav__panel--mega { grid-template-columns: 1fr; width: auto; }
-    .nav__grid { grid-template-columns: 1fr 1fr; }
+    .nav__item > summary { justify-content: space-between; }
+    .nav__panel, .nav__panel--mega { position: static; box-shadow: none; border: none; padding: 0.25rem 0 0.5rem 0.75rem; max-height: 50vh; left: auto; right: auto; }
+    .mega__brands { column-width: auto; columns: 2; }
   }
 </style>
+
+<script>
+  // Progressive enhancement: one dropdown open at a time, close on outside
+  // click or Escape, plus the mobile menu toggle.
+  const items = Array.from(document.querySelectorAll<HTMLDetailsElement>('.nav__item'));
+  items.forEach((d) =>
+    d.addEventListener('toggle', () => {
+      if (d.open) items.forEach((o) => { if (o !== d) o.open = false; });
+    })
+  );
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (!t.closest('.nav')) items.forEach((d) => (d.open = false));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') items.forEach((d) => (d.open = false));
+  });
+  const toggle = document.querySelector('.nav-toggle');
+  const navEl = document.querySelector('.nav');
+  toggle?.addEventListener('click', () => {
+    const open = navEl?.classList.toggle('nav--open');
+    toggle.setAttribute('aria-expanded', String(Boolean(open)));
+  });
+</script>

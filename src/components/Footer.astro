@@ -1,6 +1,10 @@
 ---
 import nav from '../data/nav.json';
-const { brands, guides } = nav as { brands: { name: string; route: string }[]; guides: { name: string; route: string }[] };
+const { catalog, guides } = nav as {
+  catalog: { brand: string; route: string | null }[];
+  guides: { name: string; route: string }[];
+};
+const brandHubs = catalog.filter((b) => b.route).map((b) => ({ name: b.brand, route: b.route as string }));
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -18,7 +22,7 @@ const year = new Date().getFullYear();
 
     <div class="site-footer__col">
       <p class="site-footer__heading">Brands</p>
-      <ul>{brands.slice(0, 8).map((b) => (<li><a href={b.route}>{b.name}</a></li>))}</ul>
+      <ul>{brandHubs.slice(0, 8).map((b) => (<li><a href={b.route}>{b.name}</a></li>))}</ul>
     </div>
 
     <div class="site-footer__col">

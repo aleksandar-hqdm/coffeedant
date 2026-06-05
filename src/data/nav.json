@@ -1,44 +1,778 @@
 {
-  "brands": [
+  "catalog": [
     {
-      "name": "Bosch Espresso Machines: A Practical Brand Built on Automation and Everyday Coffee",
-      "slug": "bosch",
-      "route": "/bosch/"
+      "brand": "9Barista",
+      "route": null,
+      "models": [
+        {
+          "label": "MK 2",
+          "route": "/espresso-machine/9barista-mk2/"
+        }
+      ]
     },
     {
-      "name": "Breville: From Australian innovation to global kitchen excellence",
-      "slug": "breville",
-      "route": "/breville/"
+      "brand": "Ascaso",
+      "route": null,
+      "models": [
+        {
+          "label": "Steel Duo PID",
+          "route": "/espresso-machine/ascaso-steel-duo-pid/"
+        },
+        {
+          "label": "Steel Uno PID",
+          "route": "/espresso-machine/ascaso-steel-uno/"
+        }
+      ]
     },
     {
-      "name": "De’Longhi Brand Overview: The Italian Appliance Giant That Brought Café Logic to the Home—and Pulled the Café Closer to Home",
-      "slug": "de-longhi",
-      "route": "/de-longhi/"
+      "brand": "Bezzera",
+      "route": null,
+      "models": [
+        {
+          "label": "BZ09",
+          "route": "/espresso-machine/bezzera-bz09/"
+        },
+        {
+          "label": "BZ10",
+          "route": "/espresso-machine/bezzera-bz10/"
+        },
+        {
+          "label": "BZ13 PID",
+          "route": "/espresso-machine/bezzera-bz13-pid/"
+        },
+        {
+          "label": "Duo MN",
+          "route": "/espresso-machine/bezzera-duo-mn/"
+        },
+        {
+          "label": "Hobby",
+          "route": "/espresso-machine/bezzera-hobby/"
+        },
+        {
+          "label": "Mitica Top PID",
+          "route": "/espresso-machine/bezzera-mitica-top-pid/"
+        },
+        {
+          "label": "Strega",
+          "route": "/espresso-machine/bezzera-strega/"
+        },
+        {
+          "label": "Unica PID (MN)",
+          "route": "/espresso-machine/bezzera-unica-pid/"
+        }
+      ]
     },
     {
-      "name": "Gaggia: From Crema’s Birthplace To Your Kitchen",
-      "slug": "gaggia",
-      "route": "/gaggia/"
+      "brand": "Bosch",
+      "route": "/bosch/",
+      "models": [
+        {
+          "label": "300 Series VeroCafe (TIU20307)",
+          "route": "/espresso-machine/bosch-300-series-verocafe-tiu20307/"
+        },
+        {
+          "label": "500 Series VeroCafe (TPU40109)",
+          "route": "/espresso-machine/bosch-500-series-verocafe-tpu40109/"
+        },
+        {
+          "label": "800 Series Espresso Machine",
+          "route": "/espresso-machine/bosch-800-series/"
+        }
+      ]
     },
     {
-      "name": "Keurig",
-      "slug": "keurig",
-      "route": "/keurig/"
+      "brand": "Breville",
+      "route": "/breville/",
+      "models": [
+        {
+          "label": "Bambino Plus",
+          "route": "/espresso-machine/breville-bambino/"
+        },
+        {
+          "label": "Barista Express",
+          "route": "/espresso-machine/breville-barista-express-bes870xl/"
+        },
+        {
+          "label": "Barista Express Impress",
+          "route": "/espresso-machine/breville-barista-express-impress-bes876/"
+        },
+        {
+          "label": "Barista Pro",
+          "route": "/espresso-machine/breville-barista-pro-bes878/"
+        },
+        {
+          "label": "Barista Touch BES880BSS 2025",
+          "route": "/espresso-machine/breville-barista-touch-bes880bss/"
+        },
+        {
+          "label": "Barista Touch Impress",
+          "route": "/espresso-machine/breville-barista-touch-impress-bes881/"
+        },
+        {
+          "label": "Dual Boiler (BES920XL)",
+          "route": "/espresso-machine/breville-dual-boiler-bes920xl/"
+        },
+        {
+          "label": "Dynamic Duo (BEP920)",
+          "route": "/espresso-machine/breville-dynamic-duo-bep920/"
+        },
+        {
+          "label": "Oracle",
+          "route": "/espresso-machine/breville-oracle-bes980x/"
+        },
+        {
+          "label": "Oracle Jet",
+          "route": "/espresso-machine/breville-oracle-jet-bes985/"
+        },
+        {
+          "label": "Oracle Touch",
+          "route": "/espresso-machine/breville-oracle-touch-bes990/"
+        }
+      ]
     },
     {
-      "name": "Krups Espresso Machines: German Engineering for Your Morning Ritual",
-      "slug": "krups",
-      "route": "/krups/"
+      "brand": "Cafelat",
+      "route": null,
+      "models": [
+        {
+          "label": "Robot Barista",
+          "route": "/espresso-machine/cafelat-robot-barista/"
+        }
+      ]
     },
     {
-      "name": "Nespresso: The engineering of premium coffee culture",
-      "slug": "nespresso",
-      "route": "/nespresso/"
+      "brand": "Crem",
+      "route": null,
+      "models": [
+        {
+          "label": "ONE HX PID WT/WC",
+          "route": "/espresso-machine/crem-one-hx-pid-wt-wc/"
+        }
+      ]
     },
     {
-      "name": "Rocket Espresso",
-      "slug": "rocket-espresso",
-      "route": "/rocket-espresso/"
+      "brand": "Dalla Corte",
+      "route": null,
+      "models": [
+        {
+          "label": "Mina",
+          "route": "/espresso-machine/dalla-corte-mina/"
+        }
+      ]
+    },
+    {
+      "brand": "De'Longhi",
+      "route": "/de-longhi/",
+      "models": [
+        {
+          "label": "De’Longhi Dedica EC685",
+          "route": "/espresso-machine/delonghi-dedica/"
+        },
+        {
+          "label": "De’Longhi Dinamica Plus",
+          "route": "/espresso-machine/delonghi-dinamica-plus-ecam370/"
+        },
+        {
+          "label": "De’Longhi ECP3420",
+          "route": "/espresso-machine/delonghi-ecp3420/"
+        },
+        {
+          "label": "De’Longhi Eletta Explore (ECAM450.xx)",
+          "route": "/espresso-machine/delonghi-eletta-explore-ecam450/"
+        },
+        {
+          "label": "De’Longhi La Specialista Arte",
+          "route": "/espresso-machine/delonghi-la-specialista-arte/"
+        },
+        {
+          "label": "De’Longhi La Specialista Prestigio",
+          "route": "/espresso-machine/delonghi-la-specialista-prestigio/"
+        },
+        {
+          "label": "De’Longhi PrimaDonna Soul (ECAM610.xx)",
+          "route": "/espresso-machine/delonghi-primadonna-soul-ecam610/"
+        },
+        {
+          "label": "Dinamica Aroma Bar ECAM359.37.TB",
+          "route": "/espresso-machine/delonghi-dinamica-aroma-bar-ecam359-37-tb/"
+        },
+        {
+          "label": "Dinamica Plus ECAM38085SB",
+          "route": "/espresso-machine/delonghi-dinamica-plus-ecam38085sb/"
+        },
+        {
+          "label": "Magnifica ESAM3000",
+          "route": "/espresso-machine/delonghi-magnifica-esam3000/"
+        },
+        {
+          "label": "Magnifica Evo",
+          "route": "/espresso-machine/delonghi-magnifica-evo/"
+        },
+        {
+          "label": "Magnifica Evo Next",
+          "route": "/espresso-machine/delonghi-magnifica-evo-next/"
+        },
+        {
+          "label": "Magnifica Plus",
+          "route": "/espresso-machine/delonghi-magnifica-plus/"
+        },
+        {
+          "label": "Magnifica Start",
+          "route": "/espresso-machine/delonghi-magnifica-start/"
+        }
+      ]
+    },
+    {
+      "brand": "ECM",
+      "route": null,
+      "models": [
+        {
+          "label": "Casa V",
+          "route": "/espresso-machine/ecm-casa-v/"
+        },
+        {
+          "label": "Classika PID + Flow Control",
+          "route": "/espresso-machine/ecm-classika-pid-flow-control/"
+        },
+        {
+          "label": "Mechanika Slim PID",
+          "route": "/espresso-machine/ecm-mechanika-slim-pid/"
+        },
+        {
+          "label": "Mechanika V Slim",
+          "route": "/espresso-machine/ecm-mechanika-v-slim/"
+        },
+        {
+          "label": "Puristika",
+          "route": "/espresso-machine/ecm-puristika/"
+        },
+        {
+          "label": "Synchronika",
+          "route": "/espresso-machine/ecm-synchronika/"
+        },
+        {
+          "label": "Technika V Profi PID",
+          "route": "/espresso-machine/ecm-technika-v-profi-pid/"
+        }
+      ]
+    },
+    {
+      "brand": "Flair",
+      "route": null,
+      "models": [
+        {
+          "label": "58",
+          "route": "/espresso-machine/flair-58/"
+        },
+        {
+          "label": "Classic",
+          "route": "/espresso-machine/flair-classic/"
+        },
+        {
+          "label": "NEO Flex",
+          "route": "/espresso-machine/flair-neo-flex/"
+        },
+        {
+          "label": "PRO 2",
+          "route": "/espresso-machine/flair-pro-2/"
+        }
+      ]
+    },
+    {
+      "brand": "Gaggia",
+      "route": "/gaggia/",
+      "models": [
+        {
+          "label": "Accademia",
+          "route": "/espresso-machine/gaggia-accademia-ri9781-01/"
+        },
+        {
+          "label": "Anima",
+          "route": "/espresso-machine/gaggia-anima/"
+        },
+        {
+          "label": "Anima Deluxe",
+          "route": "/espresso-machine/gaggia-anima-deluxe/"
+        },
+        {
+          "label": "Anima Prestige",
+          "route": "/espresso-machine/gaggia-anima-prestige/"
+        },
+        {
+          "label": "Babila (RI9700/64)",
+          "route": "/espresso-machine/gaggia-babila-ri9700/"
+        },
+        {
+          "label": "Brera (RI9305/11)",
+          "route": "/espresso-machine/gaggia-brera-ri9305/"
+        },
+        {
+          "label": "Cadorna Barista Plus (RI9603/47)",
+          "route": "/espresso-machine/gaggia-cadorna-barista-plus-ri9603-47/"
+        },
+        {
+          "label": "Cadorna Milk",
+          "route": "/espresso-machine/gaggia-cadorna-milk/"
+        },
+        {
+          "label": "Cadorna Prestige",
+          "route": "/espresso-machine/gaggia-cadorna-prestige/"
+        },
+        {
+          "label": "Classic Evo",
+          "route": "/espresso-machine/gaggia-classic-evo/"
+        },
+        {
+          "label": "Classic Evo Pro",
+          "route": "/espresso-machine/gaggia-classic-evo-pro/"
+        },
+        {
+          "label": "Classic GT",
+          "route": "/espresso-machine/gaggia-classic-gt/"
+        },
+        {
+          "label": "Espresso Evolution (EG2115)",
+          "route": "/espresso-machine/gaggia-espresso-evolution-eg2115/"
+        },
+        {
+          "label": "Magenta Prestige (RI8702)",
+          "route": "/espresso-machine/gaggia-magenta-prestige-ri8702/"
+        },
+        {
+          "label": "Naviglio Deluxe (HD8749)",
+          "route": "/espresso-machine/gaggia-naviglio-deluxe-hd8749/"
+        },
+        {
+          "label": "Naviglio Milk (HD8749/01)",
+          "route": "/espresso-machine/gaggia-naviglio-milk-hd8749-01/"
+        },
+        {
+          "label": "Velasca (RI8260/RI8263)",
+          "route": "/espresso-machine/gaggia-velasca-ri8260-3/"
+        },
+        {
+          "label": "Velasca Prestige (RI8263/SUP047RG)",
+          "route": "/espresso-machine/gaggia-velasca-prestige-ri8263/"
+        }
+      ]
+    },
+    {
+      "brand": "Jura",
+      "route": null,
+      "models": [
+        {
+          "label": "E6",
+          "route": "/espresso-machine/jura-e6/"
+        },
+        {
+          "label": "E8",
+          "route": "/espresso-machine/jura-e8/"
+        },
+        {
+          "label": "GIGA 6",
+          "route": "/espresso-machine/jura-giga-6/"
+        },
+        {
+          "label": "Z10",
+          "route": "/espresso-machine/jura-z10/"
+        }
+      ]
+    },
+    {
+      "brand": "Krups",
+      "route": "/krups/",
+      "models": [
+        {
+          "label": "Arabica Digital EA817040",
+          "route": "/espresso-machine/krups-arabica-digital-ea817040/"
+        },
+        {
+          "label": "Arabica Manual (EA811040/EA811840)",
+          "route": "/espresso-machine/krups-arabica-manual-ea811040-ea811840/"
+        },
+        {
+          "label": "Evidence Eco Design EA897B40",
+          "route": "/espresso-machine/krups-evidence-eco-design-ea897b40/"
+        },
+        {
+          "label": "Evidence Milk EA891D27",
+          "route": "/espresso-machine/krups-evidence-milk-ea891d27/"
+        },
+        {
+          "label": "Evidence One EA895N40",
+          "route": "/espresso-machine/krups-evidence-one-ea895n40/"
+        },
+        {
+          "label": "INTUITION ESSENTIAL (EA870840)",
+          "route": "/espresso-machine/krups-intuition-essential-ea870840/"
+        },
+        {
+          "label": "INTUITION EXPERIENCE+",
+          "route": "/espresso-machine/krups-intuition-experience-ea877d40/"
+        },
+        {
+          "label": "INTUITION PREFERENCE+ EA875U40",
+          "route": "/espresso-machine/krups-intuition-preference-ea875u40/"
+        },
+        {
+          "label": "OPIO XP320840",
+          "route": "/espresso-machine/krups-opio-xp320840/"
+        },
+        {
+          "label": "SENSATION EA910E40",
+          "route": "/espresso-machine/krups-sensation-ea910e40/"
+        },
+        {
+          "label": "Virtuoso XP442C40",
+          "route": "/espresso-machine/krups-virtuoso-xp442c40/"
+        }
+      ]
+    },
+    {
+      "brand": "La Marzocco",
+      "route": null,
+      "models": [
+        {
+          "label": "Linea Micra",
+          "route": "/espresso-machine/la-marzocco-linea-micra/"
+        },
+        {
+          "label": "Linea Mini",
+          "route": "/espresso-machine/la-marzocco-linea-mini/"
+        }
+      ]
+    },
+    {
+      "brand": "La Pavoni",
+      "route": null,
+      "models": [
+        {
+          "label": "Cellini Classic",
+          "route": "/espresso-machine/la-pavoni-cellini-classic/"
+        },
+        {
+          "label": "Europiccola",
+          "route": "/espresso-machine/la-pavoni-europiccola/"
+        },
+        {
+          "label": "Mini Cellini",
+          "route": "/espresso-machine/la-pavoni-mini-cellini/"
+        },
+        {
+          "label": "New Domus Bar",
+          "route": "/espresso-machine/la-pavoni-new-domus-bar/"
+        }
+      ]
+    },
+    {
+      "brand": "Lelit",
+      "route": null,
+      "models": [
+        {
+          "label": "Anna PL41TEM",
+          "route": "/espresso-machine/lelit-anna/"
+        },
+        {
+          "label": "Bianca PL162T",
+          "route": "/espresso-machine/lelit-bianca-pl162t/"
+        },
+        {
+          "label": "Elizabeth PL92T",
+          "route": "/espresso-machine/lelit-elizabeth/"
+        },
+        {
+          "label": "Glenda PL41PlusT",
+          "route": "/espresso-machine/lelit-glenda-pl41plust/"
+        },
+        {
+          "label": "Grace PL81T",
+          "route": "/espresso-machine/lelit-grace-pl81t/"
+        },
+        {
+          "label": "Mara X (PL62X)",
+          "route": "/espresso-machine/lelit-mara-x/"
+        },
+        {
+          "label": "Victoria PL91T",
+          "route": "/espresso-machine/lelit-victoria-pl91t/"
+        }
+      ]
+    },
+    {
+      "brand": "Londinium",
+      "route": null,
+      "models": [
+        {
+          "label": "R24",
+          "route": "/espresso-machine/londinium-r24/"
+        }
+      ]
+    },
+    {
+      "brand": "Melitta",
+      "route": null,
+      "models": [
+        {
+          "label": "Barista TS Smart",
+          "route": "/espresso-machine/melitta-barista-ts-smart/"
+        },
+        {
+          "label": "Cafina CT8",
+          "route": "/espresso-machine/melitta-cafina-ct8/"
+        },
+        {
+          "label": "Cafina XT6 (BES870)",
+          "route": "/espresso-machine/melitta-cafina-xt6-bes870/"
+        },
+        {
+          "label": "Cafina XT7",
+          "route": "/espresso-machine/melitta-cafina-xt7/"
+        },
+        {
+          "label": "Passione OT",
+          "route": "/espresso-machine/melitta-passione/"
+        }
+      ]
+    },
+    {
+      "brand": "Miele",
+      "route": null,
+      "models": [
+        {
+          "label": "CM6360 MilkPerfection",
+          "route": "/espresso-machine/miele-cm6360-milkperfection/"
+        },
+        {
+          "label": "CM7750 CoffeeSelect",
+          "route": "/espresso-machine/miele-cm7750-coffeeselect/"
+        }
+      ]
+    },
+    {
+      "brand": "Nespresso",
+      "route": "/nespresso/",
+      "models": [
+        {
+          "label": "Vertuo Plus",
+          "route": "/espresso-machine/nespresso-vertuo-plus/"
+        }
+      ]
+    },
+    {
+      "brand": "Nivona",
+      "route": null,
+      "models": [
+        {
+          "label": "CafeRomatica 6-Series",
+          "route": "/espresso-machine/nivona-caferomatica-6xx/"
+        },
+        {
+          "label": "CafeRomatica 8xx",
+          "route": "/espresso-machine/nivona-caferomatica-8xx/"
+        }
+      ]
+    },
+    {
+      "brand": "Nuova Simonelli",
+      "route": null,
+      "models": [
+        {
+          "label": "Musica",
+          "route": "/espresso-machine/nuova-simonelli-musica/"
+        },
+        {
+          "label": "Oscar II",
+          "route": "/espresso-machine/nuova-simonelli-oscar-ii/"
+        }
+      ]
+    },
+    {
+      "brand": "Philips",
+      "route": null,
+      "models": [
+        {
+          "label": "2200 LatteGo",
+          "route": "/espresso-machine/philips-2200-lattego/"
+        },
+        {
+          "label": "3200 LatteGo",
+          "route": "/espresso-machine/philips-3200-lattego/"
+        },
+        {
+          "label": "4300 LatteGo",
+          "route": "/espresso-machine/philips-4300-lattego/"
+        },
+        {
+          "label": "5400 LatteGo (EP54xx)",
+          "route": "/espresso-machine/philips-5400-lattego/"
+        }
+      ]
+    },
+    {
+      "brand": "Profitec",
+      "route": null,
+      "models": [
+        {
+          "label": "GO",
+          "route": "/espresso-machine/profitec-go/"
+        },
+        {
+          "label": "Pro 400",
+          "route": "/espresso-machine/profitec-pro-400/"
+        },
+        {
+          "label": "Pro 500 PID",
+          "route": "/espresso-machine/profitec-pro-500-pid/"
+        },
+        {
+          "label": "Pro 600",
+          "route": "/espresso-machine/profitec-pro-600/"
+        },
+        {
+          "label": "Pro 700",
+          "route": "/espresso-machine/profitec-pro-700/"
+        },
+        {
+          "label": "Pro 800",
+          "route": "/espresso-machine/profitec-pro-800/"
+        }
+      ]
+    },
+    {
+      "brand": "Quick Mill",
+      "route": null,
+      "models": [
+        {
+          "label": "Alexia EVO + Flow Control",
+          "route": "/espresso-machine/quick-mill-alexia-evo-flow/"
+        },
+        {
+          "label": "Andreja Premium Evo",
+          "route": "/espresso-machine/quick-mill-andreja-premium-evo/"
+        },
+        {
+          "label": "Carola EVO",
+          "route": "/espresso-machine/quick-mill-carola-evo/"
+        },
+        {
+          "label": "Orione 3000",
+          "route": "/espresso-machine/quick-mill-orione-3000/"
+        },
+        {
+          "label": "Pippa 4100",
+          "route": "/espresso-machine/quick-mill-pippa-4100/"
+        },
+        {
+          "label": "QM67 Evo",
+          "route": "/espresso-machine/quick-mill-qm67-evo/"
+        },
+        {
+          "label": "Rubino",
+          "route": "/espresso-machine/quick-mill-rubino/"
+        },
+        {
+          "label": "Silvano Evo",
+          "route": "/espresso-machine/quick-mill-silvano-evo/"
+        },
+        {
+          "label": "Vetrano 2B Evo",
+          "route": "/espresso-machine/quick-mill-vetrano-2b-evo/"
+        }
+      ]
+    },
+    {
+      "brand": "Rancilio",
+      "route": null,
+      "models": [
+        {
+          "label": "Silvia",
+          "route": "/espresso-machine/rancilio-silvia/"
+        },
+        {
+          "label": "Silvia Pro X",
+          "route": "/espresso-machine/rancilio-silvia-pro-x/"
+        }
+      ]
+    },
+    {
+      "brand": "Rocket Espresso",
+      "route": "/rocket-espresso/",
+      "models": [
+        {
+          "label": "Appartamento",
+          "route": "/espresso-machine/rocket-appartamento-tca/"
+        },
+        {
+          "label": "Rocket Giotto Cronometro R",
+          "route": "/espresso-machine/rocket-giotto-cronometro-r/"
+        },
+        {
+          "label": "Rocket Mozzafiato Cronometro R",
+          "route": "/espresso-machine/rocket-mozzafiato-cronometro-r/"
+        },
+        {
+          "label": "Rocket R Nine One",
+          "route": "/espresso-machine/rocket-r-nine-one/"
+        }
+      ]
+    },
+    {
+      "brand": "ROK",
+      "route": null,
+      "models": [
+        {
+          "label": "EspressoGC",
+          "route": "/espresso-machine/rok-espresso-gc/"
+        }
+      ]
+    },
+    {
+      "brand": "Saeco",
+      "route": null,
+      "models": [
+        {
+          "label": "Xelsis",
+          "route": "/espresso-machine/saeco-xelsis/"
+        }
+      ]
+    },
+    {
+      "brand": "Siemens",
+      "route": null,
+      "models": [
+        {
+          "label": "EQ.700 Integral",
+          "route": "/espresso-machine/siemens-eq700-integral/"
+        },
+        {
+          "label": "EQ.9 Plus s700",
+          "route": "/espresso-machine/siemens-eq9-plus-s700/"
+        }
+      ]
+    },
+    {
+      "brand": "Slayer",
+      "route": null,
+      "models": [
+        {
+          "label": "Single Group",
+          "route": "/espresso-machine/slayer-single-group/"
+        }
+      ]
+    },
+    {
+      "brand": "VBM",
+      "route": null,
+      "models": [
+        {
+          "label": "Domobar Single Boiler Digital",
+          "route": "/espresso-machine/vbm-domobar-single-boiler-digital/"
+        },
+        {
+          "label": "Domobar Super HX",
+          "route": "/espresso-machine/vbm-domobar-super-hx/"
+        }
+      ]
     }
   ],
   "guides": [
@@ -71,18 +805,36 @@
       "route": "/espresso-machine/single-boiler/"
     }
   ],
-  "sections": [
+  "grinders": [
     {
-      "name": "Best Espresso Machines (2026): pick the machine that fits your routine",
-      "route": "/espresso-machine/"
+      "label": "1Zpresso K-Ultra",
+      "route": "/grinder/1zpresso-k-ultra/"
     },
     {
-      "name": "Coffee Machine",
-      "route": "/coffee-machine/"
+      "label": "Baratza Encore ESP",
+      "route": "/grinder/baratza-encore-esp/"
     },
     {
-      "name": "Grinders",
-      "route": "/grinder/"
+      "label": "Timemore Sculptor",
+      "route": "/grinder/timemore-sculptor/"
+    }
+  ],
+  "coffeeMachines": [
+    {
+      "label": "Breville Luxe Brewer Thermal BDC465",
+      "route": "/coffee-machine/breville-luxe-brewer-thermal-bdc465/"
+    },
+    {
+      "label": "Keurig",
+      "route": "/keurig/"
+    },
+    {
+      "label": "Keurig K-Duo & K-Duo Plus (2025)",
+      "route": "/coffee-machine/k-duo-plus/"
+    },
+    {
+      "label": "Nespresso",
+      "route": "/nespresso/"
     }
   ]
 }
