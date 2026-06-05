@@ -15,7 +15,7 @@ function walk(dir) {
       const html = fs.readFileSync(fp, 'utf8');
       for (const m of html.matchAll(URL_RE)) {
         total++;
-        if (!new RegExp(`[?&]tag=${TAG}(?:&|$)`).test(m[0])) {
+        if (!new RegExp(`[?&]tag=${TAG}(?:&|$)`).test(m[0].replace(/&amp;/g, '&'))) {
           untagged++;
           if (bad.size < 8) bad.add(m[0]);
         }

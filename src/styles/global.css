@@ -89,4 +89,7 @@ img { max-width: 100%; height: auto; }
 .breadcrumbs a { color: var(--color-muted); text-decoration: none; }
 .breadcrumbs a:hover { text-decoration: underline; }
 
+/* "Last updated" stamp on injected live prices */
+.cd-asof { font-size: 0.85em; color: var(--color-muted); font-weight: 400; }
+
 :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }

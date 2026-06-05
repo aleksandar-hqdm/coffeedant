@@ -3,7 +3,7 @@ import nav from '../../data/nav.json';
 import amazon from '../../data/amazon.json';
 import asinMap from '../../data/asins.json';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { liveProduct } from '../../lib/product';
+import { liveProduct, formatUpdated } from '../../lib/product';
 
 type Model = { label: string; route: string; slug: string; image: string | null; rating: number | null; price: string | null; asin: string | null; amazonUrl: string | null };
 type Brand = { brand: string; slug: string; route: string; hubRoute: string | null; count: number; avgRating: number | null; models: Model[] };
@@ -26,6 +26,7 @@ const models = brand.models.map((m) => {
     ...m,
     image: live?.image || m.image,
     livePrice: live?.displayPrice || (live?.price ? `$${live.price}` : null),
+    lastUpdated: live?.displayPrice || live?.price ? formatUpdated(live?.updated) : null,
   };
 });
 const crumbs = [
@@ -60,6 +61,7 @@ const desc = `Every ${brand.brand} espresso machine we have reviewed${brand.avgR
                 : <span class="machine-card__rating machine-card__rating--none">Reviewed</span>}
               {m.livePrice && <span class="machine-card__price">{m.livePrice}</span>}
             </div>
+            {m.lastUpdated && <span class="machine-card__updated">Last updated: {m.lastUpdated}</span>}
             <span class="machine-card__cta">Read review &rarr;</span>
           </div>
         </a>
@@ -93,5 +95,6 @@ const desc = `Every ${brand.brand} espresso machine we have reviewed${brand.avgR
   .machine-card__rating { font-size: 0.85rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 0.1rem 0.5rem; border-radius: 999px; }
   .machine-card__rating--none { color: var(--color-muted); background: var(--color-soft); font-weight: 600; }
   .machine-card__price { font-size: 0.9rem; font-weight: 700; color: var(--color-text); }
+  .machine-card__updated { font-size: 0.72rem; color: var(--color-muted); }
   .machine-card__cta { margin-top: 0.15rem; font-size: 0.85rem; font-weight: 600; color: var(--color-brand); }
 </style>

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import amazon from '../data/amazon.json';
 import asinMap from '../data/asins.json';
+import nav from '../data/nav.json';
 import { liveProduct } from '../lib/product';
 
 export async function getStaticPaths() {
@@ -44,8 +45,14 @@ const isArticle = data.type === 'review' || data.type === 'blog';
 // the refresh date. Buy links in the body are already affiliate links.
 const amz = amazon as Record<string, { title?: string | null; displayPrice?: string; price?: string; updated?: string }>;
 const asins = asinMap as Record<string, string>;
+// Map each review route to its brand so the liveProduct title-guard can match on
+// the brand name (it requires the brand or a digit model code, not plain words).
+const routeToBrand: Record<string, string> = {};
+for (const b of (nav as { catalog: { brand: string; models: { route: string }[] }[] }).catalog) {
+  for (const mdl of b.models) routeToBrand[mdl.route] = b.brand;
+}
 const live = liveProduct(
-  { slug: data.slug, brand: '', label: data.breadcrumb || data.title, asin: data.asin },
+  { slug: data.slug, brand: routeToBrand[data.route] || '', label: data.breadcrumb || data.title, asin: data.asin },
   amz,
   asins,
 ) as { displayPrice?: string; price?: string; updated?: string } | null;
@@ -55,7 +62,7 @@ if (livePrice) {
   const asOf = live?.updated
     ? new Date(live.updated + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     : null;
-  const note = `<strong>${livePrice}</strong> at Amazon${asOf ? ` <span class="cd-asof">(as of ${asOf})</span>` : ''}`;
+  const note = `<strong>${livePrice}</strong> at Amazon${asOf ? `<br><span class="cd-asof">Last updated: ${asOf}</span>` : ''}`;
   if (/class=["'][^"']*\bprice-note\b[^"']*["']/i.test(bodyHtml)) {
     // boxes that already have a price note: swap its content for the live price
     bodyHtml = bodyHtml.replace(/(<p\b[^>]*\bprice-note\b[^>]*>)[\s\S]*?(<\/p>)/gi, `$1${note}$2`);
