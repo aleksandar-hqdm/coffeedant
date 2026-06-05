@@ -1,7 +1,7 @@
 ---
 import nav from '../data/nav.json';
 const { catalog, guides, grinders, coffeeMachines } = nav as {
-  catalog: { brand: string; slug: string; route: string; count: number; avgRating: number | null }[];
+  catalog: { brand: string; slug: string; route: string; count: number; avgRating: number | null; models: { label: string; route: string }[] }[];
   guides: { name: string; route: string }[];
   grinders: { label: string; route: string }[];
   coffeeMachines: { label: string; route: string }[];
@@ -27,14 +27,29 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
               {guides.map((g) => (<a href={g.route}>{g.name}</a>))}
             </div>
           </div>
+
+          <p class="mega__hint" data-hint>Pick a brand to see its machines, or open its full brand page.</p>
+
           <div class="mega__brands">
             {catalog.map((b) => (
-              <a class="brand-pill" href={b.route}>
+              <a class="brand-pill" href={b.route} data-brand={b.slug} aria-expanded="false">
                 <span class="brand-pill__name">{b.brand}</span>
-                <span class="brand-pill__meta">
-                  {b.count} {b.count === 1 ? 'review' : 'reviews'}{b.avgRating ? ` · ★ ${b.avgRating}` : ''}
-                </span>
+                <span class="brand-pill__meta">{b.count} {b.count === 1 ? 'review' : 'reviews'}{b.avgRating ? ` · ★ ${b.avgRating}` : ''}</span>
               </a>
+            ))}
+          </div>
+
+          <div class="mega__models">
+            {catalog.map((b) => (
+              <div class="brand-models" data-brand-panel={b.slug} hidden>
+                <div class="brand-models__head">
+                  <span class="brand-models__title">{b.brand} · {b.count} {b.count === 1 ? 'review' : 'reviews'}{b.avgRating ? ` · ★ ${b.avgRating} / 5` : ''}</span>
+                  <a class="brand-models__page" href={b.route}>View the {b.brand} brand page &rarr;</a>
+                </div>
+                <ul class="brand-models__list">
+                  {b.models.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
+                </ul>
+              </div>
             ))}
           </div>
         </div>
@@ -96,7 +111,6 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
   .nav__item > summary::after { content: '▾'; font-size: 0.7rem; color: var(--color-muted); }
   .nav__link:hover, .nav__item > summary:hover, .nav__item[open] > summary { background: var(--color-soft); }
 
-  /* small dropdowns anchor to their item */
   .nav__item { position: relative; }
   .nav__panel {
     position: absolute; top: calc(100% + 4px); left: 0; z-index: 200;
@@ -107,29 +121,36 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
   .nav__panel li a { display: block; padding: 0.4rem 0.6rem; border-radius: 8px; color: var(--color-text); text-decoration: none; font-size: 0.92rem; }
   .nav__panel li a:hover { background: var(--color-soft); color: var(--color-brand); }
 
-  /* full-width mega panel anchors to the header container */
   .nav__item--mega { position: static; }
-  .nav__panel--mega {
-    left: 1.25rem; right: 1.25rem; min-width: 0; padding: 1.1rem 1.25rem 1.25rem;
-    max-height: 74vh; overflow: auto;
-  }
+  .nav__panel--mega { left: 1.25rem; right: 1.25rem; min-width: 0; padding: 1.1rem 1.25rem 1.25rem; max-height: 78vh; overflow: auto; }
   .mega__top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; padding-bottom: 0.85rem; margin-bottom: 0.85rem; border-bottom: 1px solid var(--color-line); }
   .mega__all { font-weight: 700; color: var(--color-brand); text-decoration: none; }
   .mega__guides { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .mega__guides a {
-    font-size: 0.82rem; padding: 0.25rem 0.65rem; border-radius: 999px; text-decoration: none;
-    background: var(--color-soft); color: var(--color-text);
-  }
+  .mega__guides a { font-size: 0.82rem; padding: 0.25rem 0.65rem; border-radius: 999px; text-decoration: none; background: var(--color-soft); color: var(--color-text); }
   .mega__guides a:hover { background: #ece7e1; }
+  .mega__hint { margin: 0 0 0.75rem; font-size: 0.82rem; color: var(--color-muted); }
+
   .mega__brands { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 0.6rem; }
   .brand-pill {
     display: flex; flex-direction: column; gap: 2px; padding: 0.55rem 0.75rem;
-    border: 1px solid var(--color-line); border-radius: 10px; background: #fff; text-decoration: none;
+    border: 1px solid var(--color-line); border-radius: 10px; background: #fff; text-decoration: none; cursor: pointer;
     transition: border-color 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
   }
-  .brand-pill:hover { border-color: rgba(111, 78, 55, 0.45); background: var(--color-soft); box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06); }
+  .brand-pill:hover { border-color: rgba(111, 78, 55, 0.45); background: var(--color-soft); }
+  .brand-pill.is-active { border-color: var(--color-brand); background: var(--color-soft); box-shadow: inset 0 0 0 1px var(--color-brand); }
   .brand-pill__name { font-weight: 700; font-size: 0.92rem; color: var(--color-text); }
   .brand-pill__meta { font-size: 0.76rem; color: var(--color-muted); }
+
+  .mega__models { margin-top: 1rem; }
+  .brand-models { border-top: 1px solid var(--color-line); padding-top: 1rem; }
+  .brand-models__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .brand-models__title { font-weight: 700; font-size: 0.95rem; }
+  .brand-models__page { font-size: 0.85rem; font-weight: 600; color: var(--color-brand); text-decoration: none; white-space: nowrap; }
+  .brand-models__page:hover { text-decoration: underline; }
+  .brand-models__list { list-style: none; margin: 0; padding: 0; column-width: 200px; column-gap: 1.5rem; }
+  .brand-models__list li { break-inside: avoid; }
+  .brand-models__list li a { display: block; padding: 0.2rem 0; color: var(--color-muted); text-decoration: none; font-size: 0.88rem; }
+  .brand-models__list li a:hover { color: var(--color-brand); }
 
   @media (max-width: 860px) {
     .nav-toggle { display: flex; }
@@ -137,14 +158,14 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
     .nav.nav--open { display: flex; }
     .nav__item, .nav__link { width: 100%; }
     .nav__item > summary { justify-content: space-between; }
-    .nav__panel, .nav__panel--mega { position: static; box-shadow: none; border: none; padding: 0.25rem 0 0.5rem 0.75rem; max-height: 50vh; left: auto; right: auto; }
+    .nav__panel, .nav__panel--mega { position: static; box-shadow: none; border: none; padding: 0.25rem 0 0.5rem 0; max-height: none; left: auto; right: auto; }
     .mega__brands { grid-template-columns: 1fr 1fr; }
+    .brand-models__list { column-width: auto; columns: 1; }
   }
 </style>
 
 <script>
-  // Progressive enhancement: one dropdown open at a time, close on outside
-  // click or Escape, plus the mobile menu toggle.
+  // One dropdown open at a time + close on outside click / Escape + mobile toggle.
   const items = Array.from(document.querySelectorAll<HTMLDetailsElement>('.nav__item'));
   items.forEach((d) =>
     d.addEventListener('toggle', () => {
@@ -163,5 +184,31 @@ const { catalog, guides, grinders, coffeeMachines } = nav as {
   toggle?.addEventListener('click', () => {
     const open = navEl?.classList.toggle('nav--open');
     toggle.setAttribute('aria-expanded', String(Boolean(open)));
+  });
+
+  // Brand pills: clicking a pill reveals that brand's reviews inside the menu
+  // (instead of navigating). The "Brand page" link inside still navigates.
+  const pills = Array.from(document.querySelectorAll<HTMLAnchorElement>('.brand-pill[data-brand]'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-brand-panel]'));
+  const hint = document.querySelector<HTMLElement>('[data-hint]');
+  pills.forEach((pill) => {
+    pill.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || (e as MouseEvent).button === 1) return; // allow open-in-new-tab
+      e.preventDefault();
+      const slug = pill.getAttribute('data-brand');
+      const panel = panels.find((p) => p.getAttribute('data-brand-panel') === slug);
+      const wasActive = pill.classList.contains('is-active');
+      pills.forEach((p) => { p.classList.remove('is-active'); p.setAttribute('aria-expanded', 'false'); });
+      panels.forEach((p) => (p.hidden = true));
+      if (!wasActive && panel) {
+        pill.classList.add('is-active');
+        pill.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
+        if (hint) hint.hidden = true;
+        panel.scrollIntoView({ block: 'nearest' });
+      } else if (hint) {
+        hint.hidden = false;
+      }
+    });
   });
 </script>
