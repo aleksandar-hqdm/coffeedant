@@ -1,6 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import amazon from '../data/amazon.json';
+import asinMap from '../data/asins.json';
+import { liveProduct } from '../lib/product';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -35,6 +38,32 @@ segs.forEach((seg, i) => {
 });
 
 const isArticle = data.type === 'review' || data.type === 'blog';
+
+// Inject the live Amazon price into the product box (the price-note element).
+// Amazon requires cached prices to show when they were retrieved, so we stamp
+// the refresh date. Buy links in the body are already affiliate links.
+const amz = amazon as Record<string, { title?: string | null; displayPrice?: string; price?: string; updated?: string }>;
+const asins = asinMap as Record<string, string>;
+const live = liveProduct(
+  { slug: data.slug, brand: '', label: data.breadcrumb || data.title, asin: data.asin },
+  amz,
+  asins,
+) as { displayPrice?: string; price?: string; updated?: string } | null;
+const livePrice = live?.displayPrice || (live?.price ? `$${live.price}` : null);
+let bodyHtml = data.bodyHtml;
+if (livePrice) {
+  const asOf = live?.updated
+    ? new Date(live.updated + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    : null;
+  const note = `<strong>${livePrice}</strong> at Amazon${asOf ? ` <span class="cd-asof">(as of ${asOf})</span>` : ''}`;
+  if (/class=["'][^"']*\bprice-note\b[^"']*["']/i.test(bodyHtml)) {
+    // boxes that already have a price note: swap its content for the live price
+    bodyHtml = bodyHtml.replace(/(<p\b[^>]*\bprice-note\b[^>]*>)[\s\S]*?(<\/p>)/gi, `$1${note}$2`);
+  } else {
+    // boxes with only a buy button: insert a price line after the first button
+    bodyHtml = bodyHtml.replace(/(<a\b[^>]*\bbtn-buy\b[^>]*>[\s\S]*?<\/a>)/i, `$1<p class="price-note">${note}</p>`);
+  }
+}
 ---
 <BaseLayout
   title={data.seoTitle || data.title}
@@ -47,5 +76,5 @@ const isArticle = data.type === 'review' || data.type === 'blog';
   noindex={data.noindex}
   breadcrumbs={breadcrumbs}
 >
-  <article class="cd-article" set:html={data.bodyHtml} />
+  <article class="cd-article" set:html={bodyHtml} />
 </BaseLayout>

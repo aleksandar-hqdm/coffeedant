@@ -3,12 +3,13 @@ import nav from '../../data/nav.json';
 import amazon from '../../data/amazon.json';
 import asinMap from '../../data/asins.json';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { liveProduct } from '../../lib/product';
 
 type Model = { label: string; route: string; slug: string; image: string | null; rating: number | null; price: string | null; asin: string | null; amazonUrl: string | null };
 type Brand = { brand: string; slug: string; route: string; hubRoute: string | null; count: number; avgRating: number | null; models: Model[] };
 
 const catalog = (nav as { catalog: Brand[] }).catalog;
-const amz = amazon as Record<string, { image?: string; price?: string; displayPrice?: string; url?: string }>;
+const amz = amazon as Record<string, { title?: string | null; image?: string; price?: string; displayPrice?: string; url?: string }>;
 const asins = asinMap as Record<string, string>;
 
 export async function getStaticPaths() {
@@ -20,8 +21,7 @@ const { brand } = Astro.props as { brand: Brand };
 // Resolve each machine's ASIN (from content or the slug->ASIN map), then prefer
 // live Amazon image/price; fall back to the product image from the review.
 const models = brand.models.map((m) => {
-  const asin = m.asin || asins[m.slug] || null;
-  const live = asin ? amz[asin] : null;
+  const live = liveProduct({ slug: m.slug, brand: brand.brand, label: m.label, asin: m.asin }, amz, asins);
   return {
     ...m,
     image: live?.image || m.image,

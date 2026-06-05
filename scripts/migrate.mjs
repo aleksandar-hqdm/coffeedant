@@ -92,6 +92,20 @@ function decodeEntities(s) {
     .replace(/&amp;/g, '&');
 }
 
+// Ensure every amazon.com link carries our Associates tag (amzn.to short links
+// already encode it; foreign marketplaces are left alone since a US tag is moot).
+const AFFILIATE_TAG = 'coffeedant03-20';
+function enforceAffiliate(html) {
+  // Match every amazon.com URL (href, microdata content, JSON-LD url, plain text)
+  // and ensure it carries our tag.
+  return html.replace(/https?:\/\/(?:www\.)?amazon\.com\/[^\s"<>]*/gi, (url) => {
+    const [base, query = ''] = url.split('?');
+    const params = query.split('&').filter((p) => p && !/^tag=/i.test(p));
+    params.push('tag=' + AFFILIATE_TAG);
+    return base + '?' + params.join('&');
+  });
+}
+
 // ---- Gutenberg -> HTML --------------------------------------------------------
 function blocksToHtml(content) {
   if (!content) return '';
@@ -103,6 +117,7 @@ function blocksToHtml(content) {
     .trim();
   // keep images pointing at the live host for now; make other internal links root-relative
   html = html.replace(/https:\/\/coffeedant\.com\/(?!wp-content)/g, '/');
+  html = enforceAffiliate(html);
   return html;
 }
 
