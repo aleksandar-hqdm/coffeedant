@@ -1,0 +1,26 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/feed",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/feed/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-admin/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wp-login.php",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}

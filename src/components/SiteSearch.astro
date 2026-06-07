@@ -1,0 +1,50 @@
+---
+import { searchIndex } from '../lib/catalog';
+const json = JSON.stringify(searchIndex).replace(/</g, '\\u003c');
+---
+<div class="search" id="site-search">
+  <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm9 16-4.35-4.35"/></svg>
+  <input type="search" class="search__input" id="ss-input" placeholder="Search machines" aria-label="Search machines" autocomplete="off" />
+  <div class="search__results" id="ss-results" role="listbox" hidden></div>
+</div>
+
+<script id="ss-data" type="application/json" set:html={json} />
+<script is:inline>
+  (() => {
+    const IDX = JSON.parse(document.getElementById('ss-data').textContent);
+    const wrap = document.getElementById('site-search');
+    const input = document.getElementById('ss-input');
+    const box = document.getElementById('ss-results');
+    function run() {
+      const q = input.value.trim().toLowerCase();
+      if (q.length < 2) { box.hidden = true; box.innerHTML = ''; return; }
+      const hits = IDX.filter((m) => (m.l + ' ' + m.b).toLowerCase().includes(q)).slice(0, 8);
+      box.innerHTML = hits.length
+        ? hits.map((m) => `<a role="option" href="${m.r}"><span class="ss-b">${m.b}</span> ${m.l}</a>`).join('')
+        : '<span class="ss-none">No matches</span>';
+      box.hidden = false;
+    }
+    input.addEventListener('input', run);
+    input.addEventListener('focus', run);
+    document.addEventListener('click', (e) => { if (!e.target.closest('#site-search')) box.hidden = true; });
+    input.addEventListener('keydown', (e) => { if (e.key === 'Escape') { box.hidden = true; input.blur(); } });
+  })();
+</script>
+
+<style>
+  .search { position: relative; display: flex; align-items: center; gap: 0.45rem; flex: 0 1 270px; min-width: 184px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 0.4rem 0.85rem; transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease); }
+  .search:focus-within { border-color: var(--copper); box-shadow: 0 0 0 3px var(--copper-tint); }
+  .search__icon { width: 16px; height: 16px; color: var(--ink-3); flex: none; }
+  .search__input { border: 0; background: none; outline: none; font: inherit; font-size: 0.9rem; width: 100%; color: var(--ink); }
+  .search__input::placeholder { color: var(--ink-3); }
+  .search__results {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 300; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg);
+    padding: 0.45rem; max-height: 60vh; overflow: auto; min-width: 280px;
+  }
+  .search__results a { display: block; padding: 0.55rem 0.65rem; border-radius: var(--radius-sm); text-decoration: none; color: var(--ink); font-size: 0.9rem; transition: background 0.14s var(--ease), color 0.14s var(--ease); }
+  .search__results a:hover { background: var(--canvas-2); color: var(--copper-deep); }
+  .search__results .ss-b { color: var(--ink-3); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.1em; margin-right: 0.3rem; font-weight: 600; }
+  .ss-none { display: block; padding: 0.6rem; color: var(--ink-3); font-size: 0.88rem; }
+  @media (max-width: 900px) { .search { flex: 1 1 auto; min-width: 0; } .search__input { font-size: 16px; } }
+</style>

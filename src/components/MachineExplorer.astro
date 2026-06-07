@@ -1,0 +1,135 @@
+---
+import { machines } from '../lib/catalog';
+interface Props { only?: string[] }
+const { only } = Astro.props;
+const list = only && only.length ? machines.filter((m) => only.includes(m.slug)) : machines;
+const data = JSON.stringify(list).replace(/</g, '\\u003c');
+---
+<div class="explorer">
+  <div class="explorer__bar">
+    <div class="explorer__filters">
+      <div class="fgroup" data-group="type" role="group" aria-label="Machine type">
+        <button class="chip is-active" data-type="all">All types</button>
+        <button class="chip" data-type="superauto">Super-automatic</button>
+        <button class="chip" data-type="semi-auto">Semi-automatic</button>
+        <button class="chip" data-type="lever">Lever / manual</button>
+      </div>
+      <div class="fgroup" data-group="price" role="group" aria-label="Price">
+        <button class="chip is-active" data-price="all">Any price</button>
+        <button class="chip" data-price="u500">Under $500</button>
+        <button class="chip" data-price="5_10">$500 - $1,000</button>
+        <button class="chip" data-price="10_20">$1,000 - $2,000</button>
+        <button class="chip" data-price="o2000">$2,000+</button>
+      </div>
+      <label class="grinder"><input type="checkbox" id="ex-grinder" /> Built-in grinder</label>
+    </div>
+    <label class="explorer__sort">Sort
+      <select id="ex-sort">
+        <option value="rating">Top rated</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </label>
+  </div>
+  <p class="explorer__count" id="ex-count" aria-live="polite"></p>
+  <div class="card-grid" id="ex-grid"></div>
+  <p class="explorer__empty" id="ex-empty" hidden>No machines match those filters. Try widening them.</p>
+</div>
+
+<script id="ex-data" type="application/json" set:html={data} />
+<script is:inline>
+  (() => {
+    const M = JSON.parse(document.getElementById('ex-data').textContent);
+    const state = { type: 'all', price: 'all', grinder: false, sort: 'rating' };
+    const p = new URLSearchParams(location.search);
+    if (p.get('type')) state.type = p.get('type');
+    if (p.get('price')) state.price = p.get('price');
+    if (p.get('sort')) state.sort = p.get('sort');
+    if (p.get('grinder') === '1') state.grinder = true;
+
+    const grid = document.getElementById('ex-grid');
+    const count = document.getElementById('ex-count');
+    const empty = document.getElementById('ex-empty');
+    const sortSel = document.getElementById('ex-sort');
+    const grinder = document.getElementById('ex-grinder');
+    sortSel.value = state.sort;
+    grinder.checked = state.grinder;
+
+    const typeOk = (m) => state.type === 'all' || (state.type === 'lever' ? (m.type === 'lever' || m.type === 'manual') : m.type === state.type);
+    const priceOk = (m) => {
+      if (state.price === 'all') return true;
+      if (m.price == null) return false;
+      const pr = m.price;
+      return state.price === 'u500' ? pr < 500
+        : state.price === '5_10' ? pr >= 500 && pr < 1000
+        : state.price === '10_20' ? pr >= 1000 && pr < 2000
+        : state.price === 'o2000' ? pr >= 2000 : true;
+    };
+    const cmp = {
+      rating: (a, b) => (b.rating ?? -1) - (a.rating ?? -1),
+      'price-asc': (a, b) => (a.price ?? Infinity) - (b.price ?? Infinity),
+      'price-desc': (a, b) => (b.price ?? -1) - (a.price ?? -1),
+      name: (a, b) => (a.brand + ' ' + a.label).localeCompare(b.brand + ' ' + b.label),
+    };
+
+    function card(m) {
+      return `<div class="mcard">
+        <a class="mcard__media" href="${m.route}">${m.image ? `<img src="${m.image}" alt="${m.label}" loading="lazy">` : '<span class="mcard__ph">No image</span>'}</a>
+        <div class="mcard__body">
+          <span class="mcard__brand">${m.brand}</span>
+          <a class="mcard__title" href="${m.route}">${m.label}</a>
+          <div class="mcard__meta">${m.rating ? `<span class="mcard__rating">${m.rating}</span>` : ''}${m.displayPrice ? `<span class="mcard__price">${m.displayPrice}</span>` : ''}</div>
+          <div class="mcard__actions">
+            <a class="mcard__buy" href="${m.buyUrl}" target="_blank" rel="nofollow sponsored noopener">Check price</a>
+            <a class="mcard__review" href="${m.route}">Review</a>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function syncChips() {
+      document.querySelectorAll('[data-group="type"] .chip').forEach((c) => c.classList.toggle('is-active', c.dataset.type === state.type));
+      document.querySelectorAll('[data-group="price"] .chip').forEach((c) => c.classList.toggle('is-active', c.dataset.price === state.price));
+    }
+    function syncUrl() {
+      const q = new URLSearchParams();
+      if (state.type !== 'all') q.set('type', state.type);
+      if (state.price !== 'all') q.set('price', state.price);
+      if (state.grinder) q.set('grinder', '1');
+      if (state.sort !== 'rating') q.set('sort', state.sort);
+      history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
+    }
+    function render() {
+      const list = M.filter((m) => typeOk(m) && priceOk(m) && (!state.grinder || m.grinder)).sort(cmp[state.sort]);
+      grid.innerHTML = list.map(card).join('');
+      count.textContent = `${list.length} machine${list.length === 1 ? '' : 's'}`;
+      empty.hidden = list.length > 0;
+      syncChips();
+      syncUrl();
+    }
+
+    document.querySelectorAll('[data-group="type"] .chip').forEach((c) => c.addEventListener('click', () => { state.type = c.dataset.type; render(); }));
+    document.querySelectorAll('[data-group="price"] .chip').forEach((c) => c.addEventListener('click', () => { state.price = c.dataset.price; render(); }));
+    grinder.addEventListener('change', () => { state.grinder = grinder.checked; render(); });
+    sortSel.addEventListener('change', () => { state.sort = sortSel.value; render(); });
+    render();
+  })();
+</script>
+
+<style>
+  /* card + chip atoms live in global.css; this only styles the filter bar */
+  .explorer__bar {
+    display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 1.5rem; padding: 1.1rem 1.25rem; background: var(--surface);
+    border: 1px solid var(--line-soft); border-radius: var(--radius); box-shadow: var(--shadow-xs);
+  }
+  .explorer__filters { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; align-items: center; }
+  .fgroup { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .grinder { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.88rem; font-weight: 600; cursor: pointer; color: var(--ink-2); }
+  .grinder input { accent-color: var(--copper-deep); width: 1rem; height: 1rem; }
+  .explorer__sort { font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ink-2); }
+  .explorer__count { color: var(--ink-3); font-size: 0.85rem; margin: 0 0 1.25rem; font-weight: 500; }
+  .explorer__empty { text-align: center; color: var(--ink-3); padding: 2.5rem; }
+  @media (max-width: 560px) { .explorer__bar { padding: 1rem; } }
+</style>

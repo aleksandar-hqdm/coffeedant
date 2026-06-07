@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MachineExplorer from '../../components/MachineExplorer.astro';
+import { machines } from '../../lib/catalog';
+---
+<BaseLayout
+  title="All Espresso Machines: Browse, Filter & Compare"
+  description={`Browse all ${machines.length} espresso machines we have tested. Filter by type, price, and milk system, and sort by rating or price.`}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Espresso Machines', url: '/machines/' }]}
+>
+  <div class="hub">
+    <header class="hub__head">
+      <p class="eyebrow">{machines.length} machines on the bench</p>
+      <h1>The full collection</h1>
+      <p class="hub__sub">Filter and sort every espresso machine we have bought and tested. Prices refresh weekly from Amazon.</p>
+    </header>
+    <MachineExplorer />
+  </div>
+</BaseLayout>
+
+<style>
+  .hub { max-width: var(--container); margin: 0 auto; padding: 2.25rem 1.5rem 4rem; }
+  .hub__head { margin-bottom: 1.75rem; }
+  .hub__head h1 { margin: 0 0 0.5rem; font-size: clamp(2rem, 4.5vw, 3rem); }
+  .hub__sub { margin: 0; color: var(--ink-2); font-size: 1.08rem; max-width: 60ch; }
+</style>

@@ -1,0 +1,228 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import machinesRaw from '../../data/machines.json';
+import amazon from '../../data/amazon.json';
+import asinMap from '../../data/asins.json';
+import { liveProduct, searchUrl } from '../../lib/product';
+
+type Machine = {
+  slug: string; label: string; brand: string; route: string;
+  image: string | null; rating: number | null; price: string | null;
+  asin: string | null; amazonUrl: string | null; type: string; grinder: boolean; milk: string;
+};
+const amz = amazon as Record<string, { title?: string | null; price?: string; displayPrice?: string; image?: string; url?: string }>;
+const asins = asinMap as Record<string, string>;
+
+// Merge live Amazon data at build time (refreshed weekly), but only when Amazon's
+// product title matches the machine (lib/product guards against wrong-product links).
+const machines = (machinesRaw as Machine[]).map((m) => {
+  const live = liveProduct(m, amz, asins);
+  const liveNum = live?.price ? parseFloat(live.price) : null;
+  const contentNum = m.price ? parseFloat(m.price) : null;
+  return {
+    slug: m.slug, label: m.label, brand: m.brand, route: m.route,
+    type: m.type, grinder: m.grinder, milk: m.milk, rating: m.rating,
+    image: live?.image || m.image || null,
+    price: liveNum ?? contentNum,
+    displayPrice: live?.displayPrice || null,
+    buyUrl: live?.url || searchUrl(m.brand, m.label),
+  };
+});
+const dataJson = JSON.stringify(machines).replace(/</g, '\\u003c');
+---
+<BaseLayout
+  title="Find Your Espresso Machine: Take the Quiz"
+  description="Answer five quick questions and get a shortlist of the espresso machines that fit you best, with live prices, ratings, and full reviews."
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Find your machine', url: '/quiz/' }]}
+>
+  <section class="quiz" aria-live="polite">
+    <header class="quiz__head">
+      <p class="quiz__eyebrow">Find your machine</p>
+      <h1 id="quiz-title">Let's find your perfect espresso machine</h1>
+      <p id="quiz-sub">Five quick questions, matched against {machines.length} machines we have tested.</p>
+      <div class="quiz__progress" aria-hidden="true"><div class="quiz__bar" id="quiz-bar"></div></div>
+    </header>
+    <div id="quiz-step" class="quiz__step"></div>
+    <div id="quiz-results" class="quiz__results" hidden></div>
+  </section>
+
+  <script id="cd-machines" type="application/json" set:html={dataJson} />
+
+  <script is:inline>
+    const machines = JSON.parse(document.getElementById('cd-machines').textContent);
+    const QUESTIONS = [
+      { key: 'make', q: 'What do you want to make?', options: [
+        { v: 'espresso', label: 'Espresso & black coffee', desc: 'Straight shots, Americanos' },
+        { v: 'milk', label: 'Lattes, cappuccinos, flat whites', desc: 'Milk-based drinks' },
+        { v: 'onetouch', label: 'One-touch coffee & espresso', desc: 'Push a button, walk away' },
+      ]},
+      { key: 'hands', q: 'How hands-on do you want to be?', options: [
+        { v: 'auto', label: 'Just press a button', desc: 'Fully automatic' },
+        { v: 'some', label: 'A little hands-on', desc: "I'll grind, dose and pull shots" },
+        { v: 'manual', label: 'Full manual control', desc: 'Lever or precision setup' },
+      ]},
+      { key: 'exp', q: 'Your espresso experience?', options: [
+        { v: 'new', label: 'Total beginner', desc: 'My first machine' },
+        { v: 'some', label: 'Some experience', desc: "I've owned one before" },
+        { v: 'pro', label: 'Enthusiast / barista-level', desc: 'I dial in by taste' },
+      ]},
+      { key: 'budget', q: "What's your budget?", options: [
+        { v: 500, label: 'Under $500', desc: 'Entry level' },
+        { v: 1000, label: '$500 - $1,000', desc: 'Mid range' },
+        { v: 2000, label: '$1,000 - $2,000', desc: 'Premium' },
+        { v: 99999, label: 'No limit', desc: 'Best possible' },
+      ]},
+      { key: 'pri', q: 'What matters most?', options: [
+        { v: 'convenience', label: 'Convenience & speed', desc: 'Fuss-free mornings' },
+        { v: 'quality', label: 'Cafe-quality in the cup', desc: 'Best shot wins' },
+        { v: 'build', label: 'Build quality & longevity', desc: 'Buy once, keep for years' },
+        { v: 'value', label: 'Best value for money', desc: 'Most bang for the buck' },
+      ]},
+    ];
+    const answers = {};
+    let step = 0;
+    const stepEl = document.getElementById('quiz-step');
+    const barEl = document.getElementById('quiz-bar');
+    const resultsEl = document.getElementById('quiz-results');
+    const subEl = document.getElementById('quiz-sub');
+
+    function renderStep() {
+      const Q = QUESTIONS[step];
+      barEl.style.width = `${(step / QUESTIONS.length) * 100}%`;
+      stepEl.hidden = false;
+      resultsEl.hidden = true;
+      stepEl.innerHTML = `
+        <div class="quiz__count">Question ${step + 1} of ${QUESTIONS.length}</div>
+        <h2 class="quiz__q">${Q.q}</h2>
+        <div class="quiz__options">
+          ${Q.options.map((o) => `
+            <button class="quiz__opt${answers[Q.key] === o.v ? ' is-active' : ''}" data-val="${o.v}">
+              <span class="quiz__opt-label">${o.label}</span>
+              <span class="quiz__opt-desc">${o.desc}</span>
+            </button>`).join('')}
+        </div>
+        <div class="quiz__nav">
+          ${step > 0 ? '<button class="quiz__back" id="quiz-back">&larr; Back</button>' : '<span></span>'}
+        </div>`;
+      stepEl.querySelectorAll('.quiz__opt').forEach((btn) => btn.addEventListener('click', () => {
+        const raw = btn.dataset.val;
+        answers[Q.key] = isNaN(Number(raw)) ? raw : Number(raw);
+        if (step < QUESTIONS.length - 1) { step++; renderStep(); }
+        else showResults();
+      }));
+      const back = document.getElementById('quiz-back');
+      if (back) back.addEventListener('click', () => { step--; renderStep(); });
+      stepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function score(m, a) {
+      let s = 0;
+      const p = m.price;
+      if (a.make === 'espresso') s += (m.type === 'semi-auto' || m.type === 'lever') ? 3 : m.type === 'capsule' ? -2 : 1;
+      if (a.make === 'milk') s += m.milk === 'auto' ? 3 : m.milk === 'wand' ? 2 : -2;
+      if (a.make === 'onetouch') s += m.type === 'superauto' ? 4 : m.type === 'capsule' ? 3 : -2;
+      if (a.hands === 'auto') s += (m.type === 'superauto' || m.type === 'capsule') ? 4 : -3;
+      if (a.hands === 'some') s += m.type === 'semi-auto' ? 4 : m.type === 'superauto' ? 1 : -1;
+      if (a.hands === 'manual') s += (m.type === 'lever' || m.type === 'manual') ? 4 : m.type === 'semi-auto' ? 2 : -4;
+      if (a.exp === 'new') s += (m.type === 'superauto' || m.type === 'capsule') ? 3 : m.type === 'lever' ? -2 : (p && p < 700) ? 1 : -1;
+      if (a.exp === 'some') s += m.type === 'semi-auto' ? 3 : 1;
+      if (a.exp === 'pro') s += m.type === 'lever' ? 3 : (m.type === 'semi-auto' && p && p >= 1000) ? 3 : m.type === 'semi-auto' ? 2 : -1;
+      if (p != null) { if (p <= a.budget) s += 3; else if (p <= a.budget * 1.2) s += 0; else s -= 6; }
+      if (a.pri === 'convenience') s += m.type === 'superauto' ? 3 : m.type === 'capsule' ? 3 : m.grinder ? 1 : 0;
+      if (a.pri === 'quality') s += (m.rating ? (m.rating - 4) * 2 : 0) + ((m.type === 'semi-auto' || m.type === 'lever') ? 1 : 0);
+      if (a.pri === 'build') s += (p && p > 1200 ? 2 : 0) + (m.type === 'lever' ? 2 : m.type === 'semi-auto' ? 1 : 0);
+      if (a.pri === 'value') s += (m.rating && p) ? Math.max(0, (m.rating - 3.8) * 4 - p / 1000) : 0;
+      s += m.rating ? (m.rating - 4) * 1.5 : 0;
+      return s;
+    }
+
+    function stars(r) {
+      if (!r) return '';
+      return `<span class="rc-star">&#9733; ${r}</span>`;
+    }
+
+    function showResults() {
+      barEl.style.width = '100%';
+      const ranked = machines.map((m) => ({ m, s: score(m, answers) })).sort((a, b) => b.s - a.s);
+      const top = ranked.slice(0, 9).map((x) => x.m);
+      stepEl.hidden = true;
+      resultsEl.hidden = false;
+      subEl.textContent = 'Based on your answers, here are your best matches.';
+      resultsEl.innerHTML = `
+        <h2 class="quiz__results-title">Your top matches</h2>
+        <div class="rc-grid">
+          ${top.map((m) => `
+            <div class="rc-card">
+              <a class="rc-media" href="${m.route}">${m.image ? `<img src="${m.image}" alt="${m.label}" loading="lazy">` : '<span class="rc-ph">No image</span>'}</a>
+              <div class="rc-body">
+                <span class="rc-brand">${m.brand}</span>
+                <a class="rc-title" href="${m.route}">${m.label}</a>
+                <div class="rc-meta">${stars(m.rating)}${m.displayPrice ? `<span class="rc-price">${m.displayPrice}</span>` : ''}</div>
+                <div class="rc-actions">
+                  <a class="rc-buy" href="${m.buyUrl}" target="_blank" rel="nofollow sponsored noopener">Check price on Amazon</a>
+                  <a class="rc-review" href="${m.route}">Read review</a>
+                </div>
+              </div>
+            </div>`).join('')}
+        </div>
+        <button class="quiz__retake" id="quiz-retake">Retake the quiz</button>`;
+      document.getElementById('quiz-retake').addEventListener('click', () => {
+        step = 0; for (const k in answers) delete answers[k];
+        subEl.textContent = `Five quick questions, matched against ${machines.length} machines we have tested.`;
+        renderStep();
+      });
+      resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    renderStep();
+  </script>
+</BaseLayout>
+
+<style>
+  .quiz { max-width: 840px; margin: 0 auto; padding: 2.5rem 1.5rem 4.5rem; }
+  .quiz__head { text-align: center; margin-bottom: 2.25rem; }
+  .quiz__eyebrow { display: inline-block; text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.74rem; font-weight: 650; color: var(--copper-deep); margin: 0 0 0.6rem; }
+  .quiz__head h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); margin: 0 0 0.6rem; line-height: 1.1; }
+  .quiz__head p { color: var(--ink-2); margin: 0 0 1.4rem; font-size: 1.05rem; }
+  .quiz__progress { height: 6px; background: var(--canvas-2); border-radius: 999px; overflow: hidden; max-width: 420px; margin: 0 auto; }
+  .quiz__bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--copper), var(--copper-deep)); border-radius: 999px; transition: width 0.4s var(--ease); }
+
+  .quiz__count { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; font-weight: 650; color: var(--copper-deep); text-align: center; }
+  .quiz__q { text-align: center; font-size: clamp(1.5rem, 3vw, 2.1rem); margin: 0.6rem 0 1.75rem; }
+  .quiz__options { display: grid; gap: 0.85rem; }
+  .quiz__opt {
+    display: flex; flex-direction: column; gap: 0.2rem; text-align: left; padding: 1.15rem 1.35rem;
+    border: 1.5px solid var(--line); border-radius: var(--radius); background: var(--surface); cursor: pointer; width: 100%;
+    box-shadow: var(--shadow-xs);
+    transition: border-color 0.16s var(--ease), background 0.16s var(--ease), transform 0.16s var(--ease), box-shadow 0.2s var(--ease);
+  }
+  .quiz__opt:hover { border-color: var(--copper); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .quiz__opt.is-active { border-color: var(--copper-deep); background: var(--copper-tint); box-shadow: inset 0 0 0 1px var(--copper-deep); }
+  .quiz__opt-label { font-weight: 680; font-size: 1.08rem; color: var(--ink); }
+  .quiz__opt-desc { font-size: 0.88rem; color: var(--ink-2); }
+  .quiz__nav { margin-top: 1.75rem; display: flex; justify-content: flex-start; }
+  .quiz__back { background: none; border: 0; color: var(--ink-3); font-weight: 600; cursor: pointer; padding: 0.5rem 0; font-size: 0.95rem; }
+  .quiz__back:hover { color: var(--copper-deep); }
+
+  .quiz__results-title { text-align: center; font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 0 0 1.75rem; }
+  .rc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.4rem; }
+  .rc-card { display: flex; flex-direction: column; border: 1px solid var(--line-soft); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: var(--shadow-xs); transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease); }
+  .rc-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+  .rc-media { aspect-ratio: 4 / 3; background: radial-gradient(120% 100% at 50% 0%, #fff, var(--canvas-2)); display: flex; align-items: center; justify-content: center; padding: 1.2rem; }
+  .rc-media img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+  .rc-ph { color: var(--ink-3); font-size: 0.85rem; }
+  .rc-body { padding: 1rem 1.1rem 1.15rem; display: flex; flex-direction: column; gap: 0.45rem; }
+  .rc-brand { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 600; }
+  .rc-title { font-family: var(--font-display); font-weight: 540; font-size: 1.15rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; line-height: 1.2; }
+  .rc-title:hover { color: var(--copper-deep); }
+  .rc-meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .rc-star { font-size: 0.82rem; font-weight: 700; color: #7a5a14; background: var(--gold-tint); padding: 0.14rem 0.55rem; border-radius: 999px; }
+  .rc-price { font-weight: 700; margin-left: auto; }
+  .rc-actions { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+  .rc-buy { text-align: center; background: var(--copper-deep); color: #fff; font-weight: 620; padding: 0.65rem 0.75rem; border-radius: 999px; text-decoration: none; font-size: 0.9rem; transition: background 0.2s var(--ease); }
+  .rc-buy:hover { background: var(--copper-dark); color: #fff; }
+  .rc-review { text-align: center; font-weight: 600; color: var(--ink-2); text-decoration: none; font-size: 0.9rem; }
+  .rc-review:hover { color: var(--copper-deep); text-decoration: underline; }
+  .quiz__retake { display: block; margin: 2.5rem auto 0; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 0.65rem 1.5rem; font-weight: 600; color: var(--ink); cursor: pointer; transition: background 0.18s var(--ease), border-color 0.18s var(--ease); }
+  .quiz__retake:hover { background: var(--surface); border-color: rgba(54,38,26,0.28); box-shadow: var(--shadow-sm); }
+</style>

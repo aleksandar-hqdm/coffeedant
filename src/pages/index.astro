@@ -1,40 +1,336 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import nav from '../data/nav.json';
+import machinesRaw from '../data/machines.json';
+import amazon from '../data/amazon.json';
+import asinMap from '../data/asins.json';
+import { liveProduct, searchUrl, formatUpdated } from '../lib/product';
+
+type Machine = { slug: string; label: string; brand: string; route: string; image: string | null; rating: number | null; price: string | null; asin: string | null; amazonUrl: string | null; type: string; grinder: boolean; milk: string };
+const machines = machinesRaw as Machine[];
+const amz = amazon as Record<string, { title?: string | null; image?: string; price?: string; displayPrice?: string; url?: string }>;
+const asins = asinMap as Record<string, string>;
+const { catalog, guides } = nav as { catalog: { brand: string; slug: string; route: string; count: number; avgRating: number | null }[]; guides: { name: string; route: string }[] };
+
+const enrich = (m: Machine) => {
+  const live = liveProduct(m, amz, asins);
+  return { ...m, image: live?.image || m.image, displayPrice: live?.displayPrice || null, lastUpdated: live?.displayPrice ? formatUpdated(live?.updated) : null, buyUrl: live?.url || searchUrl(m.brand, m.label) };
+};
+const topRatedAll = machines
+  .filter((m) => m.rating != null && m.rating >= 4.5 && m.image)
+  .sort((a, b) => (b.rating! - a.rating!))
+  .map(enrich);
+const featured = topRatedAll[0];
+const topRated = topRatedAll.slice(1, 9);
+const reviewCount = machines.length;
+const brands = [...catalog].sort((a, b) => b.count - a.count);
+
+// topical line icons for the buying-guide tiles
+const svg = (p: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const ICON = {
+  small: svg('<rect x="8" y="8" width="8" height="8" rx="1.5"/><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/>'),
+  grinder: svg('<circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v2.5M12 18.9v2.5M2.6 12h2.5M18.9 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"/>'),
+  auto: svg('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>'),
+  beginner: svg('<path d="M12 21v-7.5"/><path d="M12 13.5C12 10.2 9.8 8 6.5 8 6.5 11.3 8.7 13.5 12 13.5z"/><path d="M12 12c0-2.6 2-4.6 4.6-4.6 0 2.6-2 4.6-4.6 4.6z"/>'),
+  budget: svg('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.1v9.8M14.4 9.2c-.6-.8-1.5-1.2-2.6-1.2-1.4 0-2.5.8-2.5 1.9 0 2.5 5.2 1.4 5.2 3.9 0 1.1-1.1 1.9-2.7 1.9-1.1 0-2-.4-2.6-1.2"/>'),
+  prosumer: svg('<path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="M12 17l4.4-5.4"/><circle cx="12" cy="17" r="1.3" fill="currentColor" stroke="none"/>'),
+  boiler: svg('<path d="M12 3.2c3 4 5 6.6 5 9.6a5 5 0 0 1-10 0c0-3 2-5.6 5-9.6z"/>'),
+};
+const iconFor = (route: string) =>
+  route.includes('/small/') ? ICON.small
+  : route.includes('grinder') ? ICON.grinder
+  : route.includes('superautomatic') ? ICON.auto
+  : route.includes('beginner') ? ICON.beginner
+  : (route.includes('budget') || route.includes('under-500') || route.includes('cheap')) ? ICON.budget
+  : route.includes('prosumer') ? ICON.prosumer
+  : route.includes('single-boiler') ? ICON.boiler
+  : ICON.auto;
+const QUIZ_ICON = svg('<path d="M12 3l1.5 4.2L18 9l-4.5 1.8L12 15l-1.5-4.2L6 9l4.5-1.8L12 3z"/><path d="M18.5 14.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z"/>');
+const COMPARE_ICON = svg('<rect x="3.5" y="4.5" width="7" height="15" rx="1.5"/><rect x="13.5" y="4.5" width="7" height="15" rx="1.5"/>');
 ---
 <BaseLayout
-  title="Coffeedant"
-  description="Honest espresso machine reviews, buying guides, and brewing tips."
+  title="Coffeedant: Honest Espresso Machine Reviews & Buying Guides"
+  description="Independent, hands-on espresso machine reviews, buying guides, and brewing tips. Take the quiz to find the machine that fits you, with live prices and ratings."
 >
-  <main>
-    <section class="hero">
-      <h1>Coffeedant</h1>
-      <p class="tagline">Honest espresso machine reviews, buying guides, and brewing tips.</p>
-      <p class="note">The site is being rebuilt. New reviews and guides coming soon.</p>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">Independent · Barista-tested</p>
+        <h1 class="hero__title">The espresso machine you buy<br><em>should be the right one.</em></h1>
+        <p class="hero__sub">{reviewCount} machines bought, pulled, and scored on the bench, on what actually matters: the shot, the steam, the build, and the price you pay.</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary btn--lg" href="/quiz/">Find your machine</a>
+          <a class="btn btn--ghost btn--lg" href="/machines/">Browse all reviews</a>
+        </div>
+        <div class="hero__stats">
+          <div class="stat"><span class="stat__num">{reviewCount}</span><span class="stat__label">machines on the bench</span></div>
+          <div class="stat"><span class="stat__num">Zero</span><span class="stat__label">sponsored reviews</span></div>
+          <div class="stat"><span class="stat__num">Measured</span><span class="stat__label">not spec sheets</span></div>
+        </div>
+      </div>
+
+      {featured && (
+        <a class="hero__feature" href={featured.route} aria-label={`Top rated: ${featured.brand} ${featured.label}`}>
+          <span class="hero__feature-tag">★ {featured.rating} · Top rated</span>
+          <span class="hero__spotlight"></span>
+          {featured.image && <img src={featured.image} alt={`${featured.brand} ${featured.label}`} width="520" height="520" fetchpriority="high" />}
+          <span class="hero__feature-foot">
+            <span class="hero__feature-brand">{featured.brand}</span>
+            <span class="hero__feature-name">{featured.label}</span>
+            <span class="arrow-link">Read the review <span class="arr">&rarr;</span></span>
+          </span>
+        </a>
+      )}
+    </div>
+  </section>
+
+  <div class="home">
+    <!-- Top rated -->
+    <section class="block reveal">
+      <div class="block__head">
+        <div>
+          <p class="eyebrow">The bench favourites</p>
+          <h2>Top-rated machines</h2>
+        </div>
+        <a class="arrow-link" href="/machines/">See all reviews <span class="arr">&rarr;</span></a>
+      </div>
+      <div class="card-grid">
+        {topRated.map((m) => (
+          <div class="mcard">
+            <a class="mcard__media" href={m.route}>{m.image ? <img src={m.image} alt={m.label} loading="lazy" /> : <span class="mcard__ph">No image</span>}</a>
+            <div class="mcard__body">
+              <span class="mcard__brand">{m.brand}</span>
+              <a class="mcard__title" href={m.route}>{m.label}</a>
+              <div class="mcard__meta">
+                <span class="mcard__rating">{m.rating}</span>
+                {m.displayPrice && <span class="mcard__price">{m.displayPrice}</span>}
+              </div>
+              {m.lastUpdated && <span class="mcard__updated">Updated {m.lastUpdated}</span>}
+              <div class="mcard__actions">
+                <a class="mcard__buy" href={m.buyUrl} target="_blank" rel="nofollow sponsored noopener">Check price</a>
+                <a class="mcard__review" href={m.route}>Review</a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
-  </main>
+
+    <!-- Quiz band -->
+    <section class="quizband reveal">
+      <div class="quizband__glow"></div>
+      <div class="quizband__text">
+        <p class="eyebrow" style="color: var(--copper);">Not sure where to start?</p>
+        <h2>Tell us how you drink. We'll shortlist the machine.</h2>
+        <p>Five quick questions on taste, skill, and budget, then a shortlist matched to you, with live prices and the honest trade-offs.</p>
+      </div>
+      <a class="btn btn--primary btn--lg" href="/quiz/">Take the quiz <span class="arr">&rarr;</span></a>
+    </section>
+
+    <!-- Shop by use -->
+    <section class="block reveal">
+      <div class="block__head"><div><p class="eyebrow">Start with the goal</p><h2>Shop by what you need</h2></div></div>
+      <div class="tile-grid">
+        {guides.map((g) => (
+          <a class="tile" href={g.route}>
+            <span class="tile__icon" set:html={iconFor(g.route)} />
+            <span class="tile__name">{g.name}</span>
+            <span class="tile__arrow">&rarr;</span>
+          </a>
+        ))}
+      </div>
+      <div class="tools-row">
+        <a class="tool-card tool-card--quiz" href="/quiz/">
+          <span class="tool-card__icon" set:html={QUIZ_ICON} />
+          <span class="tool-card__text"><strong>Take the quiz</strong><span>Five questions, a shortlist matched to you</span></span>
+          <span class="tile__arrow">&rarr;</span>
+        </a>
+        <a class="tool-card" href="/compare/">
+          <span class="tool-card__icon" set:html={COMPARE_ICON} />
+          <span class="tool-card__text"><strong>Compare side by side</strong><span>Up to three machines, scores and specs</span></span>
+          <span class="tile__arrow">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Shop by brand -->
+    <section class="block reveal">
+      <div class="block__head"><div><p class="eyebrow">Loyal to a maker?</p><h2>Browse by brand</h2></div><a class="arrow-link" href="/machines/">All brands <span class="arr">&rarr;</span></a></div>
+      <div class="brand-grid">
+        {brands.slice(0, 18).map((b) => (
+          <a class="bpill" href={b.route}>
+            <span class="bpill__name">{b.brand}</span>
+            <span class="bpill__meta">{b.count} {b.count === 1 ? 'review' : 'reviews'}{b.avgRating ? ` · ★ ${b.avgRating}` : ''}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <!-- Trust (full-bleed) -->
+  <section class="trust reveal">
+    <div class="trust__inner">
+      <p class="eyebrow eyebrow--center" style="color: var(--copper); justify-content: center;">Why trust Coffeedant</p>
+      <h2>No favours. No funnels. Just the gear, measured.</h2>
+      <div class="trust__grid">
+        <div class="trust__item">
+          <span class="trust__icon">⏱</span>
+          <h3>I buy the gear</h3>
+          <p>Machines are purchased at retail where possible. Brands do not see drafts and cannot influence a score.</p>
+        </div>
+        <div class="trust__item">
+          <span class="trust__icon">⚖</span>
+          <h3>Measured testing</h3>
+          <p>Temperature stability, shot yield, flow behaviour, and milk texture, recorded on the bench, not read off marketing claims.</p>
+        </div>
+        <div class="trust__item">
+          <span class="trust__icon">◷</span>
+          <h3>No sponsored reviews</h3>
+          <p>Funded by affiliate links at no extra cost to you. The recommendation is the same either way.</p>
+        </div>
+      </div>
+      <a class="btn btn--on-dark" href="/testing/">See exactly how we test <span class="arr">&rarr;</span></a>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem;
+  /* ---- hero ---- */
+  .hero { background: linear-gradient(168deg, var(--canvas) 0%, var(--canvas-2) 60%, var(--canvas-3) 100%); border-bottom: 1px solid var(--line-soft); overflow: hidden; }
+  .hero__inner {
+    max-width: var(--container); margin: 0 auto; padding: 4.5rem 1.5rem 4.75rem;
+    display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 3rem;
   }
-  .hero {
-    text-align: center;
+  .hero__title { font-size: clamp(2.5rem, 5.4vw, 4.2rem); font-weight: 580; line-height: 1.04; margin: 0 0 1.25rem; letter-spacing: -0.025em; }
+  .hero__title em { font-style: italic; color: var(--copper-deep); font-weight: 480; }
+  .hero__sub { font-size: clamp(1.05rem, 1.6vw, 1.22rem); color: var(--ink-2); max-width: 44ch; margin: 0 0 2rem; line-height: 1.6; }
+  .hero__cta { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+  .hero__stats { display: flex; gap: 2.5rem; margin-top: 2.75rem; padding-top: 1.75rem; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 0.1rem; }
+  .stat__num { font-family: var(--font-display); font-optical-sizing: auto; font-weight: 580; font-size: 1.85rem; line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
+  .stat__label { font-size: 0.8rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* hero featured product */
+  .hero__feature {
+    position: relative; display: grid; justify-items: center; align-content: center;
+    aspect-ratio: 1 / 1; max-width: 460px; margin-left: auto; text-decoration: none;
+    padding: 1.5rem;
   }
-  h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    margin: 0 0 1rem;
-    letter-spacing: -0.02em;
+  .hero__spotlight {
+    position: absolute; inset: 8% 8% 12%; border-radius: 50%; z-index: 0;
+    background: radial-gradient(circle at 50% 42%, #fff 0%, rgba(255,255,255,0.65) 38%, rgba(236,224,209,0) 70%);
+    box-shadow: 0 50px 80px -30px rgba(40,26,16,0.35);
   }
-  .tagline {
-    font-size: 1.25rem;
-    color: var(--color-muted);
-    margin: 0 0 2rem;
+  .hero__feature img {
+    position: relative; z-index: 1; max-width: 88%; max-height: 78%; object-fit: contain;
+    filter: drop-shadow(0 28px 34px rgba(40,26,16,0.28)); mix-blend-mode: multiply;
+    transition: transform 0.5s var(--ease);
   }
-  .note {
-    color: var(--color-muted);
-    font-size: 0.95rem;
+  .hero__feature:hover img { transform: translateY(-6px) scale(1.02); }
+  .hero__feature-tag {
+    position: absolute; top: 6%; right: 2%; z-index: 2;
+    background: var(--surface); color: #7a5a14; border: 1px solid var(--gold-tint);
+    font-weight: 700; font-size: 0.82rem; padding: 0.4rem 0.8rem; border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-md);
+  }
+  .hero__feature-foot {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 2;
+    display: grid; justify-items: center; gap: 0.15rem; text-align: center; white-space: nowrap;
+    background: var(--surface); border: 1px solid var(--line-soft); box-shadow: var(--shadow-md);
+    padding: 0.7rem 1.2rem; border-radius: var(--radius); min-width: 70%;
+  }
+  .hero__feature-brand { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 600; }
+  .hero__feature-name { font-family: var(--font-display); font-weight: 560; font-size: 1.12rem; color: var(--ink); letter-spacing: -0.01em; }
+  .hero__feature-foot .arrow-link { font-size: 0.85rem; margin-top: 0.15rem; }
+
+  /* ---- layout ---- */
+  .home { max-width: var(--container); margin: 0 auto; padding: 0 1.5rem; }
+  .block { padding: 4rem 0 0; }
+  .block__head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.75rem; gap: 1rem; }
+  .block__head .eyebrow { margin-bottom: 0.5rem; }
+  .block__head h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin: 0; }
+
+  /* ---- quiz band ---- */
+  .quizband {
+    position: relative; overflow: hidden; margin: 4.5rem 0 0;
+    padding: 2.75rem 2.75rem; background: linear-gradient(135deg, var(--espresso) 0%, var(--espresso-2) 100%);
+    border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem; flex-wrap: wrap; box-shadow: var(--shadow-lg);
+  }
+  .quizband__glow { position: absolute; top: -40%; right: -10%; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(190,106,53,0.42), transparent 65%); pointer-events: none; }
+  .quizband__text { position: relative; max-width: 60ch; }
+  .quizband__text h2 { margin: 0.3rem 0 0.6rem; font-size: clamp(1.5rem, 2.6vw, 2rem); color: #fff; }
+  .quizband__text p { margin: 0; color: #cdbcab; line-height: 1.6; }
+  .quizband .btn { position: relative; flex: none; }
+
+  /* ---- tiles ---- */
+  .tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0.9rem; }
+  .tile {
+    display: flex; align-items: center; gap: 0.9rem; padding: 1.2rem 1.35rem;
+    border: 1px solid var(--line-soft); border-radius: var(--radius); background: var(--surface);
+    text-decoration: none; color: var(--ink); box-shadow: var(--shadow-xs);
+    transition: border-color 0.18s var(--ease), background 0.18s var(--ease), box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .tile:hover { border-color: var(--line); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+  .tile__no { font-family: var(--font-display); font-weight: 560; font-size: 0.95rem; color: var(--copper-deep); width: 1.9rem; flex: none; }
+  .tile__name { font-weight: 580; flex: 1; line-height: 1.25; }
+  .tile__arrow { color: var(--ink-3); transition: transform 0.2s var(--ease); }
+  .tile:hover .tile__arrow { transform: translateX(4px); color: var(--copper-deep); }
+  .tile--accent { background: var(--copper-tint); border-color: var(--copper-tint-2); }
+  .tile--accent .tile__name { color: var(--copper-dark); }
+  .tile__icon { display: inline-flex; align-items: center; justify-content: center; width: 2.2rem; height: 2.2rem; flex: none; color: var(--copper-deep); background: var(--copper-tint); border-radius: 10px; }
+  .tile__icon svg { width: 20px; height: 20px; }
+  .tile:hover .tile__icon { background: var(--copper-tint-2); }
+
+  /* ---- tools row (quiz + compare) ---- */
+  .tools-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-top: 0.9rem; }
+  .tool-card {
+    display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.4rem; border-radius: var(--radius);
+    text-decoration: none; color: var(--ink); border: 1px solid var(--line-soft); background: var(--surface); box-shadow: var(--shadow-xs);
+    transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease), border-color 0.18s var(--ease);
+  }
+  .tool-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--line); }
+  .tool-card:hover .tile__arrow { transform: translateX(4px); color: var(--copper-deep); }
+  .tool-card--quiz { background: var(--copper-tint); border-color: var(--copper-tint-2); }
+  .tool-card__icon { display: inline-flex; align-items: center; justify-content: center; width: 2.7rem; height: 2.7rem; flex: none; color: var(--copper-deep); background: var(--surface); border-radius: 12px; box-shadow: var(--shadow-xs); }
+  .tool-card--quiz .tool-card__icon { background: rgba(255, 255, 255, 0.65); }
+  .tool-card__icon svg { width: 24px; height: 24px; }
+  .tool-card__text { flex: 1; display: flex; flex-direction: column; gap: 0.1rem; }
+  .tool-card__text strong { font-family: var(--font-display); font-optical-sizing: auto; font-weight: 560; font-size: 1.12rem; letter-spacing: -0.01em; }
+  .tool-card__text span { font-size: 0.85rem; color: var(--ink-3); }
+  @media (max-width: 560px) { .tools-row { grid-template-columns: 1fr; } }
+
+  /* ---- brand grid ---- */
+  .brand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 0.7rem; }
+  .bpill {
+    display: flex; flex-direction: column; gap: 2px; padding: 0.75rem 0.9rem;
+    border: 1px solid var(--line-soft); border-radius: var(--radius-sm); background: var(--surface);
+    text-decoration: none; box-shadow: var(--shadow-xs);
+    transition: border-color 0.16s var(--ease), background 0.16s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .bpill:hover { border-color: var(--line); background: var(--canvas); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+  .bpill__name { font-weight: 650; color: var(--ink); font-size: 0.95rem; }
+  .bpill__meta { font-size: 0.76rem; color: var(--ink-3); }
+
+  /* ---- trust (full-bleed dark) ---- */
+  .trust { margin-top: 5rem; padding: 4.5rem 1.5rem; background:
+    radial-gradient(120% 120% at 80% 0%, #43301f 0%, var(--espresso-2) 45%, var(--espresso-3) 100%); color: #ece2d6; }
+  .trust__inner { max-width: 980px; margin: 0 auto; text-align: center; }
+  .trust__inner > h2 { color: #fff; margin: 0 0 2.5rem; font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+  .trust__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: left; margin-bottom: 2.75rem; }
+  .trust__item { padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); background: rgba(255,255,255,0.03); }
+  .trust__icon { display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--copper-tint-2); color: var(--copper); font-size: 1.2rem; margin-bottom: 1rem; }
+  .trust__item h3 { margin: 0 0 0.5rem; color: #fff; font-size: 1.2rem; }
+  .trust__item p { margin: 0; color: #bcae9f; font-size: 0.93rem; line-height: 1.6; }
+
+  @media (max-width: 900px) {
+    .hero__inner { grid-template-columns: 1fr; gap: 2.5rem; padding-top: 3rem; }
+    .hero__feature { order: -1; max-width: 360px; margin: 0 auto; }
+    .trust__grid { grid-template-columns: 1fr; gap: 1rem; }
+  }
+  @media (max-width: 560px) {
+    .hero__stats { gap: 1.5rem; }
+    .quizband { padding: 2rem 1.5rem; }
   }
 </style>

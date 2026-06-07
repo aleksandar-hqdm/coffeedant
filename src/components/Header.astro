@@ -1,0 +1,282 @@
+---
+import nav from '../data/nav.json';
+import machines from '../data/machines.json';
+import SiteSearch from './SiteSearch.astro';
+const { catalog, guides, grinders, coffeeMachines } = nav as {
+  catalog: { brand: string; slug: string; route: string; count: number; avgRating: number | null; models: { label: string; route: string }[] }[];
+  guides: { name: string; route: string }[];
+  grinders: { label: string; route: string }[];
+  coffeeMachines: { label: string; route: string }[];
+};
+const tested = (machines as unknown[]).length;
+---
+<div class="topbar">
+  <div class="topbar__inner">
+    <span class="topbar__item"><span class="topbar__dot"></span> Independent &amp; hands-on</span>
+    <span class="topbar__sep">·</span>
+    <span class="topbar__item">{tested} machines bought &amp; tested</span>
+    <span class="topbar__sep">·</span>
+    <span class="topbar__item">No sponsored placements</span>
+  </div>
+</div>
+
+<header class="site-header" id="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="brand" aria-label="Coffeedant home">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30">
+          <circle cx="16" cy="16" r="15" fill="var(--espresso)"/>
+          <path d="M11 9c5 2 5 12 10 14" fill="none" stroke="var(--copper)" stroke-width="2.1" stroke-linecap="round"/>
+          <path d="M11 9c-2.4 3.2-2.4 11 0 14M21 9c2.4 3.2 2.4 11 0 14" fill="none" stroke="#e8d6c2" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+      </span>
+      <span class="brand__word">Coffee<span>dant</span></span>
+    </a>
+
+    <SiteSearch />
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="primary-nav" aria-label="Primary">
+      <details class="nav__item nav__item--mega">
+        <summary>Espresso Machines</summary>
+        <div class="nav__panel nav__panel--mega">
+          <div class="mega__top">
+            <a class="mega__all" href="/machines/">Browse &amp; filter all machines <span class="arr">&rarr;</span></a>
+            <div class="mega__guides">
+              {guides.map((g) => (<a href={g.route}>{g.name}</a>))}
+            </div>
+          </div>
+
+          <p class="mega__hint" data-hint>Pick a brand to see its machines, or open its full brand page.</p>
+
+          <div class="mega__brands">
+            {catalog.map((b) => (
+              <a class="brand-pill" href={b.route} data-brand={b.slug} aria-expanded="false">
+                <span class="brand-pill__name">{b.brand}</span>
+                <span class="brand-pill__meta">{b.count} {b.count === 1 ? 'review' : 'reviews'}{b.avgRating ? ` · ★ ${b.avgRating}` : ''}</span>
+              </a>
+            ))}
+          </div>
+
+          <div class="mega__models">
+            {catalog.map((b) => (
+              <div class="brand-models" data-brand-panel={b.slug} hidden>
+                <div class="brand-models__head">
+                  <span class="brand-models__title">{b.brand} · {b.count} {b.count === 1 ? 'review' : 'reviews'}{b.avgRating ? ` · ★ ${b.avgRating} / 5` : ''}</span>
+                  <a class="brand-models__page" href={b.route}>View the {b.brand} brand page &rarr;</a>
+                </div>
+                <ul class="brand-models__list">
+                  {b.models.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </details>
+
+      <details class="nav__item">
+        <summary>Coffee Machines</summary>
+        <div class="nav__panel">
+          <ul>
+            {coffeeMachines.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
+            <li><a href="/coffee-machine/"><strong>All coffee machines</strong></a></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="nav__item">
+        <summary>Grinders</summary>
+        <div class="nav__panel">
+          <ul>
+            {grinders.map((m) => (<li><a href={m.route}>{m.label}</a></li>))}
+            <li><a href="/grinder/"><strong>All grinders</strong></a></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="nav__item">
+        <summary>Guides</summary>
+        <div class="nav__panel">
+          <ul>{guides.map((g) => (<li><a href={g.route}>{g.name}</a></li>))}</ul>
+        </div>
+      </details>
+
+      <a class="nav__link" href="/compare/">Compare</a>
+      <a class="nav__link" href="/about/">About</a>
+      <a class="nav__cta" href="/quiz/">Find your machine</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* slim credential strip */
+  .topbar { background: var(--espresso-2); color: #e9ddcf; font-size: 0.76rem; }
+  .topbar__inner {
+    max-width: var(--container); margin: 0 auto; padding: 0.42rem 1.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.7rem; flex-wrap: wrap;
+    letter-spacing: 0.01em;
+  }
+  .topbar__item { display: inline-flex; align-items: center; gap: 0.45rem; color: #d8c8b6; }
+  .topbar__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--copper); box-shadow: 0 0 0 3px rgba(190,106,53,0.22); }
+  .topbar__sep { color: rgba(255,255,255,0.28); }
+
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250, 245, 239, 0.82);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+    transition: box-shadow 0.25s var(--ease), background 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+  .site-header.is-scrolled { box-shadow: var(--shadow-sm); border-color: var(--line); background: rgba(250, 245, 239, 0.94); }
+  .site-header__inner {
+    position: relative;
+    max-width: var(--container); margin: 0 auto; padding: 0.7rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.85rem;
+  }
+
+  .brand { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .brand__mark { display: inline-flex; filter: drop-shadow(0 3px 8px rgba(40,26,16,0.18)); transition: transform 0.4s var(--ease); }
+  .brand:hover .brand__mark { transform: rotate(-8deg); }
+  .brand__word { font-family: var(--font-display); font-optical-sizing: auto; font-weight: 600; font-size: 1.5rem; letter-spacing: -0.02em; color: var(--ink); }
+  .brand__word span { color: var(--copper-deep); }
+
+  .nav-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: 0; padding: 0.5rem; cursor: pointer; }
+  .nav-toggle span { width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.2s var(--ease), opacity 0.2s var(--ease); }
+
+  .nav { display: flex; align-items: center; gap: 0.15rem; }
+  .nav__link, .nav__item > summary {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.5rem 0.7rem; border-radius: var(--radius-sm); font-weight: 560; font-size: 0.95rem;
+    color: var(--ink); text-decoration: none; cursor: pointer; list-style: none; white-space: nowrap;
+    transition: background 0.18s var(--ease), color 0.18s var(--ease);
+  }
+  .nav__item > summary::-webkit-details-marker { display: none; }
+  .nav__item > summary::after { content: '▾'; font-size: 0.66rem; color: var(--ink-3); transition: transform 0.2s var(--ease); }
+  .nav__item[open] > summary::after { transform: rotate(180deg); }
+  .nav__link:hover, .nav__item > summary:hover, .nav__item[open] > summary { background: var(--canvas-2); color: var(--copper-deep); }
+  .nav__cta {
+    display: inline-flex; align-items: center; margin-left: 0.35rem; padding: 0.58rem 1.1rem;
+    border-radius: var(--radius-pill); font-weight: 620; font-size: 0.92rem; text-decoration: none;
+    background: var(--copper-deep); color: #fff; white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(158,86,31,0.26); transition: background 0.2s var(--ease), transform 0.16s var(--ease), box-shadow 0.2s var(--ease);
+  }
+  .nav__cta:hover { background: var(--copper-dark); color: #fff; transform: translateY(-1px); box-shadow: 0 12px 24px rgba(158,86,31,0.32); }
+
+  .nav__item { position: relative; }
+  .nav__panel {
+    position: absolute; top: calc(100% + 8px); left: 0; z-index: 200;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow-lg); padding: 0.6rem; min-width: 250px;
+  }
+  .nav__panel ul { list-style: none; margin: 0; padding: 0; }
+  .nav__panel li a { display: block; padding: 0.5rem 0.7rem; border-radius: var(--radius-sm); color: var(--ink); text-decoration: none; font-size: 0.93rem; transition: background 0.16s var(--ease), color 0.16s var(--ease); }
+  .nav__panel li a:hover { background: var(--canvas-2); color: var(--copper-deep); }
+
+  .nav__item--mega { position: static; }
+  .nav__panel--mega { left: 1.5rem; right: 1.5rem; min-width: 0; padding: 1.3rem 1.5rem 1.5rem; max-height: 78vh; overflow: auto; }
+  .mega__top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.2rem; padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--line-soft); }
+  .mega__all { font-weight: 650; color: var(--copper-deep); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; }
+  .mega__all .arr { transition: transform 0.2s var(--ease); }
+  .mega__all:hover .arr { transform: translateX(4px); }
+  .mega__guides { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .mega__guides a { font-size: 0.82rem; padding: 0.3rem 0.7rem; border-radius: var(--radius-pill); text-decoration: none; background: var(--canvas-2); color: var(--ink-2); font-weight: 550; transition: background 0.16s var(--ease), color 0.16s var(--ease); }
+  .mega__guides a:hover { background: var(--copper-tint); color: var(--copper-deep); }
+  .mega__hint { margin: 0 0 0.85rem; font-size: 0.82rem; color: var(--ink-3); }
+
+  .mega__brands { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.6rem; }
+  .brand-pill {
+    display: flex; flex-direction: column; gap: 2px; padding: 0.6rem 0.8rem;
+    border: 1px solid var(--line-soft); border-radius: var(--radius-sm); background: var(--surface); text-decoration: none; cursor: pointer;
+    transition: border-color 0.14s var(--ease), background 0.14s var(--ease), box-shadow 0.14s var(--ease), transform 0.14s var(--ease);
+  }
+  .brand-pill:hover { border-color: var(--line); background: var(--canvas); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+  .brand-pill.is-active { border-color: var(--copper); background: var(--copper-tint); box-shadow: inset 0 0 0 1px var(--copper); }
+  .brand-pill__name { font-weight: 650; font-size: 0.92rem; color: var(--ink); }
+  .brand-pill__meta { font-size: 0.75rem; color: var(--ink-3); }
+
+  .mega__models { margin-top: 1.1rem; }
+  .brand-models { border-top: 1px solid var(--line-soft); padding-top: 1.1rem; }
+  .brand-models__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.7rem; }
+  .brand-models__title { font-weight: 650; font-size: 0.95rem; }
+  .brand-models__page { font-size: 0.85rem; font-weight: 600; color: var(--copper-deep); text-decoration: none; white-space: nowrap; }
+  .brand-models__page:hover { text-decoration: underline; }
+  .brand-models__list { list-style: none; margin: 0; padding: 0; column-width: 200px; column-gap: 1.5rem; }
+  .brand-models__list li { break-inside: avoid; }
+  .brand-models__list li a { display: block; padding: 0.22rem 0; color: var(--ink-2); text-decoration: none; font-size: 0.88rem; transition: color 0.14s var(--ease); }
+  .brand-models__list li a:hover { color: var(--copper-deep); }
+
+  @media (max-width: 900px) {
+    .nav-toggle { display: flex; }
+    .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow-lg); padding: 0.6rem; max-height: 82vh; overflow: auto; }
+    .nav.nav--open { display: flex; }
+    .nav__item, .nav__link { width: 100%; }
+    .nav__item > summary { justify-content: space-between; }
+    .nav__cta { margin: 0.4rem 0 0; justify-content: center; }
+    .nav__panel, .nav__panel--mega { position: static; box-shadow: none; border: none; padding: 0.25rem 0 0.5rem 0; max-height: none; left: auto; right: auto; }
+    .mega__brands { grid-template-columns: 1fr 1fr; }
+    .brand-models__list { column-width: auto; columns: 1; }
+    .topbar__inner { gap: 0.5rem; font-size: 0.72rem; }
+  }
+  @media (max-width: 540px) {
+    .topbar__item:nth-child(3), .topbar__sep:nth-child(2) { display: none; }
+  }
+</style>
+
+<script>
+  // One dropdown open at a time + close on outside click / Escape + mobile toggle.
+  const items = Array.from(document.querySelectorAll<HTMLDetailsElement>('.nav__item'));
+  items.forEach((d) =>
+    d.addEventListener('toggle', () => {
+      if (d.open) items.forEach((o) => { if (o !== d) o.open = false; });
+    })
+  );
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (!t.closest('.nav')) items.forEach((d) => (d.open = false));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') items.forEach((d) => (d.open = false));
+  });
+  const toggle = document.querySelector('.nav-toggle');
+  const navEl = document.querySelector('.nav');
+  toggle?.addEventListener('click', () => {
+    const open = navEl?.classList.toggle('nav--open');
+    toggle.setAttribute('aria-expanded', String(Boolean(open)));
+  });
+
+  // Subtle elevation once the page is scrolled.
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Brand pills: clicking a pill reveals that brand's reviews inside the menu
+  // (instead of navigating). The "Brand page" link inside still navigates.
+  const pills = Array.from(document.querySelectorAll<HTMLAnchorElement>('.brand-pill[data-brand]'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-brand-panel]'));
+  const hint = document.querySelector<HTMLElement>('[data-hint]');
+  pills.forEach((pill) => {
+    pill.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || (e as MouseEvent).button === 1) return; // allow open-in-new-tab
+      e.preventDefault();
+      const slug = pill.getAttribute('data-brand');
+      const panel = panels.find((p) => p.getAttribute('data-brand-panel') === slug);
+      const wasActive = pill.classList.contains('is-active');
+      pills.forEach((p) => { p.classList.remove('is-active'); p.setAttribute('aria-expanded', 'false'); });
+      panels.forEach((p) => (p.hidden = true));
+      if (!wasActive && panel) {
+        pill.classList.add('is-active');
+        pill.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
+        if (hint) hint.hidden = true;
+        panel.scrollIntoView({ block: 'nearest' });
+      } else if (hint) {
+        hint.hidden = false;
+      }
+    });
+  });
+</script>

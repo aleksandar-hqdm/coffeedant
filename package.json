@@ -9,10 +9,19 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "migrate": "node scripts/migrate.mjs",
+    "strip-secrets": "node scripts/strip-secrets.mjs",
+    "resolve-asins": "node scripts/resolve-asins.mjs",
+    "amazon-refresh": "node scripts/amazon-refresh.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/inter": "^5.2.8",
     "astro": "^6.3.6"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
   }
 }

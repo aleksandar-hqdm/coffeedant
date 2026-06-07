@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import amazon from '../data/amazon.json';
+import asinMap from '../data/asins.json';
+import nav from '../data/nav.json';
+import { liveProduct } from '../lib/product';
+import MachineExplorer from '../components/MachineExplorer.astro';
+import { machines as catalogMachines } from '../lib/catalog';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages
+    .filter((p) => p.data.route !== '/')
+    .map((p) => ({
+      params: { slug: p.data.route.replace(/^\/|\/$/g, '') },
+      props: { data: p.data },
+    }));
+}
+
+const { data } = Astro.props;
+
+const LABELS: Record<string, string> = {
+  'espresso-machine': 'Espresso Machines',
+  'coffee-machine': 'Coffee Machines',
+  grinder: 'Grinders',
+  blog: 'Blog',
+  tos: 'Terms of Service',
+  'privacy-policy': 'Privacy Policy',
+};
+function titleize(seg: string) {
+  return LABELS[seg] || seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+const segs = data.route.replace(/^\/|\/$/g, '').split('/');
+const breadcrumbs = [{ name: 'Home', url: '/' }];
+segs.forEach((seg, i) => {
+  const url = '/' + segs.slice(0, i + 1).join('/') + '/';
+  const last = i === segs.length - 1;
+  breadcrumbs.push({ name: last ? data.breadcrumb || data.title : titleize(seg), url });
+});
+
+const isArticle = data.type === 'review' || data.type === 'blog';
+
+// Inject the live Amazon price into the product box (the price-note element).
+// Amazon requires cached prices to show when they were retrieved, so we stamp
+// the refresh date. Buy links in the body are already affiliate links.
+const amz = amazon as Record<string, { title?: string | null; displayPrice?: string; price?: string; updated?: string }>;
+const asins = asinMap as Record<string, string>;
+// Map each review route to its brand so the liveProduct title-guard can match on
+// the brand name (it requires the brand or a digit model code, not plain words).
+const routeToBrand: Record<string, string> = {};
+for (const b of (nav as { catalog: { brand: string; models: { route: string }[] }[] }).catalog) {
+  for (const mdl of b.models) routeToBrand[mdl.route] = b.brand;
+}
+const live = liveProduct(
+  { slug: data.slug, brand: routeToBrand[data.route] || '', label: data.breadcrumb || data.title, asin: data.asin },
+  amz,
+  asins,
+) as { displayPrice?: string; price?: string; updated?: string } | null;
+const livePrice = live?.displayPrice || (live?.price ? `$${live.price}` : null);
+let bodyHtml = data.bodyHtml;
+if (livePrice) {
+  const asOf = live?.updated
+    ? new Date(live.updated + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    : null;
+  const note = `<strong>${livePrice}</strong> at Amazon${asOf ? `<br><span class="cd-asof">Last updated: ${asOf}</span>` : ''}`;
+  if (/class=["'][^"']*\bprice-note\b[^"']*["']/i.test(bodyHtml)) {
+    // boxes that already have a price note: swap its content for the live price
+    bodyHtml = bodyHtml.replace(/(<p\b[^>]*\bprice-note\b[^>]*>)[\s\S]*?(<\/p>)/gi, `$1${note}$2`);
+  } else {
+    // boxes with only a buy button: insert a price line after the first button
+    bodyHtml = bodyHtml.replace(/(<a\b[^>]*\bbtn-buy\b[^>]*>[\s\S]*?<\/a>)/i, `$1<p class="price-note">${note}</p>`);
+  }
+}
+
+// Best-of guide pages: surface a filter/sort explorer scoped to the machines the
+// guide links to (falls back to the full catalog when it links to few).
+let guideOnly: string[] | undefined;
+if (data.type === 'category') {
+  const machineSlugs = new Set(catalogMachines.map((m) => m.slug));
+  const linked = [...new Set([...bodyHtml.matchAll(/\/espresso-machine\/([a-z0-9-]+)\//g)].map((m) => m[1]))].filter((s) => machineSlugs.has(s));
+  guideOnly = linked.length >= 3 ? linked : undefined;
+}
+---
+<BaseLayout
+  title={data.seoTitle || data.title}
+  description={data.description}
+  canonicalURL={data.canonical}
+  ogTitle={data.ogTitle}
+  ogDescription={data.ogDescription}
+  ogImage={data.ogImage}
+  ogType={isArticle ? 'article' : 'website'}
+  noindex={data.noindex}
+  breadcrumbs={breadcrumbs}
+>
+  <article class="cd-article" set:html={bodyHtml} />
+  {data.type === 'category' && (
+    <section class="guide-explorer">
+      <h2 class="guide-explorer__title">Filter &amp; sort these picks</h2>
+      <MachineExplorer only={guideOnly} />
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .guide-explorer { max-width: var(--container); margin: 0 auto; padding: 0.5rem 1.25rem 2.5rem; }
+  .guide-explorer__title { font-size: clamp(1.3rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+</style>

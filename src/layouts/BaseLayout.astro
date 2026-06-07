@@ -1,22 +1,52 @@
 ---
+import '@fontsource-variable/fraunces/standard.css';
+import '@fontsource-variable/fraunces/standard-italic.css';
+import '@fontsource-variable/inter/wght.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Crumb { name: string; url: string; }
 interface Props {
   title: string;
-  description: string;
-  canonicalURL?: string;
-  ogImage?: string;
+  description?: string | null;
+  canonicalURL?: string | null;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+  ogImage?: string | null;
+  ogType?: string;
   noindex?: boolean;
+  breadcrumbs?: Crumb[];
 }
 
 const {
   title,
-  description,
+  description = 'Honest espresso machine reviews, buying guides, and brewing tips.',
   canonicalURL = new URL(Astro.url.pathname, Astro.site).toString(),
+  ogTitle,
+  ogDescription,
   ogImage = '/og-default.png',
+  ogType = 'website',
   noindex = false,
+  breadcrumbs = [],
 } = Astro.props;
 
 const siteName = 'Coffeedant';
-const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
+const fullTitle = title?.includes(siteName) ? title : `${title} | ${siteName}`;
+const desc = description ?? '';
+const ogImageURL = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
+
+const ldGraph: any[] = [
+  { '@type': 'Organization', '@id': `${Astro.site}#org`, name: siteName, url: String(Astro.site) },
+  { '@type': 'WebSite', '@id': `${Astro.site}#site`, name: siteName, url: String(Astro.site), publisher: { '@id': `${Astro.site}#org` } },
+];
+if (breadcrumbs.length > 1) {
+  ldGraph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: new URL(c.url, Astro.site).toString() })),
+  });
+}
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': ldGraph });
 ---
 <!doctype html>
 <html lang="en">
@@ -24,54 +54,59 @@ const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#faf5ef" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
 
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    {desc && <meta name="description" content={desc} />}
     <link rel="canonical" href={canonicalURL} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={siteName} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={ogTitle || fullTitle} />
+    {(ogDescription || desc) && <meta property="og:description" content={ogDescription || desc} />}
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+    {ogImageURL && <meta property="og:image" content={ogImageURL} />}
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />
+    <meta name="twitter:title" content={ogTitle || fullTitle} />
+    {(ogDescription || desc) && <meta name="twitter:description" content={ogDescription || desc} />}
+    {ogImageURL && <meta name="twitter:image" content={ogImageURL} />}
+
+    <script type="application/ld+json" set:html={jsonLd} />
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    {breadcrumbs.length > 1 && (
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        {breadcrumbs.map((c, i) => (
+          <>{i > 0 && <span> / </span>}{i < breadcrumbs.length - 1 ? <a href={c.url}>{c.name}</a> : <span>{c.name}</span>}</>
+        ))}
+      </nav>
+    )}
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // Reveal-on-scroll for elements tagged .reveal (respects reduced-motion).
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const els = document.querySelectorAll('.reveal');
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, sans-serif;
-    --color-text: #1a1a1a;
-    --color-muted: #666;
-    --color-bg: #fafafa;
-    --color-accent: #6f4e37;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; }
-
-  html { color-scheme: light; }
-
-  body {
-    margin: 0;
-    font-family: var(--font-sans);
-    color: var(--color-text);
-    background: var(--color-bg);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a { color: var(--color-accent); }
-</style>

@@ -1,0 +1,122 @@
+---
+import nav from '../../data/nav.json';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { machines as catalogMachines, TYPE_LABEL, MILK_LABEL } from '../../lib/catalog';
+
+type Brand = { brand: string; slug: string; route: string; hubRoute: string | null; count: number; avgRating: number | null; models: any[] };
+const catalog = (nav as { catalog: Brand[] }).catalog;
+
+export async function getStaticPaths() {
+  const cat = (nav as { catalog: Brand[] }).catalog;
+  return cat.map((b) => ({ params: { slug: b.slug }, props: { brand: b } }));
+}
+
+const { brand } = Astro.props as { brand: Brand };
+const rows = catalogMachines
+  .filter((m) => m.brand === brand.brand)
+  .sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
+const sc = (v: number | undefined) => (v == null ? '' : v >= 8.5 ? 'is-high' : v >= 7 ? 'is-mid' : 'is-low');
+const crumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Espresso Machines', url: '/machines/' },
+  { name: brand.brand, url: brand.route },
+];
+const desc = `Compare every ${brand.brand} espresso machine we have reviewed${brand.avgRating ? `, average rating ${brand.avgRating} out of 5` : ''}: price, rating, type, milk system, and grinder, side by side.`;
+---
+<BaseLayout title={`${brand.brand} Espresso Machines: Compared`} description={desc} breadcrumbs={crumbs}>
+  <div class="brand-page">
+    <header class="brand-hero">
+      <h1>{brand.brand} Espresso Machines</h1>
+      <p class="brand-hero__meta">
+        {brand.count} {brand.count === 1 ? 'review' : 'reviews'}
+        {brand.avgRating && <span> · average rating <strong>★ {brand.avgRating} / 5</strong></span>}
+      </p>
+      {brand.hubRoute && <a class="brand-hero__guide" href={brand.hubRoute}>Read the {brand.brand} buying guide &rarr;</a>}
+    </header>
+
+    <div class="ctable-wrap">
+      <table class="ctable">
+        <thead>
+          <tr>
+            <th scope="col">Machine</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Price</th>
+            <th scope="col">Type</th>
+            <th scope="col">Milk</th>
+            <th scope="col">Grinder</th>
+            <th scope="col" title="Espresso quality (our score / 10)">Espr.</th>
+            <th scope="col" title="Milk &amp; steam (our score / 10)">Steam</th>
+            <th scope="col" title="Build quality (our score / 10)">Build</th>
+            <th scope="col" title="Ease of use (our score / 10)">Ease</th>
+            <th scope="col" title="Value (our score / 10)">Value</th>
+            <th scope="col">Size (mm)</th>
+            <th scope="col"><span class="sr">Links</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((m) => (
+            <tr>
+              <th scope="row" class="ct-machine">
+                <a class="ct-thumb" href={m.route}>{m.image ? <img src={m.image} alt={m.label} loading="lazy" /> : <span class="ct-ph">No image</span>}</a>
+                <a class="ct-name" href={m.route}>{m.label}</a>
+              </th>
+              <td data-label="Rating">{m.rating ? <span class="ct-rating">★ {m.rating}</span> : <span class="ct-na">n/a</span>}</td>
+              <td data-label="Price">{m.displayPrice || <span class="ct-na">See Amazon</span>}</td>
+              <td data-label="Type">{TYPE_LABEL[m.type] || m.type}</td>
+              <td data-label="Milk">{MILK_LABEL[m.milk] || m.milk}</td>
+              <td data-label="Grinder">{m.grinder ? 'Yes' : 'No'}</td>
+              <td class={`ct-score ${sc(m.scores.espresso)}`} data-label="Espresso">{m.scores.espresso ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.milk)}`} data-label="Steam">{m.scores.milk ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.build)}`} data-label="Build">{m.scores.build ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.ease)}`} data-label="Ease">{m.scores.ease ?? '—'}</td>
+              <td class={`ct-score ${sc(m.scores.value)}`} data-label="Value">{m.scores.value ?? '—'}</td>
+              <td class="ct-dims" data-label="Size">{m.dims || <span class="ct-na">—</span>}</td>
+              <td class="ct-actions">
+                <a class="ct-buy" href={m.buyUrl} target="_blank" rel="nofollow sponsored noopener">Price</a>
+                <a class="ct-review" href={m.route}>Review</a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="ctable-note">Prices update weekly from Amazon. Some boutique models are not sold on Amazon; choose "See Amazon" to check current listings.</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .brand-page { max-width: var(--container); margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
+  .brand-hero { padding: 1rem 0 1.5rem; border-bottom: 1px solid var(--color-line); margin-bottom: 1.5rem; }
+  .brand-hero h1 { margin: 0 0 0.35rem; font-size: clamp(1.7rem, 4vw, 2.3rem); }
+  .brand-hero__meta { margin: 0; color: var(--color-muted); }
+  .brand-hero__meta strong { color: var(--color-accent); }
+  .brand-hero__guide { display: inline-block; margin-top: 0.6rem; color: var(--color-brand); font-weight: 600; text-decoration: none; }
+  .brand-hero__guide:hover { text-decoration: underline; }
+
+  .ctable-wrap { overflow-x: auto; border: 1px solid var(--line-soft); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); }
+  .ctable { width: 100%; border-collapse: collapse; min-width: 1120px; }
+  .ct-score { text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ct-score.is-high { color: var(--green); }
+  .ct-score.is-mid { color: #9a7440; }
+  .ct-score.is-low { color: #b4543e; }
+  .ct-dims { white-space: nowrap; font-size: 0.84rem; color: var(--color-muted); }
+  .ctable thead th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-muted); padding: 0.85rem 0.9rem; border-bottom: 1px solid var(--color-line); background: var(--color-soft); }
+  .ctable tbody tr { border-bottom: 1px solid var(--color-line); }
+  .ctable tbody tr:last-child { border-bottom: 0; }
+  .ctable td, .ctable th[scope="row"] { padding: 0.7rem 0.9rem; font-size: 0.92rem; vertical-align: middle; }
+  .ct-machine { display: flex; align-items: center; gap: 0.75rem; min-width: 240px; font-weight: 400; }
+  .ct-thumb { flex: none; width: 54px; height: 54px; border-radius: 8px; background: var(--color-soft); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .ct-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .ct-ph { font-size: 0.6rem; color: var(--color-muted); text-align: center; }
+  .ct-name { font-family: var(--font-display); font-weight: 540; font-size: 1.06rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; line-height: 1.25; }
+  .ct-name:hover { color: var(--copper-deep); }
+  .ct-rating { font-weight: 700; color: #7a5a14; background: var(--gold-tint); padding: 0.12rem 0.5rem; border-radius: 999px; white-space: nowrap; }
+  .ct-na { color: var(--ink-3); }
+  .ct-actions { white-space: nowrap; }
+  .ct-buy { display: inline-block; background: var(--copper-deep); color: #fff; font-weight: 620; padding: 0.42rem 0.85rem; border-radius: 999px; text-decoration: none; font-size: 0.82rem; margin-right: 0.35rem; transition: background 0.2s var(--ease); }
+  .ct-buy:hover { background: var(--copper-dark); color: #fff; }
+  .ct-review { display: inline-block; color: var(--color-brand); font-weight: 600; text-decoration: none; font-size: 0.82rem; }
+  .ct-review:hover { text-decoration: underline; }
+  .ctable-note { color: var(--color-muted); font-size: 0.82rem; margin: 0.85rem 0 0; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
